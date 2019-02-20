@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/velosojonathan5/dp-world-api/issues"
   },
-  "homepage": "https://github.com/velosojonathan5/dp-world-api#readme"
+  "homepage": "https://github.com/velosojonathan5/dp-world-api#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pg": "^7.8.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0"
+  }
 }
