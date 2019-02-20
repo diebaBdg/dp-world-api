@@ -1,0 +1,19 @@
+{
+  "name": "dp-world-api",
+  "version": "1.0.0",
+  "description": "It is the api for the supplier management web sistem at Dp World",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/velosojonathan5/dp-world-api.git"
+  },
+  "author": "Jonathan, Cleyton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/velosojonathan5/dp-world-api/issues"
+  },
+  "homepage": "https://github.com/velosojonathan5/dp-world-api#readme"
+}
