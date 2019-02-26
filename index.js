@@ -1,19 +1,23 @@
 let app = require('express')();
+let bodyParser = require('body-parser');
+let logger = require('morgan');
+let fs = require('fs');
+let path = require('path')
 
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('postgres://postgres:1234@localhost:5432/dp_world');
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+// setup the logger
+app.use(logger('combined', { stream: accessLogStream }))
 
-app.get('/', (req, res) => {
-    res.send('hello dp world')
-});
+// difine routes
+const companies = require('./routes/company');
+app.use('/companies', companies);
+
+// config
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 
 const port = 80;
