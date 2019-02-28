@@ -7,7 +7,7 @@ let cors = require('cors');
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: 'http://localhost',
+  origin: '*',
   optionsSuccessStatus: 204,
   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
 }
@@ -23,14 +23,16 @@ let accessLogStream = rfs('access.log', {
 // setup the logger
 app.use(logger('combined', { stream: accessLogStream }));
 
-// difine routes
-const companies = require('./routes/company');
-app.use('/companies', companies);
-
 // config
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// difine routes
+const companies = require('./routes/company');
+app.use('/companies', companies);
+
+
 
 const port = 80;
 
