@@ -1,11 +1,38 @@
 const router = require('express').Router();
 const controller = require('../controllers/company');
+// middleware to  find erros difined in routes validations
 const expressValidator = require('./middlewares/express-validator');
+// validators of this specifics routes
 const companyValidators = require('./company-validators');
 
+/**
+ * @api {get} /companies Companies
+ * @apiGroup Sistema
+ *
+ * @apiSuccess {String} status Mensagem de acesso autorizado
+ * 
+ * @apiSuccessExample {json} Sucesso
+ *    HTTP/1.1 200 OK
+ *     {
+ *           "companies": [
+ *               {
+ *                   "id": 3,
+ *                   "cnpj": "22222222222222",
+ *                   "createdAt": "2019-02-26T01:26:30.065Z",
+ *                   "updatedAt": "2019-02-26T01:26:30.065Z"
+ *               },
+ *               {
+ *                   "id": 4,
+ *                   "cnpj": "11111111111111",
+ *                   "createdAt": "2019-02-26T01:33:42.295Z",
+ *                   "updatedAt": "2019-02-26T01:33:42.295Z"
+ *               }
+ *           ]
+ *       }
+ */
 router.get('/', controller.get);
 
-router.post('/', 
+router.post('/',
     companyValidators.post
     , expressValidator.findsValidatorErros()
     , controller.post
