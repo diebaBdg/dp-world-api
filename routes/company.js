@@ -1,17 +1,8 @@
-var models  = require('../db/models');
-var express = require('express');
-var router  = express.Router();
+const router  = require('express').Router();
+const controller = require('../controllers/company');
 
-router.get('/', async (req, res) => {
-    let Empresa = models.Empresa;
-    let empresas = await Empresa.findAll();
-    res.send(empresas);
-});
+router.get('/', controller.get);
 
-router.post('/', async (req, res) => {
-    let Empresa = models.Empresa;
-    let result = await Empresa.create({cnpj: '33333333333333'});
-    res.send(result);
-});
+router.post('/', controller.post);
 
 module.exports = router;

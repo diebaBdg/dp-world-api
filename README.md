@@ -1,6 +1,6 @@
 # DP WORLD API
 
-It is the api for the supplier management web sistem at Dp World
+It is the api for the supplier management web system at Dp World
 
 ## Getting Started
 
