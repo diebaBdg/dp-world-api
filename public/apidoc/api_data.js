@@ -9,10 +9,10 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Array",
             "optional": false,
-            "field": "status",
-            "description": "<p>Mensagem de acesso autorizado</p>"
+            "field": "companies",
+            "description": "<p>List of companies</p>"
           }
         ]
       },
@@ -28,5 +28,35 @@ define({ "api": [
     "filename": "routes/company.js",
     "groupTitle": "Sistema",
     "name": "GetCompanies"
+  },
+  {
+    "type": "post",
+    "url": "/companies",
+    "title": "Companies",
+    "group": "Sistema",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Json",
+            "optional": false,
+            "field": "company",
+            "description": "<p>Companie inserted</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sucesso",
+          "content": "HTTP/1.1 200 OK\n {\n       \"id\": 19,\n       \"cnpj\": \"33333333333333\",\n       \"updatedAt\": \"2019-03-04T20:20:01.453Z\",\n       \"createdAt\": \"2019-03-04T20:20:01.453Z\"\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/company.js",
+    "groupTitle": "Sistema",
+    "name": "PostCompanies"
   }
 ] });

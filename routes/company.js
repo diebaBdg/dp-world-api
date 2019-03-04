@@ -9,7 +9,7 @@ const companyValidators = require('./company-validators');
  * @api {get} /companies Companies
  * @apiGroup Sistema
  *
- * @apiSuccess {String} status Mensagem de acesso autorizado
+ * @apiSuccess {Array} companies List of companies
  * 
  * @apiSuccessExample {json} Sucesso
  *    HTTP/1.1 200 OK
@@ -32,6 +32,21 @@ const companyValidators = require('./company-validators');
  */
 router.get('/', controller.get);
 
+/**
+ * @api {post} /companies Companies
+ * @apiGroup Sistema
+ *
+ * @apiSuccess {Json} company Companie inserted
+ * 
+ * @apiSuccessExample {json} Sucesso
+ *    HTTP/1.1 200 OK
+ *     {
+ *           "id": 19,
+ *           "cnpj": "33333333333333",
+ *           "updatedAt": "2019-03-04T20:20:01.453Z",
+ *           "createdAt": "2019-03-04T20:20:01.453Z"
+ *       }
+ */
 router.post('/',
     companyValidators.post
     , expressValidator.findsValidatorErros()

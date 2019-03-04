@@ -2,7 +2,6 @@ const models = require('../db/models');
 const { check, validationResult } = require('express-validator/check');
 
 exports.get = async (req, res) => {
-    console.log(2);
     res.send({
         companies: await models.Empresa.findAll()
     });
