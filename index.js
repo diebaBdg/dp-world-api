@@ -11,7 +11,7 @@ let cors = require('cors');
 const corsOptions = {
   origin: 'http://localhost',
   optionsSuccessStatus: 204,
-  methods: ['GET', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }
 app.use(cors(corsOptions));
 
@@ -33,6 +33,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // difinig routes
 const companies = require('./routes/company');
 app.use('/companies', companies);
+const documents = require('./routes/document');
+app.use('/documents', documents);
 
 // defining server port and start server
 const port = 80;
