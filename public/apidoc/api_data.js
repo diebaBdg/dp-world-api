@@ -49,7 +49,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sucesso",
-          "content": "HTTP/1.1 200 OK\n {\n       \"id\": 19,\n       \"cnpj\": \"33333333333333\",\n       \"updatedAt\": \"2019-03-04T20:20:01.453Z\",\n       \"createdAt\": \"2019-03-04T20:20:01.453Z\"\n  }",
+          "content": "HTTP/1.1 200 OK\n {\n       \"id\": 19,\n       \"cnpj\": \"33333333333333\",\n       \"updatedAt\": \"2019-03-04T20:20:01.453Z\",\n       \"createdAt\": \"2019-03-04T20:20:01.453Z\"\n   }",
           "type": "json"
         }
       ]
@@ -58,5 +58,35 @@ define({ "api": [
     "filename": "routes/company.js",
     "groupTitle": "Sistema",
     "name": "PostCompanies"
+  },
+  {
+    "type": "post",
+    "url": "/documents",
+    "title": "Documents",
+    "group": "Sistema",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Json",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Document inserted</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 OK\n {\n       \"id\": 19,\n       \"cnpj\": \"33333333333333\",\n       \"updatedAt\": \"2019-03-04T20:20:01.453Z\",\n       \"createdAt\": \"2019-03-04T20:20:01.453Z\"\n   }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/document.js",
+    "groupTitle": "Sistema",
+    "name": "PostDocuments"
   }
 ] });
