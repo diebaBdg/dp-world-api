@@ -24,17 +24,14 @@ let accessLogStream = rfs('access.log', {
 // setup the logger
 app.use(logger('combined', { stream: accessLogStream }));
 
-// config
+// config middlewares
 app.use(express.static("public"));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// difinig routes
-const companies = require('./routes/company');
-app.use('/companies', companies);
-const documents = require('./routes/document');
-app.use('/documents', documents);
+// difinig routes in routes/index.js
+app = require('./routes').routes(app);
 
 // defining server port and start server
 const port = 80;
