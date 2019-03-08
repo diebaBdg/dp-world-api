@@ -3,7 +3,7 @@ const controller = require('../controllers/document');
 // middleware to  find erros difined in routes validations
 const expressValidator = require('./middlewares/express-validator');
 // validators of this specifics routes
-// const companyValidators = require('./company-validators');
+const validators = require('./validators/document-validators');
 
 /**
  * @api {get} /documents Documents
@@ -51,8 +51,6 @@ router.get('/', controller.get);
  *           "createdAt": "2019-03-04T20:20:01.453Z"
  *       }
  */
-router.post('/'
-    , controller.post
-);
+router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 module.exports = router;
