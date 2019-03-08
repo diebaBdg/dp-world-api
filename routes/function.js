@@ -6,15 +6,16 @@ const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/function-validators');
 
 /**
- * @api {get} /functions Functions
- * @apiGroup Sistema
+ * @api {get} /functions List of collaborators functions
+ * @apiName GetFunctions
+ * @apiGroup Functions
  *
  * @apiSuccess {Array} functions List of functions
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    {
- *    "functions": [
+ *       "functions": [
  *          {
  *              "id": 9,
  *              "description": "Soldador",
@@ -28,13 +29,14 @@ const validators = require('./validators/function-validators');
  *              "updatedAt": "2019-03-05T23:21:09.686Z"
  *          }
  *       ]
- *   }
+ *    }
  */
 router.get('/', controller.get);
 
 /**
- * @api {post} /functions Functions
- * @apiGroup Sistema
+ * @api {post} /functions Create a new function
+ * @apiName PostFunctions
+ * @apiGroup Functions
  *
  * @apiParam (Request body) {Array} description The function description.
  * 
