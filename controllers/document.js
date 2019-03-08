@@ -17,7 +17,7 @@ exports.post = async (req, res) => {
         // get documents and verify if exists document with the same name
         const documents = await models.Document.findAll({ where: { description: req.body.description } });
         if(!documents.length){
-            // set status active and create
+            // set status active and creating document
             document.status = 1
             res.status(201).send(await models.Document.create(document));
         }else{
