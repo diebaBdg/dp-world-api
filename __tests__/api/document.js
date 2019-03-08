@@ -5,3 +5,13 @@ it('GET shoud return a list of documents', () => {
         .expect('status', 200)
         .expect('jsonTypes', 'documents', frisby.Joi.array())
 })
+
+it('POST should return a status of 201 Created', function () {
+    return frisby
+        .post('http://localhost/documents', {
+            description: `Frisby test ${new Date()}`,
+            DocumentTypeId: 1,
+	        FunctionId: 1
+        })
+        .expect('status', 201);
+});

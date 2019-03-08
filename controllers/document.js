@@ -18,7 +18,7 @@ exports.post = async (req, res) => {
         const documents = await models.Document.findAll({ where: { description: req.body.description } });
         if(!documents.length){
             // set status active and creating document
-            document.status = 1
+            document.status = 1;
             res.status(201).send(await models.Document.create(document));
         }else{
             res.status(400).send({ msg: "Document already existis." });
