@@ -14,7 +14,7 @@ exports.post = async (req, res) => {
     try {
         const functions = await models.Function.findAll({ where: { description: req.body.description } });
         if (!functions.length) {
-            res.status(201).send(await models.Function.create({ description: req.body.description }));
+            res.status(201).send({id: (await models.Function.create({ description: req.body.description })).id});
         } else {
             res.status(400).send({ msg: "Function already existis." });
         }

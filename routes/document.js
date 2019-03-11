@@ -6,12 +6,13 @@ const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/document-validators');
 
 /**
- * @api {get} /documents Documents
- * @apiGroup Sistema
+ * @api {get} /documents List of documents
+ * @apiName GetDocuments
+ * @apiGroup Documents
  *
  * @apiSuccess {Array} documents List of documents
  * 
- * @apiSuccessExample {json} Success
+ * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *     {
  *   "companies": [
@@ -37,19 +38,21 @@ const validators = require('./validators/document-validators');
 router.get('/', controller.get);
 
 /**
- * @api {post} /documents Documents
- * @apiGroup Sistema
+ * @api {post} /documents Create a new document
+ * @apiName PostDocuments
+ * @apiGroup Documents
  *
- * @apiSuccess {Json} document Document inserted
+ * @apiParam (Request body) {String} description The function description.
+ * @apiParam (Request body) {Int} DocumentTypeId The id of the document type.
+ * @apiParam (Request body) {Int} FunctionId The id of the function.
  * 
- * @apiSuccessExample {json} Success
+ * @apiSuccess {Int} id Id of the document inserted
+ * 
+ * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
- *     {
- *           "id": 19,
- *           "cnpj": "33333333333333",
- *           "updatedAt": "2019-03-04T20:20:01.453Z",
- *           "createdAt": "2019-03-04T20:20:01.453Z"
- *       }
+ *    {
+ *        "id": 20
+ *    }
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 

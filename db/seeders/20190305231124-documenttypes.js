@@ -12,16 +12,6 @@ module.exports = {
         description: 'Colaborador',
         createdAt: new Date(),
         updatedAt: new Date()
-      },{
-        id: 3,
-        description: 'Mensais',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },{
-        id: 4,
-        description: 'Mensais colaborador',
-        createdAt: new Date(),
-        updatedAt: new Date()
       }], {});
   },
 

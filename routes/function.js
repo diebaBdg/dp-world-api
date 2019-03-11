@@ -12,7 +12,7 @@ const validators = require('./validators/function-validators');
  *
  * @apiSuccess {Array} functions List of functions
  * 
- * @apiSuccessExample {json} Success
+ * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
  *       "functions": [
@@ -38,18 +38,15 @@ router.get('/', controller.get);
  * @apiName PostFunctions
  * @apiGroup Functions
  *
- * @apiParam (Request body) {Array} description The function description.
+ * @apiParam (Request body) {String} description The function description.
  * 
  * @apiSuccess {Json} function Function inserted
  * 
- * @apiSuccessExample {json} Success
+ * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *          "id": 17,
- *          "description": "Mecanico de balão",
- *          "updatedAt": "2019-03-07T00:30:06.478Z",
- *          "createdAt": "2019-03-07T00:30:06.478Z"
- *     }
+ *        "id": 17
+ *    }
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros() , controller.post);
 

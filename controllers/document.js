@@ -19,7 +19,7 @@ exports.post = async (req, res) => {
         if(!documents.length){
             // set status active and creating document
             document.status = 1;
-            res.status(201).send(await models.Document.create(document));
+            res.status(201).send({id: (await models.Document.create(document)).id});
         }else{
             res.status(400).send({ msg: "Document already existis." });
         }

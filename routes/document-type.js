@@ -2,13 +2,13 @@ const router = require('express').Router();
 const controller = require('../controllers/document-type');
 
 /**
- * @api {get} /document-types List document types
+ * @api {get} /document-types List of document types
  * @apiName GetDocumentTypes
  * @apiGroup DocumentTypes
  *
  * @apiSuccess {Array} DocumentTypes List of Document Types
  * 
- * @apiSuccessExample {json} Success
+ * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
  *       "documentTypes": [

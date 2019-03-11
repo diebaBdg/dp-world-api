@@ -6,12 +6,13 @@ const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/company-validators');
 
 /**
- * @api {get} /companies Companies
- * @apiGroup Sistema
+ * @api {get} /companies List of companies
+ * @apiName GetCompanies
+ * @apiGroup Companies
  *
  * @apiSuccess {Array} companies List of companies
  * 
- * @apiSuccessExample {json} Sucesso
+ * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
  *           "companies": [
@@ -33,12 +34,13 @@ const validators = require('./validators/company-validators');
 router.get('/', controller.get);
 
 /**
- * @api {post} /companies Companies
- * @apiGroup Sistema
- *
+ * @api {post} /companies Create a new company
+ * @apiName PostCompanies
+ * @apiGroup Companies
+ * 
  * @apiSuccess {Json} company Companie inserted
  * 
- * @apiSuccessExample {json} Sucesso
+ * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
  *           "id": 19,
