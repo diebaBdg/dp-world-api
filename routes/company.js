@@ -41,13 +41,10 @@ router.get('/', controller.get);
  * @apiSuccess {Json} company Companie inserted
  * 
  * @apiSuccessExample {json} Sucesso (example)
- *    HTTP/1.1 200 OK
- *     {
- *           "id": 19,
- *           "cnpj": "33333333333333",
- *           "updatedAt": "2019-03-04T20:20:01.453Z",
- *           "createdAt": "2019-03-04T20:20:01.453Z"
- *       }
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 19
+ *    }
  */
 router.post('/',
     validators.post

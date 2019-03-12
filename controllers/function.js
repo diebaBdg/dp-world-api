@@ -16,7 +16,7 @@ exports.post = async (req, res) => {
         if (!functions.length) {
             res.status(201).send({id: (await models.Function.create({ description: req.body.description })).id});
         } else {
-            res.status(400).send({ msg: "Function already existis." });
+            res.status(400).send({ msg: "Item already exists." });
         }
     } catch (err) {
         console.log(err);

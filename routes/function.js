@@ -43,7 +43,7 @@ router.get('/', controller.get);
  * @apiSuccess {Json} function Function inserted
  * 
  * @apiSuccessExample {json} Success (example)
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *        "id": 17
  *    }

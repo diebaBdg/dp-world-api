@@ -49,7 +49,7 @@ router.get('/', controller.get);
  * @apiSuccess {Int} id Id of the document inserted
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *        "id": 20
  *    }
