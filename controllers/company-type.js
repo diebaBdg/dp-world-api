@@ -45,3 +45,22 @@ exports.delete = async (req, res) => {
         res.status(500).send({msg: 'Internal Error'})
     }
 }
+
+
+exports.getDocuments = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const documents = await models.Document.findAll({
+            include: [{
+                model: models.DocumentToCompanyType,
+                where: {
+                    CompanyTypeId: id
+                }
+            }]
+        });
+        res.send({ data: documents });
+    }catch(err){
+        console.log(err);
+        res.status(500).send({msg: 'Internal Error'})
+    }
+}

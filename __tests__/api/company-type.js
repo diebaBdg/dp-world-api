@@ -19,3 +19,9 @@ it('DELETE should return a status of 200 OK', function () {
         .delete('http://localhost/company-types/1')
         .expect('status', 200);
 });
+
+it('GET shoud return a list of documents of a company type', () => {
+    return frisby.get('http://localhost/company-types/1/documents')
+        .expect('status', 200)
+        .expect('jsonTypes', 'data', frisby.Joi.array())
+})

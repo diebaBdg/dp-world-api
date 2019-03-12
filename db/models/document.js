@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Document.belongsTo(models.DocumentType);
     Document.belongsTo(models.Function);
+    Document.hasMany(models.DocumentToCompanyType);
   };
   return Document;
 };

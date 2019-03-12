@@ -6,5 +6,9 @@ exports.post = [
 ];
 
 exports.delete = [
-    check('id').optional({nullable: true}).isInt().withMessage("Shoud be an integer.")
+    check('id').isInt().withMessage("Shoud be an integer.")
+];
+
+exports.getDocuments = [
+    check('id').isInt().withMessage("Shoud be an integer.")
 ];

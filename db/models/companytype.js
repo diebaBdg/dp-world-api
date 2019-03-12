@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   CompanyType.associate = function(models) {
     // associations can be defined here
+    CompanyType.hasMany(models.DocumentToCompanyType);
   };
   return CompanyType;
 };

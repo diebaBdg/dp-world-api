@@ -69,4 +69,21 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  */
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
 
+/**
+ * @api {get} /company-types/:id/documents List of documents of a company type
+ * @apiName GetCompanyTypesDocumets
+ * @apiGroup CompanyTypes
+ *
+ * @apiSuccess {Array} data List of documents
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "data": [
+ *          
+ *       ]
+ *    }
+ */
+router.get('/:id/documents',validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
+
 module.exports = router;
