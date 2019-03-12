@@ -6,26 +6,26 @@ const controller = require('../controllers/company-type');
  * @apiName GetCompanyTypes
  * @apiGroup CompanyTypes
  *
- * @apiSuccess {Array} CompanyTypes List of company types
+ * @apiSuccess {Array} data List of company types
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "CompanyTypes": [
+ *       "data": [
  *          {
  *               "id": 1,
  *               "description": "Estrangeiro",
  *               "status": 1,
  *               "createdAt": "2019-03-11T03:48:19.020Z",
  *               "updatedAt": "2019-03-11T03:48:19.020Z"
- *           },
- *           {
+ *          },
+ *          {
  *               "id": 2,
  *               "description": "Fornecimento",
  *               "status": 1,
  *               "createdAt": "2019-03-11T03:48:19.020Z",
  *               "updatedAt": "2019-03-11T03:48:19.020Z"
- *           }
+ *          }
  *       ]
  *    }
  */

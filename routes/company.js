@@ -15,7 +15,7 @@ const validators = require('./validators/company-validators');
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
- *           "companies": [
+ *           "data": [
  *               {
  *                   "id": 3,
  *                   "cnpj": "22222222222222",

@@ -10,30 +10,30 @@ const validators = require('./validators/document-validators');
  * @apiName GetDocuments
  * @apiGroup Documents
  *
- * @apiSuccess {Array} documents List of documents
+ * @apiSuccess {Array} data List of documents
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
- *     {
- *   "companies": [
- *       {
- *           "id": 3,
- *           "description": "Documento Teste",
- *           "status": 1,
- *           "createdAt": "2019-03-06T02:29:06.613Z",
- *           "updatedAt": "2019-03-06T02:29:06.613Z",
- *           "DocumentTypeId": 5
- *       },
- *       {
- *           "id": 4,
- *           "description": "Documento Teste",
- *           "status": 1,
- *           "createdAt": "2019-03-06T22:52:28.186Z",
- *           "updatedAt": "2019-03-06T22:52:28.186Z",
- *           "DocumentTypeId": 5
- *       }
- *   ]
- *}
+ *    {
+ *       "data": [
+ *          {
+ *              "id": 3,
+ *              "description": "Documento Teste",
+ *              "status": 1,
+ *              "createdAt": "2019-03-06T02:29:06.613Z",
+ *              "updatedAt": "2019-03-06T02:29:06.613Z",
+ *              "DocumentTypeId": 5
+ *          },
+ *          {
+ *              "id": 4,
+ *              "description": "Documento Teste",
+ *              "status": 1,
+ *              "createdAt": "2019-03-06T22:52:28.186Z",
+ *              "updatedAt": "2019-03-06T22:52:28.186Z",
+ *              "DocumentTypeId": 5
+ *          }
+ *       ]
+ *    }
  */
 router.get('/', controller.get);
 

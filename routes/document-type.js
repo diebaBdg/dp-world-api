@@ -6,12 +6,12 @@ const controller = require('../controllers/document-type');
  * @apiName GetDocumentTypes
  * @apiGroup DocumentTypes
  *
- * @apiSuccess {Array} DocumentTypes List of Document Types
+ * @apiSuccess {Array} data List of Document Types
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "documentTypes": [
+ *       "data": [
  *          {
  *              "id": 1,
  *              "description": "Empresa",

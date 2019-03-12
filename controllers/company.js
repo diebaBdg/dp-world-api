@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator/check');
 
 exports.get = async (req, res) => {
     res.send({
-        companies: await models.Empresa.findAll()
+        data: await models.Empresa.findAll()
     });
 }
 

@@ -10,12 +10,12 @@ const validators = require('./validators/function-validators');
  * @apiName GetFunctions
  * @apiGroup Functions
  *
- * @apiSuccess {Array} functions List of functions
+ * @apiSuccess {Array} data List of functions
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "functions": [
+ *       "data": [
  *          {
  *              "id": 9,
  *              "description": "Soldador",
