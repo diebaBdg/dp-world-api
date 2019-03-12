@@ -1,8 +1,12 @@
 const models = require('../db/models');
 exports.get = async (req, res) => {
     try{
+        // select filters
+        let filters = req.query;
+        filters.status = 1;
+        // execute query and send data
         res.send({
-            data: await models.Document.findAll({ where: { status: 1} })
+            data: await models.Document.findAll({ where: filters })
         });
     }catch(err){
         console.log(err);
