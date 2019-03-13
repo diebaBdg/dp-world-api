@@ -10,5 +10,7 @@ exports.delete = [
 ];
 
 exports.getDocuments = [
-    check('id').isInt().withMessage("Shoud be an integer.")
+    check('id').isInt().withMessage("Shoud be an integer."),
+    check('DocumentTypeId').optional({nullable: true}).isInt().withMessage("Shoud be an integer."),
+    check('FunctionId').optional({nullable: true}).isInt().withMessage("Shoud be an integer.")
 ];

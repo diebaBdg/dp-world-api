@@ -50,7 +50,9 @@ exports.delete = async (req, res) => {
 exports.getDocuments = async (req, res) => {
     try{
         const id = req.params.id;
+        const filters = req.query;
         const documents = await models.Document.findAll({
+            where: filters,
             include: [{
                 model: models.DocumentToCompanyType,
                 where: {
