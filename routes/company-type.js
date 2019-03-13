@@ -62,7 +62,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiSuccess {Int} id Id of the company type deleted
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *        "id": 20
  *    }
@@ -75,12 +75,41 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
  * @apiGroup CompanyTypes
  * 
  * @apiParam (Params) {Int} id The company type id.
- * @apiParam (Query Params) {String} DocumentTypeId Filter by document type.
- * @apiParam (Query Params) {String} FunctionId Filter by collaborator function.
+ * @apiParam (Query params) {String} DocumentTypeId Filter by document type.
+ * @apiParam (Query params) {String} FunctionId Filter by collaborator function.
  *
  * @apiSuccess {Array} data List of documents
  * 
  */
-router.get('/:id/documents',validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
+router.get('/:id/documents', validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
+
+/**
+ * @api {post} /company-types/:id/documents Create company types's documents
+ * @apiName PostCompanyTypesDocumets
+ * @apiGroup CompanyTypes
+ * 
+ * @apiParam (Params) {Int} id The company type id.
+ * @apiParam (Request body) {Array} documents List of documents.
+ * 
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *	        "documents": [{
+ *		        "DocumentId": 1,
+ *		        "defaultValidity": "1day"
+ *	        },{
+ *		        "DocumentId": 3,
+ *		        "defaultValidity": "1week"
+ *	        }]
+ *     }
+ *
+ * @apiSuccess {Array} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "msg": "Documents inserted"
+ *    }
+ */
+router.post('/:id/documents', validators.postDocuments, expressValidator.findsValidatorErros(), controller.postDocuments);
 
 module.exports = router;
