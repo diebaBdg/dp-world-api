@@ -112,4 +112,22 @@ router.get('/:id/documents', validators.getDocuments, expressValidator.findsVali
  */
 router.post('/:id/documents', validators.postDocuments, expressValidator.findsValidatorErros(), controller.postDocuments);
 
+/**
+ * @api {delete} /company-types/:id/documents/:DocumentId Delete company types's documents
+ * @apiName DeleteCompanyTypesDocumets
+ * @apiGroup CompanyTypes
+ * 
+ * @apiParam (Params) {Int} id The company type id.
+ * @apiParam (Params) {Int} DocumentId The document id.
+ *
+ * @apiSuccess {Int} deleted 1 if the relation was deleted or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "deleted": 1
+ *    }
+ */
+router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
+
 module.exports = router;

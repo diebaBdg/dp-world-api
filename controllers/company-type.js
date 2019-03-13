@@ -89,3 +89,18 @@ exports.postDocuments = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error'})
     }
 }
+
+exports.deleteDocuments = async (req, res) => {
+    try {
+        const deleted = await models.DocumentToCompanyType.destroy({
+            where: {
+                CompanyTypeId: req.params.id, 
+                DocumentId: req.params.id
+            }
+        });
+        res.status(200).send({deleted});
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error'})
+    }
+}

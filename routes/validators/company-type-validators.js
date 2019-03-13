@@ -21,3 +21,8 @@ exports.postDocuments = [
     check('documents.*.DocumentId').isInt().withMessage("Should be an integer."),
     check('documents.*.defaultValidity').optional({nullable: true}).isAlphanumeric().withMessage("Should be an date description.")
 ];
+
+exports.deleteDocuments = [
+    check('id').isInt().withMessage("Should be an integer."),
+    check('DocumentId').isInt().withMessage("Should be an integer.")
+];
