@@ -32,14 +32,14 @@ exports.post = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const id = req.params.id;
-        const result = models.CompanyType.update({
+        const deleted = await models.CompanyType.update({
             status: 0
         }, {
-                where: {
-                    id: id
-                }
-            })
-        res.send({ id: id, result })
+            where: {
+                id: id
+            }
+        })
+        res.send({ id: deleted });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
@@ -71,13 +71,13 @@ exports.postDocuments = async (req, res) => {
     try {
         const documents = req.body.documents;
         // insrt each document in list
-        for(document of documents){
+        for (document of documents) {
             // insert item if not exists
             await models.DocumentToCompanyType.findOrCreate({
                 where: {
-                    CompanyTypeId: req.params.id, 
+                    CompanyTypeId: req.params.id,
                     DocumentId: document.DocumentId
-                }, 
+                },
                 defaults: {
                     defaultValidity: document.defaultValidity
                 }
@@ -86,7 +86,7 @@ exports.postDocuments = async (req, res) => {
         res.status(201).send({ msg: "Documents inserted" })
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error'})
+        res.status(500).send({ msg: 'Internal Error' })
     }
 }
 
@@ -94,13 +94,30 @@ exports.deleteDocuments = async (req, res) => {
     try {
         const deleted = await models.DocumentToCompanyType.destroy({
             where: {
-                CompanyTypeId: req.params.id, 
-                DocumentId: req.params.id
+                CompanyTypeId: req.params.id,
+                DocumentId: req.params.DocumentId
             }
         });
-        res.status(200).send({deleted});
+        res.status(200).send({ deleted });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error'})
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.updateDocuments = async (req, res) => {
+    try {
+        const updated = await models.DocumentToCompanyType.update({
+            defaultValidity: req.body.defaultValidity
+        }, {
+            where: {
+                CompanyTypeId: req.params.id,
+                DocumentId: req.params.DocumentId
+            }
+        });
+        res.status(200).send({ updated: updated[0] });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
     }
 }

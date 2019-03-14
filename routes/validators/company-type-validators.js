@@ -26,3 +26,9 @@ exports.deleteDocuments = [
     check('id').isInt().withMessage("Should be an integer."),
     check('DocumentId').isInt().withMessage("Should be an integer.")
 ];
+
+exports.updateDocuments = [
+    check('id').isInt().withMessage("Should be an integer."),
+    check('DocumentId').isInt().withMessage("Should be an integer."),
+    check('defaultValidity').isAlphanumeric().withMessage("Should be an alphanumeric.")
+];

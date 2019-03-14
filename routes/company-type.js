@@ -113,7 +113,7 @@ router.get('/:id/documents', validators.getDocuments, expressValidator.findsVali
 router.post('/:id/documents', validators.postDocuments, expressValidator.findsValidatorErros(), controller.postDocuments);
 
 /**
- * @api {delete} /company-types/:id/documents/:DocumentId Delete company types's documents
+ * @api {delete} /company-types/:id/documents/:DocumentId Delete company type's document
  * @apiName DeleteCompanyTypesDocumets
  * @apiGroup CompanyTypes
  * 
@@ -129,5 +129,24 @@ router.post('/:id/documents', validators.postDocuments, expressValidator.findsVa
  *    }
  */
 router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
+
+/**
+ * @api {put} /company-types/:id/documents/:DocumentId Update validity default of the company types's documents 
+ * @apiName UpdateCompanyTypesDocumets
+ * @apiGroup CompanyTypes
+ * 
+ * @apiParam (Params) {Int} id The company type id.
+ * @apiParam (Params) {Int} DocumentId The document id.
+ * @apiParam (Request body) {String} defaultValidity The new default validity.
+ *
+ * @apiSuccess {Int} deleted 1 if the relation was deleted or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "deleted": 1
+ *    }
+ */
+router.put('/:id/documents/:DocumentId', validators.updateDocuments, expressValidator.findsValidatorErros(), controller.updateDocuments);
 
 module.exports = router;
