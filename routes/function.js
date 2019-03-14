@@ -31,7 +31,7 @@ const validators = require('./validators/function-validators');
  *       ]
  *    }
  */
-router.get('/', controller.get);
+router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
  * @api {post} /functions Create a new function

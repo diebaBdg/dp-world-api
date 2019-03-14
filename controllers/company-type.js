@@ -6,7 +6,8 @@ exports.get = async (req, res) => {
             data: await models.CompanyType.findAll({ where: { status: 1 } })
         });
     } catch (err) {
-        res.status(500).send({ msg: 'Internal Error' })
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -25,7 +26,7 @@ exports.post = async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -42,7 +43,7 @@ exports.delete = async (req, res) => {
         res.send({ id: deleted });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -63,7 +64,7 @@ exports.getDocuments = async (req, res) => {
         res.send({ data: documents });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -83,10 +84,10 @@ exports.postDocuments = async (req, res) => {
                 }
             });
         }
-        res.status(201).send({ msg: "Documents inserted" })
+        res.status(201).send({ msg: "Documents inserted" });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -101,7 +102,7 @@ exports.deleteDocuments = async (req, res) => {
         res.status(200).send({ deleted });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -118,6 +119,6 @@ exports.updateDocuments = async (req, res) => {
         res.status(200).send({ updated: updated[0] });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }

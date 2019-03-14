@@ -131,7 +131,7 @@ router.post('/:id/documents', validators.postDocuments, expressValidator.findsVa
 router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
 
 /**
- * @api {put} /company-types/:id/documents/:DocumentId Update validity default of the company types's documents 
+ * @api {put} /company-types/:id/documents/:DocumentId Update validity default of the company type's document
  * @apiName UpdateCompanyTypesDocumets
  * @apiGroup CompanyTypes
  * 
