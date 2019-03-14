@@ -9,6 +9,8 @@ const validators = require('./validators/function-validators');
  * @api {get} /functions List of collaborators functions
  * @apiName GetFunctions
  * @apiGroup Functions
+ * 
+ * @apiParam (Query params) {String} DocumentTypeId The filter document type id.
  *
  * @apiSuccess {Array} data List of functions
  * 
