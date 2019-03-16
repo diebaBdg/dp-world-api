@@ -91,7 +91,7 @@ router.get('/', controller.get);
 router.get('/:id/documents', validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
 
 /**
- * @api {post} sectors/:id/documents Create sector documents
+ * @api {post} /sectors/:id/documents Create sector documents
  * @apiName PostSectorDocuments
  * @apiGroup Sectors
  * 
@@ -118,8 +118,8 @@ router.get('/:id/documents', validators.getDocuments, expressValidator.findsVali
 router.post('/:id/documents', validators.postDocuments, expressValidator.findsValidatorErros(), controller.postDocuments);
 
 /**
- * @api {delete} sectors/:id/documents Delete sector document
- * @apiName DeleteSectoDocument
+ * @api {delete} /sectors/:id/documents/:DocumentId Delete sector document
+ * @apiName DeleteSectorDocument
  * @apiGroup Sectors
  * 
  * @apiParam (Params) {Int} id The company type id.
@@ -133,6 +133,6 @@ router.post('/:id/documents', validators.postDocuments, expressValidator.findsVa
  *       "deleted": 1
  *    }
  */
-router.post('/:id/documents', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
+router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
 
 module.exports = router;

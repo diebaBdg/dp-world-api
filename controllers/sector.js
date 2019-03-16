@@ -65,8 +65,10 @@ exports.postDocuments = async (req, res) => {
 
 exports.deleteDocuments = async (req, res) => {
     try {
-        let sector = await models.Sector.findOne({ where: { id: sectiorId } });
-        let document = await models.Document.findOne({ where: { id: idsDocuments } });
+        const sector = await models.Sector.findOne({ where: { id: req.params.id } });
+        const document = await models.Document.findOne({ where: { id: req.params.DocumentId } });
+        const removed = await sector.removeDocument(document);
+        res.send({ deleted: removed });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
