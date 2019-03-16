@@ -12,3 +12,8 @@ exports.postDocuments = [
     check('documents').isArray().isLength({min:1}).withMessage("Shoud be a list with at least 1 item."),
     check('documents.*.DocumentId').isInt().withMessage("Should be an integer.")
 ];
+
+exports.deleteDocuments = [
+    check('id').isInt().withMessage("Should be an integer."),
+    check('DocumentId').isInt().withMessage("Should be an integer.")
+];

@@ -52,11 +52,21 @@ exports.postDocuments = async (req, res) => {
         const sectiorId = req.params.id;
         const idsDocuments = req.body.documents.map(item => item.DocumentId);
         //get sector and documents
-        let sector = (await models.Sector.findOne({ where: { id: sectiorId } }));
+        let sector = await models.Sector.findOne({ where: { id: sectiorId } });
         let documents = await models.Document.findAll({ where: { id: idsDocuments } });
         // associate setor to documents
         await sector.setDocuments(documents);
         res.send({ msg: "associated" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.deleteDocuments = async (req, res) => {
+    try {
+        let sector = await models.Sector.findOne({ where: { id: sectiorId } });
+        let document = await models.Document.findOne({ where: { id: idsDocuments } });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

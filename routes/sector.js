@@ -43,7 +43,7 @@ const validators = require('./validators/sector-validators');
 router.get('/', controller.get);
 
 /**
- * @api {get} /sectors List of company sector documents
+ * @api {get} /sectors/:id/documents List of company sector documents
  * @apiName GetSectorDocuments
  * @apiGroup Sectors
  *  
@@ -91,7 +91,7 @@ router.get('/', controller.get);
 router.get('/:id/documents', validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
 
 /**
- * @api {post} /:id/documents Create sector documents
+ * @api {post} sectors/:id/documents Create sector documents
  * @apiName PostSectorDocuments
  * @apiGroup Sectors
  * 
@@ -116,5 +116,23 @@ router.get('/:id/documents', validators.getDocuments, expressValidator.findsVali
  *    }
  */
 router.post('/:id/documents', validators.postDocuments, expressValidator.findsValidatorErros(), controller.postDocuments);
+
+/**
+ * @api {delete} sectors/:id/documents Delete sector document
+ * @apiName DeleteSectoDocument
+ * @apiGroup Sectors
+ * 
+ * @apiParam (Params) {Int} id The company type id.
+ * @apiParam (Params) {Int} DocumentId The document id.
+ * 
+ * @apiSuccess {Int} deleted 1 if the relation was deleted or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "deleted": 1
+ *    }
+ */
+router.post('/:id/documents', validators.deleteDocuments, expressValidator.findsValidatorErros(), controller.deleteDocuments);
 
 module.exports = router;
