@@ -91,7 +91,7 @@ router.get('/', controller.get);
 router.get('/:id/documents', validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
 
 /**
- * @api {post} /sectors Create sector documents
+ * @api {post} /:id/documents Create sector documents
  * @apiName PostSectorDocuments
  * @apiGroup Sectors
  * 
