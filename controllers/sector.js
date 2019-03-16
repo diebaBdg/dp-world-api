@@ -55,7 +55,7 @@ exports.postDocuments = async (req, res) => {
         let sector = await models.Sector.findOne({ where: { id: sectiorId } });
         let documents = await models.Document.findAll({ where: { id: idsDocuments } });
         // associate setor to documents
-        await sector.setDocuments(documents);
+        await sector.addDocuments(documents);
         res.send({ msg: "associated" });
     } catch (err) {
         console.log(err);
