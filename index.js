@@ -9,7 +9,7 @@ let cors = require('cors');
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: 'http://localhost',
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }
@@ -34,5 +34,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app = require('./routes').routes(app);
 
 // defining server port and start server
-const port = 80;
+const port = 3000;
 app.listen(port, () => console.log(`Server runnig in port ${port}`));
