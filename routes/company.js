@@ -72,6 +72,24 @@ router.get('/', controller.get);
  * @apiName PostCompanies
  * @apiGroup Companies
  * 
+ * @apiParam (Request body) {Array} cnpj Brazilian document number.
+ * @apiParam (Request body) {Array} socialName Social name.
+ * @apiParam (Request body) {Array} businessName List Business name.
+ * @apiParam (Request body) {Array} address The local of the company.
+ * @apiParam (Request body) {Array} number Th street number.
+ * @apiParam (Request body) {Array} complement The complement address.
+ * @apiParam (Request body) {Array} district The district.
+ * @apiParam (Request body) {Array} city The city.
+ * @apiParam (Request body) {Array} state The state or province.
+ * @apiParam (Request body) {Array} country The country.
+ * @apiParam (Request body) {Array} cep The postal code.
+ * @apiParam (Request body) {Array} phone THe phone number.
+ * @apiParam (Request body) {Array} inscricaoEstadual Brazilian document number.
+ * @apiParam (Request body) {Array} site Company web site.
+ * @apiParam (Request body) {Array} CompanyTypeId Company type.
+ * @apiParam (Request body) {Array} CompanyId If is outsourced, the id of the company contractor.
+ * 
+ * 
  * @apiSuccess {Json} company Companie inserted
  * 
  * @apiSuccessExample {json} Sucesso (example)
