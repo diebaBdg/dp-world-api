@@ -9,6 +9,8 @@ const validators = require('./validators/company-validators');
  * @api {get} /companies List of companies
  * @apiName GetCompanies
  * @apiGroup Companies
+ * 
+ * @apiParam (Query params) {String} cnpj CNPJ of the company.
  *
  * @apiSuccess {Array} companies List of companies
  * 
@@ -17,17 +19,49 @@ const validators = require('./validators/company-validators');
  *     {
  *           "data": [
  *               {
- *                   "id": 3,
- *                   "cnpj": "22222222222222",
- *                   "createdAt": "2019-02-26T01:26:30.065Z",
- *                   "updatedAt": "2019-02-26T01:26:30.065Z"
- *               },
- *               {
- *                   "id": 4,
- *                   "cnpj": "11111111111111",
- *                   "createdAt": "2019-02-26T01:33:42.295Z",
- *                   "updatedAt": "2019-02-26T01:33:42.295Z"
- *               }
+ *                  "id": 1,
+ *                  "cnpj": "1636270000108",
+ *                  "socialName": "Empresa Teste",
+ *                  "businessName": "Empresa Teste",
+ *                  "address": "Av Afonso Pena 3148",
+ *                  "number": "1",
+ *                  "complement": "apto 101",
+ *                  "district": "Funcionários",
+ *                  "city": "Belo Horizonte",
+ *                  "state": "MG",
+ *                  "country": "Brazil",
+ *                  "cep": "30130012",
+ *                  "phone": "31989915622",
+ *                  "inscricaoEstadual": "12354885",
+ *                  "site": "http://www.semsite.com.br",
+ *                  "createdAt": "2019-03-19T01:31:18.329Z",
+ *                  "updatedAt": "2019-03-19T01:31:18.329Z",
+ *                  "CompanyStatusId": 1,
+ *                  "CompanyTypeId": 1,
+ *                  "CompanyId": null
+ *              },
+ *              {
+ *                  "id": 2,
+ *                  "cnpj": "32325649000179",
+ *                  "socialName": "Empresa Teste 2",
+ *                  "businessName": "Empresa Teste 2",
+ *                  "address": "Av Afonso Pena 3148",
+ *                  "number": "1",
+ *                  "complement": "apto 101",
+ *                  "district": "Funcionários",
+ *                  "city": "Belo Horizonte",
+ *                  "state": "MG",
+ *                  "country": "Brazil",
+ *                  "cep": "30130012",
+ *                  "phone": "31989915622",
+ *                  "inscricaoEstadual": "12354885",
+ *                  "site": "http://www.semsite.com.br",
+ *                  "createdAt": "2019-03-19T01:31:18.329Z",
+ *                  "updatedAt": "2019-03-19T01:31:18.329Z",
+ *                  "CompanyStatusId": 1,
+ *                  "CompanyTypeId": 1,
+ *                  "CompanyId": 1
+ *              }
  *           ]
  *       }
  */

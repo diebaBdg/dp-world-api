@@ -2,9 +2,14 @@ const models = require('../db/models');
 const { check, validationResult } = require('express-validator/check');
 
 exports.get = async (req, res) => {
-    res.send({
-        data: await models.Empresa.findAll()
-    });
+    try{
+        res.send({
+            data: await models.Company.findAll({where: req.query})
+        });
+    }catch(err){
+        console.log(err);
+        res.status(500).send({msg: 'Internal Error'})
+    }
 }
 
 exports.post = async (req, res) => {
