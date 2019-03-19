@@ -2,21 +2,41 @@ const models = require('../db/models');
 const { check, validationResult } = require('express-validator/check');
 
 exports.get = async (req, res) => {
-    try{
+    try {
         res.send({
-            data: await models.Company.findAll({where: req.query})
+            data: await models.Company.findAll({ where: req.query })
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        res.status(500).send({msg: 'Internal Error'})
+        res.status(500).send({ msg: 'Internal Error' })
     }
 }
 
 exports.post = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+    try {
+        // get request body
+        let company = req.body;
+        // get documents and verify if exists
+        const companies = await models.Company.findAll({
+            where: { 
+                $or: [
+                    {cnpj: company.cnpj},
+                    {socialName: company.socialName},
+                    {businessName: company.businessName}
+                ]
+            }
+        });
+        if (!companies.length) {
+            // set status and create
+            company.CompanyStatusId = 1;
+            res.status(201).send({ 
+                id: (await models.Company.create(company)).id 
+            });
+        } else {
+            res.status(400).send({ msg: "Item already exists." });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err})
     }
-    let result = await models.Empresa.create({ cnpj: '33333333333333' });
-    res.send(result);
 }
