@@ -2,15 +2,19 @@ const { check, validationResult } = require('express-validator/check');
 
 // specific validator of company routes
 let defaultCompany = [
-    check('cnpj').isNumeric()
+    check('cnpj')
+        .isNumeric()
         .isLength({ min: 14, max: 14 })
         .withMessage("Should be 14 caracters numerics."),
-    check('socialName').isLength({ min: 3, max: 200 })
+    check('socialName')
+        .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters."),
-    check('contactEmail').isEmail()
+    check('contactEmail')
+        .isEmail()
         .withMessage("Should be an email."),
-    check('contactName').isEmail()
-        .withMessage("Should be an email."),
+    check('contactName')
+        .isLength({ min: 3, max: 200 })
+        .withMessage("Should be between 3 and 200 characters."),
     check('businessName')
         .optional({ nullable: true })
         .isLength({ min: 3, max: 200 }).withMessage("Should be between 3 and 200 characters."),
