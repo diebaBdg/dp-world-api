@@ -12,7 +12,7 @@ let defaultCompany = [
     check('contactEmail')
         .isEmail()
         .withMessage("Should be an email."),
-    check('contactName').isEmail()
+    check('contactName')
         .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters."),
     check('businessName')
