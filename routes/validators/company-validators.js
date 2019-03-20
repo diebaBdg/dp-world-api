@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator/check');
 
 // specific validator of company routes
-exports.post = [
+let defaultCompany = [
     check('cnpj').isNumeric()
         .isLength({ min: 14, max: 14 })
         .withMessage("Should be 14 caracters numerics."),
@@ -54,4 +54,15 @@ exports.post = [
     check('CompanyId')
         .optional({ nullable: true })
         .isNumeric()
+];
+
+exports.post = defaultCompany;
+
+exports.put = [
+    check('id')
+        .isNumeric()
+        .withMessage("Should be numeric."),
+    check('SectorId')
+        .isNumeric()
+        .withMessage("Should be numeric.")
 ];

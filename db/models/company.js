@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Company.belongsTo(models.CompanyStatus);
     Company.belongsTo(models.CompanyType);
+    Company.belongsTo(models.Sector);
     Company.belongsTo(Company);
   };
   return Company;

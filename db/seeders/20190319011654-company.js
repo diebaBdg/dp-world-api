@@ -23,6 +23,7 @@ module.exports = {
       CompanyId: null,
       CompanyTypeId: 1,
       CompanyStatusId: 1,
+      SectorId: 1
     }, {
       id: 2,
       cnpj: '32325649000179',
@@ -44,6 +45,7 @@ module.exports = {
       CompanyId: 1,
       CompanyTypeId: 1,
       CompanyStatusId: 1,
+      SectorId: null
     },], {});
   },
 

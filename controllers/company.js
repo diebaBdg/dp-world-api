@@ -40,3 +40,19 @@ exports.post = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error', err })
     }
 }
+
+exports.put = async (req, res) => {
+    try {
+        const updated = await models.Company.update({
+            SectorId: req.body.SectorId
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).send({ updated: updated[0] });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err })
+    }
+}

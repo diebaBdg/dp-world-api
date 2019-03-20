@@ -105,4 +105,22 @@ router.post('/',
     , controller.post
 );
 
+/**
+ * @api {put} /companies/:id Update a company
+ * @apiName PutCompanies
+ * @apiGroup Companies
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Request body) {Int} SectorId Company sector.
+ * 
+ * @apiSuccess {Int} updated 1 if the item was updated or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
 module.exports = router;
