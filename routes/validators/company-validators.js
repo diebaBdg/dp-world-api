@@ -9,6 +9,8 @@ let defaultCompany = [
         .withMessage("Should be between 3 and 200 characters."),
     check('contactEmail').isEmail()
         .withMessage("Should be an email."),
+    check('contactName').isEmail()
+        .withMessage("Should be an email."),
     check('businessName')
         .optional({ nullable: true })
         .isLength({ min: 3, max: 200 }).withMessage("Should be between 3 and 200 characters."),
@@ -63,6 +65,9 @@ exports.put = [
         .isNumeric()
         .withMessage("Should be numeric."),
     check('SectorId')
+        .isNumeric()
+        .withMessage("Should be numeric."),
+    check('CompanyStatusId')
         .isNumeric()
         .withMessage("Should be numeric.")
 ];
