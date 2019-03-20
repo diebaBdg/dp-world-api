@@ -75,6 +75,7 @@ router.get('/', controller.get);
  * @apiParam (Request body) {String} cnpj Brazilian document number.
  * @apiParam (Request body) {String} socialName Social name.
  * @apiParam (Request body) {String} contactEmail Contact email.
+ * @apiParam (Request body) {String} contactName Contact name.
  * @apiParam (Request body) {String} businessName List Business name.
  * @apiParam (Request body) {String} address The local of the company.
  * @apiParam (Request body) {String} number The street number.
@@ -112,6 +113,7 @@ router.post('/',
  * 
  * @apiParam (Params) {Int} id The company id.
  * @apiParam (Request body) {Int} SectorId Company sector.
+ * @apiParam (Request body) {Int} CompanyStatusId Company sector.
  * 
  * @apiSuccess {Int} updated 1 if the item was updated or 0 if is not
  * 

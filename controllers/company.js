@@ -44,7 +44,8 @@ exports.post = async (req, res) => {
 exports.put = async (req, res) => {
     try {
         const updated = await models.Company.update({
-            SectorId: req.body.SectorId
+            SectorId: req.body.SectorId,
+            CompanyStatusId: req.body.CompanyStatusId
         }, {
             where: {
                 id: req.params.id
