@@ -1,23 +1,52 @@
 const { check, validationResult } = require('express-validator/check');
+const models = require('../../db/models');
 
 // specific validator of company routes
 let defaultCompany = [
     check('cnpj')
         .isNumeric()
         .isLength({ min: 14, max: 14 })
-        .withMessage("Should be 14 caracters numerics."),
+        .withMessage("Should be 14 caracters numerics.")
+        .custom((cnpj) => {
+            return models.Company.findOne({ where: { cnpj: cnpj } }).then(company => {
+                if (company) {
+                    return Promise.reject('Cnpj already in use');
+                }
+            });
+        }),
     check('socialName')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Should be between 3 and 200 characters.")
+        .custom((socialName) => {
+            return models.Company.findOne({ where: { socialName: socialName } }).then(company => {
+                if (company) {
+                    return Promise.reject('Social name already in use');
+                }
+            });
+        }),
     check('contactEmail')
         .isEmail()
-        .withMessage("Should be an email."),
+        .withMessage("Should be an email.")
+        .custom((email) => {
+            return models.User.findOne({ where: { email: email } }).then(user => {
+                if (user) {
+                    return Promise.reject('Contact email name already in use');
+                }
+            });
+        }),
     check('contactName')
         .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters."),
     check('businessName')
         .optional({ nullable: true })
-        .isLength({ min: 3, max: 200 }).withMessage("Should be between 3 and 200 characters."),
+        .isLength({ min: 3, max: 200 }).withMessage("Should be between 3 and 200 characters.")
+        .custom((businessName) => {
+            return models.Company.findOne({ where: { businessName: businessName } }).then(company => {
+                if (company) {
+                    return Promise.reject('Business name already in use');
+                }
+            });
+        }),
     check('address')
         .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters."),
@@ -53,7 +82,8 @@ let defaultCompany = [
         .withMessage("Should be between 3 and 200 characters."),
     check('site')
         .optional({ nullable: true })
-        .isURL(),
+        .isURL()
+        .withMessage("Should be a URL."),
     check('CompanyTypeId')
         .isNumeric()
         .withMessage("Should be numeric."),
