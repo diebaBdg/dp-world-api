@@ -1,5 +1,6 @@
 const models = require('../db/models');
 const { check, validationResult } = require('express-validator/check');
+const md5 = require('md5');
 
 exports.get = async (req, res) => {
     try {
@@ -16,25 +17,23 @@ exports.post = async (req, res) => {
     try {
         // get request body
         let company = req.body;
-        // get documents and verify if exists
-        const companies = await models.Company.findAll({
-            where: {
-                $or: [
-                    { cnpj: company.cnpj },
-                    { socialName: company.socialName },
-                    { businessName: company.businessName }
-                ]
-            }
+        // set status and create
+        company.CompanyStatusId = 1;
+        const companyCreated = await models.Company.create(company);
+        //create User to a created company
+        const password = Math.random().toString(36).slice(-8);
+        const passwordMd5 = md5(password);
+        await models.User.create({
+            password: passwordMd5,
+            email: company.contactEmail,
+            name: company.contactName + password,
+            UserTypeId: 2,
+            UserStatusId: 1,
+            CompanyId: companyCreated.id
         });
-        if (!companies.length) {
-            // set status and create
-            company.CompanyStatusId = 1;
-            res.status(201).send({
-                id: (await models.Company.create(company)).id
-            });
-        } else {
-            res.status(400).send({ msg: "Item already exists." });
-        }
+        res.status(201).send({
+            id: companyCreated.id
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error', err })
@@ -47,10 +46,10 @@ exports.put = async (req, res) => {
             SectorId: req.body.SectorId,
             CompanyStatusId: req.body.CompanyStatusId
         }, {
-            where: {
-                id: req.params.id
-            }
-        });
+                where: {
+                    id: req.params.id
+                }
+            });
         res.status(200).send({ updated: updated[0] });
     } catch (err) {
         console.log(err);
