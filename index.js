@@ -6,10 +6,11 @@ let logger = require('morgan');
 let rfs = require('rotating-file-stream');
 let path = require('path');
 let cors = require('cors');
+var auth = require("./config/auth")();
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: '*',
+  origin: ['http://localhost','http://localhost:3000'],
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }

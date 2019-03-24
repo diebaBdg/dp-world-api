@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const controller = require('../controllers/user-type');
+// applying authentication in all routes
+const auth = require("../config/auth")();
+router.use(auth.authenticate());
 
 /**
  * @api {get} /user-types List of user types

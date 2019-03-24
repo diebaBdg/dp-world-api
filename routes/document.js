@@ -4,6 +4,9 @@ const controller = require('../controllers/document');
 const expressValidator = require('./middlewares/express-validator');
 // validators of this specifics routes
 const validators = require('./validators/document-validators');
+// applying authentication in all routes
+const auth = require("../config/auth")();
+router.use(auth.authenticate());
 
 /**
  * @api {get} /documents List of documents

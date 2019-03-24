@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Sector.associate = function(models) {
     // associations can be defined here
-    // Sector.belongsToMany(models.Document, { through: 'DocumentToSectors' } );
+    Sector.belongsToMany(models.Document, { through: 'DocumentToSectors' } );
   };
   return Sector;
 };
