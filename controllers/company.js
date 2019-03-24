@@ -1,6 +1,6 @@
 const models = require('../db/models');
-const { check, validationResult } = require('express-validator/check');
 const md5 = require('md5');
+const emailHelper = require('../helpers/email-helper');
 
 exports.get = async (req, res) => {
     try {
@@ -9,7 +9,7 @@ exports.get = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error' });
     }
 }
 
@@ -17,22 +17,39 @@ exports.post = async (req, res) => {
     try {
         // get request body
         let company = req.body;
-        // set status and create
-        company.CompanyStatusId = 1;
-        const companyCreated = await models.Company.create(company);
-        //create User to a created company
         const password = Math.random().toString(36).slice(-8);
-        const passwordMd5 = md5(password);
-        await models.User.create({
-            password: passwordMd5,
-            email: company.contactEmail,
-            name: company.contactName + password,
-            UserTypeId: 2,
-            UserStatusId: 1,
-            CompanyId: companyCreated.id
-        });
-        res.status(201).send({
-            id: companyCreated.id
+        let mailOptions = {
+            from: '"noreply dp-world" noreply@speedsoftware.com.br',
+            to: company.contactEmail,
+            subject: "Cadastro",
+            html: ` <p><b>Cadastro na dp-world</b></p>
+                    <p>Seus dados foram enviados para a avaliação de cadastro. Após confirmados, você receberá um email para realizar o envio dos documentos.</p>
+                    <p>Dados para login</p>
+                    <br><p>Usuário: ${company.contactEmail}</p>
+                    <p>Senha: ${password}</p>`
+        };
+        // sending email
+        emailHelper.sendMail(mailOptions, async (error, info) => {
+            if (error) {
+                res.status(500).send({ msg: "Internal Error"});
+                return;
+            }
+            // set status and create company
+            company.CompanyStatusId = 1;
+            const companyCreated = await models.Company.create(company);
+            // create User to a created company
+            const passwordMd5 = md5(password);
+            await models.User.create({
+                password: passwordMd5,
+                email: company.contactEmail,
+                name: company.contactName + password,
+                UserTypeId: 2,
+                UserStatusId: 1,
+                CompanyId: companyCreated.id
+            });
+            res.status(201).send({
+                id: companyCreated.id
+            });
         });
     } catch (err) {
         console.log(err);

@@ -40,7 +40,7 @@ exports.getDocuments = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(500).send({ msg: 'Internal Error' })
+        res.status(500).send({ msg: 'Internal Error', err })
     }
 }
 

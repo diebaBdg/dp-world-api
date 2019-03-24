@@ -4,6 +4,9 @@ const controller = require('../controllers/sector');
 const expressValidator = require('./middlewares/express-validator');
 // validators of this specifics routes
 const validators = require('./validators/sector-validators');
+// applying authentication in all routes
+const auth = require("../config/auth")();
+router.use(auth.authenticate());
 
 /**
  * @api {get} /sectors List of company sectors
