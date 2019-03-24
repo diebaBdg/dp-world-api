@@ -8,11 +8,14 @@ exports.get = async (req, res) => {
             data: await models.Company.findAll({ 
                 where: req.query,
                 include: [{
-                    model: models.CompanyStatus
+                    model: models.CompanyStatus,
+                    attributes: ['id','description']
                 },{
-                    model: models.CompanyType
+                    model: models.CompanyType,
+                    attributes: ['id','description']
                 },{
                     model: models.User,
+                    attributes: ['id','name', 'email'],
                     where: {UserStatusId: 1}
                 }]
             })
@@ -39,9 +42,11 @@ exports.post = async (req, res) => {
                     <p>Senha: ${password}</p>`
         };
         // sending email
+        console.log(mailOptions);
         emailHelper.sendMail(mailOptions, async (error, info) => {
             if (error) {
-                res.status(500).send({ msg: "Internal Error"});
+                console.log(error)
+                res.status(500).send({ msg: "Internal Error", error});
                 return;
             }
             // set status and create company
