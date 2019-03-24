@@ -30,7 +30,7 @@ let defaultCompany = [
         .custom((email) => {
             return models.User.findOne({ where: { email: email } }).then(user => {
                 if (user) {
-                    return Promise.reject('Contact email name already in use');
+                    return Promise.reject('Contact email already in use');
                 }
             });
         }),
