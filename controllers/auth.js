@@ -14,7 +14,7 @@ exports.post = async (req, res, next) => {
             user.password = undefined;
             res.json({ token: token, user });
         } else {
-            res.sendStatus(401);
+            res.status(400).send({msg: "User or password incorrect."});
         }
     } catch (err) {
         console.log(err);
