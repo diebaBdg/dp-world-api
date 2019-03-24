@@ -13,7 +13,7 @@ const validators = require('./validators/auth-validators');
  * @apiParam (Request body) {String} email User email
  * @apiParam (Request body) {String} password User password
  * 
- * @apiSuccess {Int} token JWT access token
+ * @apiSuccess {String} token JWT access token
  * @apiSuccess {Object} user User data
  * 
  * @apiSuccessExample {json} Success (example):

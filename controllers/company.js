@@ -5,7 +5,17 @@ const emailHelper = require('../helpers/email-helper');
 exports.get = async (req, res) => {
     try {
         res.send({
-            data: await models.Company.findAll({ where: req.query })
+            data: await models.Company.findAll({ 
+                where: req.query,
+                include: [{
+                    model: models.CompanyStatus
+                },{
+                    model: models.CompanyType
+                },{
+                    model: models.User,
+                    where: {UserStatusId: 1}
+                }]
+            })
         });
     } catch (err) {
         console.log(err);

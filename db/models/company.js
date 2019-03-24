@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     Company.belongsTo(models.CompanyType);
     Company.belongsTo(models.Sector);
     Company.belongsTo(Company);
+    Company.hasMany(models.User);
   };
   return Company;
 };
