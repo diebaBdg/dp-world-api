@@ -7,8 +7,8 @@ frisby.globalSetup({
     }
 });
 
-it('GET shoud return a list of document types', () => {
-    return frisby.get(`http://localhost/document-types`)
-        .expect('status', 200)
-        .expect('jsonTypes', 'data', frisby.Joi.array())
+it('GET shoud return a list of companies', () => {
+        return frisby.get(`http://localhost/companies`)
+                .expect('status', 200)
+                .expect('jsonTypes', 'data', frisby.Joi.array())
 })

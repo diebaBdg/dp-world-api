@@ -6,10 +6,11 @@ let logger = require('morgan');
 let rfs = require('rotating-file-stream');
 let path = require('path');
 let cors = require('cors');
+var auth = require("./config/auth")();
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: '*',
+  origin: ['http://localhost','http://localhost:3000'],
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }
@@ -36,4 +37,3 @@ app = require('./routes').routes(app);
 // defining server port and start server
 const port = 3000;
 app.listen(port, () => console.log(`Server runnig in port ${port}`));
-

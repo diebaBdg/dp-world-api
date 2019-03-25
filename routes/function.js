@@ -4,6 +4,9 @@ const controller = require('../controllers/function');
 const expressValidator = require('./middlewares/express-validator');
 // validators of this specifics routes
 const validators = require('./validators/function-validators');
+// applying authentication in all routes
+const auth = require("../config/auth")();
+router.use(auth.authenticate());
 
 /**
  * @api {get} /functions List of collaborators functions
