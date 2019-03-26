@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   UserType.associate = function(models) {
     // associations can be defined here
+    UserType.belongsToMany(models.Menu, { through: 'MenuToUserTypes' } );
   };
   return UserType;
 };
