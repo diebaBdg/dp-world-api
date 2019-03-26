@@ -2,18 +2,20 @@ const models = require('../db/models');
 
 exports.get = async (req, res) => {
     try {
-        const menu = await models.Menu.findAll({
+        let userTypeid = req.user.UserTypeId;
+        userTypeid = 1;
+        const user = await models.UserType.findOne({
+            where: {id: userTypeid},
             include: [{
-                model:models.Menu,
-                as: 'Menu1',
-                include: [{
-                    model:models.Menu,
-                    as: 'Menu2'
-                }]
-            }],
-            where: { MenuId: null } 
+                model: models.Menu,
+                through: {
+                    where: {
+                        UserTypeId: userTypeid
+                    }
+                },
+            }]
         });
-        res.send({data: menu});
+        res.send({data: user.Menus});
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

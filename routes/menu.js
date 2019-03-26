@@ -5,8 +5,8 @@ const controller = require('../controllers/menu');
 // // validators of this specifics routes
 // const validators = require('./validators/sector-validators');
 // // applying authentication in all routes
-// const auth = require("../config/auth")();
-// router.use(auth.authenticate());
+const auth = require("../config/auth")();
+router.use(auth.authenticate());
 
 /**
  * @api {get} /menu List of company sectors
@@ -15,6 +15,7 @@ const controller = require('../controllers/menu');
  *
  * @apiSuccess {Array} data Itens of menu
  */
+
 router.get('/', controller.get);
 
 module.exports = router;
