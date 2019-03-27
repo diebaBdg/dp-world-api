@@ -10,7 +10,8 @@ exports.post = [
         .custom(description => {
             return models.CompanyType.findOne({
                 where: {
-                    description
+                    description,
+                    status: 1
                 }
             }).then(companyType => {
                 if (companyType) {

@@ -13,7 +13,12 @@ exports.post = [
         .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters.")
         .custom((description) => {
-            return models.Document.findOne({ where: { description: description } }).then(document => {
+            return models.Document.findOne({ 
+                where: { 
+                    description,
+                    status: 1
+                } 
+            }).then(document => {
                 if (document) {
                     return Promise.reject('Já existe documento com essa descrição.');
                 }
