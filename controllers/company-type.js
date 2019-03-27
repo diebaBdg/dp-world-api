@@ -15,15 +15,9 @@ exports.post = async (req, res) => {
     try {
         // get request body
         let campanyType = req.body;
-        // get documents and verify if exists document with the same name
-        const campanyTypes = await models.CompanyType.findAll({ where: { description: campanyType.description } });
-        if (!campanyTypes.length) {
-            // set status active and creating document
-            campanyType.status = 1;
-            res.status(201).send({ id: (await models.CompanyType.create(campanyType)).id });
-        } else {
-            res.status(400).send({ msg: "Item already exists." });
-        }
+        // set status active and create document
+        campanyType.status = 1;
+        res.status(201).send({ id: (await models.CompanyType.create(campanyType)).id });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
@@ -36,10 +30,10 @@ exports.delete = async (req, res) => {
         const deleted = await models.CompanyType.update({
             status: 0
         }, {
-            where: {
-                id: id
-            }
-        })
+                where: {
+                    id: id
+                }
+            })
         res.send({ id: deleted });
     } catch (err) {
         console.log(err);
@@ -111,11 +105,11 @@ exports.updateDocuments = async (req, res) => {
         const updated = await models.DocumentToCompanyType.update({
             defaultValidity: req.body.defaultValidity
         }, {
-            where: {
-                CompanyTypeId: req.params.id,
-                DocumentId: req.params.DocumentId
-            }
-        });
+                where: {
+                    CompanyTypeId: req.params.id,
+                    DocumentId: req.params.DocumentId
+                }
+            });
         res.status(200).send({ updated: updated[0] });
     } catch (err) {
         console.log(err);
