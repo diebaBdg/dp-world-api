@@ -3,7 +3,6 @@ const models = require('../db/models');
 exports.get = async (req, res) => {
     try {
         let userTypeid = req.user.UserTypeId;
-        userTypeid = 1;
         const user = await models.UserType.findOne({
             where: {id: userTypeid},
             include: [{
