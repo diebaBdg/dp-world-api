@@ -77,7 +77,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiSuccess {Int} updated 1 if was updated or 0 if is not
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 201 OK
+ *    HTTP/1.1 200 OK
  *    {
  *        "updated": 1
  *    }
@@ -94,7 +94,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 201 OK
+ *    HTTP/1.1 200 OK
  *    {
  *        "deleted": 1
  *    }

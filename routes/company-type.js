@@ -70,6 +70,24 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
 
 /**
+ * @api {put} /company-types/:id Update a company type
+ * @apiName PutCompanyTypes
+ * @apiGroup CompanyTypes
+ *
+ * @apiParam (Params) {Int} id The company type id.
+ * @apiParam (Request body) {String} description Company type description.
+ * 
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "updated": 1
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
+/**
  * @api {get} /company-types/:id/documents List the company type's documents
  * @apiName GetCompanyTypesDocumets
  * @apiGroup CompanyTypes

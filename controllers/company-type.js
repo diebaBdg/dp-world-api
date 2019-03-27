@@ -41,6 +41,20 @@ exports.delete = async (req, res) => {
     }
 }
 
+exports.put = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updated = await models.CompanyType.update(req.body, {
+                where: {
+                    id: id
+                }
+            })
+        res.send({ updated: updated[0] });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' });
+    }
+}
 
 exports.getDocuments = async (req, res) => {
     try {
