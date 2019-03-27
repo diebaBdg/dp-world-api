@@ -4,14 +4,14 @@ const Op = require('sequelize').Op;
 
 // specific validator of company routes
 exports.get = [
-    check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Should be an integer."),
-    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Should be an integer.")
+    check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
+    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [
     check('description')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters.")
+        .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((description) => {
             return models.Document.findOne({ 
                 where: { 
@@ -26,11 +26,11 @@ exports.post = [
         }),
     check('DocumentTypeId')
         .isInt()
-        .withMessage("Should be an integer."),
+        .withMessage("Deve ser um número inteiro."),
     check('FunctionId')
         .optional({ nullable: true })
         .isInt()
-        .withMessage("Should be an integer.")
+        .withMessage("Deve ser um número inteiro.")
 ];
 
 exports.put = [
@@ -39,7 +39,7 @@ exports.put = [
         .withMessage("Deve ser um inteiro."),
     check('description')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters.")
+        .withMessage("Deve ter entre 3 e 200 caracteres.")
         // verify if description already exists
         .custom((description, options) => {
             const id = options.req.params.id;
@@ -57,11 +57,11 @@ exports.put = [
         }),
     check('DocumentTypeId')
         .isInt()
-        .withMessage("Should be an integer."),
+        .withMessage("Deve ser um número inteiro."),
     check('FunctionId')
         .optional({ nullable: true })
         .isInt()
-        .withMessage("Should be an integer.")
+        .withMessage("Deve ser um número inteiro.")
 ];
 
 
