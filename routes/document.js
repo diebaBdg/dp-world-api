@@ -64,4 +64,24 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
+/**
+ * @api {put} /documents/:id Update a document
+ * @apiName PutDocuments
+ * @apiGroup Documents
+ *
+ * @apiParam (Params) {Int} id The document id.
+ * @apiParam (Request body) {String} description The function description.
+ * @apiParam (Request body) {Int} DocumentTypeId The id of the document type.
+ * @apiParam (Request body) {Int} FunctionId The id of the function.
+ * 
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
 module.exports = router;
