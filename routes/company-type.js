@@ -53,18 +53,18 @@ router.get('/', controller.get);
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
- * @api {delete} /company-types Delete a company type
+ * @api {delete} /company-types/:id Delete a company type
  * @apiName DeleteCompanyTypes
  * @apiGroup CompanyTypes
  *
  * @apiParam (Params) {Int} id The company type id.
  * 
- * @apiSuccess {Int} id Id of the company type deleted
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
  *    {
- *        "id": 20
+ *        "deleted": 1
  *    }
  */
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
