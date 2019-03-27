@@ -92,6 +92,14 @@ let defaultCompany = [
         .isNumeric()
 ];
 
+exports.get = [
+    check('cnpj')
+        .optional({ nullable: true })
+        .isNumeric()
+        .isLength({ min: 14, max: 14 })
+        .withMessage("Should be 14 caracters numerics.")
+];
+
 exports.post = defaultCompany;
 
 exports.put = [
