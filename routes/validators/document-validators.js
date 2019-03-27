@@ -64,11 +64,4 @@ exports.delete = [
     check('id')
         .isInt()
         .withMessage("Deve ser um inteiro.")
-        .custom((id) => {
-            return models.DocumentToCompanyType.findOne({ where: { DocumentId: id } }).then(document => {
-                if (document) {
-                    return Promise.reject('Não é possível deletar pois está o documento está associado a um tipo de empresa.');
-                }
-            });
-        })
 ];
