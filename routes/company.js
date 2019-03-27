@@ -12,17 +12,17 @@ const validators = require('./validators/company-validators');
  * 
  * @apiParam (Query params) {String} cnpj CNPJ of the company.
  *
- * @apiSuccess {Array} companies List of companies
+ * @apiSuccess {Array} data List of companies
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
  *           "data": [
  *               {
- *                  "id": 1,
- *                  "cnpj": "1636270000108",
- *                  "socialName": "Empresa Teste",
- *                  "businessName": "Empresa Teste",
+ *                  "id": 37,
+ *                  "cnpj": "32325649000999",
+ *                  "socialName": "socialName Teste 1",
+ *                  "businessName": "businessName Teste 2",
  *                  "address": "Av Afonso Pena 3148",
  *                  "number": "1",
  *                  "complement": "apto 101",
@@ -34,16 +34,30 @@ const validators = require('./validators/company-validators');
  *                  "phone": "31989915622",
  *                  "inscricaoEstadual": "12354885",
  *                  "site": "http://www.semsite.com.br",
- *                  "createdAt": "2019-03-19T01:31:18.329Z",
- *                  "updatedAt": "2019-03-19T01:31:18.329Z",
- *                  "CompanyStatusId": 1,
+ *                  "createdAt": "2019-03-24T21:41:04.110Z",
+ *                  "updatedAt": "2019-03-25T16:43:05.794Z",
+ *                  "CompanyStatusId": 2,
  *                  "CompanyTypeId": 1,
- *                  "CompanyId": null
+ *                  "SectorId": 1,
+ *                  "CompanyId": null,
+ *                  "CompanyStatus": {
+ *                      "id": 2,
+ *                      "description": "Envio de documentos"
+ *                  },
+ *                  "CompanyType": {
+ *                      "id": 1,
+ *                      "description": "Estrangeiro"
+ *                  },
+ *                  "Users": [{
+ *                      "id": 28,
+ *                      "name": "Jonathan",
+ *                      "email": "velosojonathan5@gmail.com"
+ *                  }]
  *              }
  *           ]
  *       }
  */
-router.get('/', controller.get);
+router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
  * @api {post} /companies Create a new company
@@ -78,11 +92,7 @@ router.get('/', controller.get);
  *        "id": 19
  *    }
  */
-router.post('/',
-    validators.post
-    , expressValidator.findsValidatorErros()
-    , controller.post
-);
+router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
  * @api {put} /companies/:id Update a company

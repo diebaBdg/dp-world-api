@@ -26,15 +26,14 @@ exports.post = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const id = req.params.id;
         const deleted = await models.CompanyType.update({
             status: 0
         }, {
                 where: {
-                    id: id
+                    id: req.params.id
                 }
             })
-        res.send({ id: deleted });
+        res.send({ deleted: deleted[0] });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
