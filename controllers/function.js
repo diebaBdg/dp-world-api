@@ -30,7 +30,7 @@ exports.post = async (req, res) => {
         if (!functions.length) {
             res.status(201).send({id: (await models.Function.create({ description: req.body.description })).id});
         } else {
-            res.status(400).send({ msg: "Item already exists." });
+            res.status(400).send({ msg: "Função já em uso." });
         }
     } catch (err) {
         console.log(err);
