@@ -40,3 +40,19 @@ exports.put = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.delete = async (req, res) => {
+    try {
+        const deleted = await models.Document.update({
+            status: 0
+        },{
+            where: {
+                id: req.params.id
+            }
+        });
+        res.send({ deleted: deleted[0]});
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}

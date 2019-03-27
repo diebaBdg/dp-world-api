@@ -84,4 +84,21 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  */
 router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
 
+/**
+ * @api {delete} /documents/:id Delete a document
+ * @apiName DeleteDocuments
+ * @apiGroup Documents
+ *
+ * @apiParam (Params) {Int} id The document id.
+ * 
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "deleted": 1
+ *    }
+ */
+router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
+
 module.exports = router;

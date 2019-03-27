@@ -54,3 +54,10 @@ exports.put = [
         .isInt()
         .withMessage("Should be an integer.")
 ];
+
+
+exports.delete = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um inteiro.")
+];
