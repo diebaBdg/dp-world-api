@@ -4,15 +4,15 @@ const Op = require('sequelize').Op;
 
 // specific validator of company routes
 exports.get = [
-    check('DocumentTypeId').optional({nullable: true}).isInt().withMessage("Should be an integer."),
-    check('FunctionId').optional({nullable: true}).isInt().withMessage("Should be an integer.")
+    check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Should be an integer."),
+    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Should be an integer.")
 ];
 
 exports.post = [
     check('description')
-        .isLength({min:3, max: 200})
+        .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters.")
-        .custom((description)=>{
+        .custom((description) => {
             return models.Document.findOne({ where: { description: description } }).then(document => {
                 if (document) {
                     return Promise.reject('Já existe documento com essa descrição.');
@@ -23,7 +23,7 @@ exports.post = [
         .isInt()
         .withMessage("Should be an integer."),
     check('FunctionId')
-        .optional({nullable: true})
+        .optional({ nullable: true })
         .isInt()
         .withMessage("Should be an integer.")
 ];
@@ -33,13 +33,17 @@ exports.put = [
         .isInt()
         .withMessage("Deve ser um inteiro."),
     check('description')
-        .isLength({min:3, max: 200})
+        .isLength({ min: 3, max: 200 })
         .withMessage("Should be between 3 and 200 characters.")
         // verify if description already exists
-        .custom((description, options)=>{
+        .custom((description, options) => {
             const id = options.req.params.id;
-            return models.Document.findOne({ 
-                where: { description: description, id: {[Op.ne]: id}} 
+            return models.Document.findOne({
+                where: {
+                    description: description,
+                    id: { [Op.ne]: id },
+                    status: 1
+                }
             }).then(document => {
                 if (document) {
                     return Promise.reject('Já existe documento com essa descrição.');
@@ -50,7 +54,7 @@ exports.put = [
         .isInt()
         .withMessage("Should be an integer."),
     check('FunctionId')
-        .optional({nullable: true})
+        .optional({ nullable: true })
         .isInt()
         .withMessage("Should be an integer.")
 ];
@@ -60,4 +64,11 @@ exports.delete = [
     check('id')
         .isInt()
         .withMessage("Deve ser um inteiro.")
+        .custom((id) => {
+            return models.DocumentToCompanyType.findOne({ where: { DocumentId: id } }).then(document => {
+                if (document) {
+                    return Promise.reject('Não é possível deletar pois está o documento está associado a um tipo de empresa.');
+                }
+            });
+        })
 ];
