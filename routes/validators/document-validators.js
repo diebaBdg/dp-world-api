@@ -13,10 +13,10 @@ exports.post = [
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((description) => {
-            return models.Document.findOne({ 
-                where: { 
+            return models.Document.findOne({
+                where: {
                     description
-                } 
+                }
             }).then(document => {
                 if (document) {
                     return Promise.reject('Já existe documento com essa descrição.');
@@ -56,6 +56,10 @@ exports.put = [
     check('DocumentTypeId')
         .isInt()
         .withMessage("Deve ser um número inteiro."),
+    check('status')
+        .optional({ nullable: true })
+        .isInt({ min: 1, max: 1 })
+        .withMessage("Se mencionado, deve ser 1."),
     check('FunctionId')
         .optional({ nullable: true })
         .isInt()
