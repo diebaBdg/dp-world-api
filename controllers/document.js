@@ -8,7 +8,9 @@ exports.get = async (req, res) => {
         res.send({
             data: await models.Document.findAll({ 
                 where: filters,
-                order: ['id', 'DESC']
+                order: [
+                    ['id', 'DESC']
+                ]
             })
         });
     } catch (err) {
