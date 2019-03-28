@@ -19,7 +19,10 @@ exports.post = async (req, res) => {
         // get request body
         let document = req.body;
         document.status = 1;
-        res.status(201).send({ id: (await models.Document.create(document)).id });
+        res.status(201).send({ 
+            id: (await models.Document.create(document)).id,
+            msg: "Cadastrado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
@@ -33,7 +36,10 @@ exports.put = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.send({ updated: updated[0] });
+        res.send({ 
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
@@ -60,7 +66,10 @@ exports.delete = async (req, res) => {
                     id: req.params.id
                 }
             });
-        res.send({ deleted: deleted[0] });
+        res.send({ 
+            deleted: deleted[0],
+            msg: "Desabilitado com sucesso"
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
