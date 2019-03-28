@@ -6,7 +6,10 @@ exports.get = async (req, res) => {
         let filters = req.query;
         // execute query and send data
         res.send({
-            data: await models.Document.findAll({ where: filters })
+            data: await models.Document.findAll({ 
+                where: filters,
+                order: ['id', 'DESC']
+            })
         });
     } catch (err) {
         console.log(err);
