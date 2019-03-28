@@ -4,7 +4,6 @@ exports.get = async (req, res) => {
     try {
         // select filters
         let filters = req.query;
-        filters.status = 1;
         // execute query and send data
         res.send({
             data: await models.Document.findAll({ where: filters })
@@ -45,13 +44,13 @@ exports.delete = async (req, res) => {
     try {
         // verify if it is used by companytypes
         if(await models.DocumentToCompanyType.findOne({ where: { DocumentId: req.params.id } })){
-            res.status(400).send({ msg: 'Não é possível deletar pois está o documento está associado a um tipo de empresa.' })
+            res.status(400).send({ msg: 'Não é possível deletar o documento pois ele está associado a um tipo de empresa.' })
             return
         }
         // verify if it is used by sectors
         const document = await models.Document.findOne({ where: { id: req.params.id } });
         if ((await document.getSectors()).length) {
-            res.status(400).send({ msg: 'Não é possível deletar pois está o documento está associado a um setor.' })
+            res.status(400).send({ msg: 'Não é possível deletar o documento pois ele está associado a um setor.' })
             return
         }
         const deleted = await models.Document.update({
