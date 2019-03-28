@@ -15,8 +15,7 @@ exports.post = [
         .custom((description) => {
             return models.Document.findOne({ 
                 where: { 
-                    description,
-                    status: 1
+                    description
                 } 
             }).then(document => {
                 if (document) {
@@ -46,8 +45,7 @@ exports.put = [
             return models.Document.findOne({
                 where: {
                     description: description,
-                    id: { [Op.ne]: id },
-                    status: 1
+                    id: { [Op.ne]: id }
                 }
             }).then(document => {
                 if (document) {
