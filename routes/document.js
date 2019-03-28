@@ -73,6 +73,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiParam (Request body) {String} description The function description.
  * @apiParam (Request body) {Int} DocumentTypeId The id of the document type.
  * @apiParam (Request body) {Int} FunctionId The id of the function.
+ * @apiParam (Request body) {Int} status 1 to enable the document.
  * 
  * @apiSuccess {Int} updated 1 if was updated or 0 if is not
  * 
