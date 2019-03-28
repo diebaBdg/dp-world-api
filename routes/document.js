@@ -59,7 +59,8 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
  *    {
- *        "id": 20
+ *        "id": 20,
+ *        "msg": "Cadastrado com sucesso."
  *    }
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
@@ -80,7 +81,8 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
  *    {
- *        "updated": 1
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
  *    }
  */
 router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
@@ -97,7 +99,8 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
  *    {
- *        "deleted": 1
+ *        "deleted": 1,
+ *        "msg": "Desabilitado com sucesso"
  *    }
  */
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
