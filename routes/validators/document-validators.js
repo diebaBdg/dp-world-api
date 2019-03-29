@@ -77,7 +77,7 @@ exports.delete = [
         .custom(id => {
             return models.Document.findOne({
                 where: {
-                    id:  id 
+                    id: id
                 }
             }).then(document => {
                 if (!document) {

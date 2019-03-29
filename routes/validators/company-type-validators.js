@@ -3,6 +3,12 @@ const models = require('../../db/models');
 const Op = require('sequelize').Op;
 
 // specific validator of company routes
+exports.get = [
+    check('status')
+        .optional()
+        .isInt({ min: 0, max: 1 })
+];
+
 exports.post = [
     check('description')
         .isLength({ min: 3, max: 200 })
@@ -10,8 +16,7 @@ exports.post = [
         .custom(description => {
             return models.CompanyType.findOne({
                 where: {
-                    description,
-                    status: 1
+                    description
                 }
             }).then(companyType => {
                 if (companyType) {
@@ -22,7 +27,21 @@ exports.post = [
 ];
 
 exports.delete = [
-    check('id').isInt().withMessage("Deve ser um número inteiro.")
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.CompanyType.findOne({
+                where: {
+                    id: id
+                }
+            }).then(companyType => {
+                if (!companyType) {
+                    return Promise.reject('Tipo de empresa já excluído.');
+                }
+            });
+        })
+
 ];
 
 exports.put = [
@@ -30,22 +49,28 @@ exports.put = [
         .isInt()
         .withMessage("Deve ser um número inteiro."),
     check('description')
+        .optional()
+        .isLength({ min: 3, max: 200 })
+        .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((description, options) => {
             const id = options.req.params.id;
-            return models.CompanyType.findOne({ 
-                where: { 
+            return models.CompanyType.findOne({
+                where: {
                     description,
                     id: {
                         [Op.ne]: id
-                    },
-                    status: 1
-                } 
+                    }
+                }
             }).then(companyType => {
                 if (companyType) {
                     return Promise.reject('Descrição já existe.');
                 }
             });
-        })
+        }),
+    check('status')
+        .optional()
+        .isInt({ min: 0, max: 1 })
+        .withMessage("Deve ser um número inteiro."),
 ];
 
 exports.getDocuments = [

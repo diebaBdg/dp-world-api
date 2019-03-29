@@ -2,12 +2,10 @@ const models = require('../db/models');
 
 exports.get = async (req, res) => {
     try {
-        // select filters
-        let filters = req.query;
         // execute query and send data
         res.send({
             data: await models.Document.findAll({
-                where: filters,
+                where: req.query,
                 order: [
                     ['id', 'DESC']
                 ]

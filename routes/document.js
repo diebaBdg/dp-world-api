@@ -101,7 +101,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  *    HTTP/1.1 200 OK
  *    {
  *        "deleted": 1,
- *        "msg": "Documento não existe."
+ *        "msg": "Excluído com sucesso."
  *    }
  */
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
