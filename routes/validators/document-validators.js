@@ -4,9 +4,9 @@ const Op = require('sequelize').Op;
 
 // specific validator of company routes
 exports.get = [
-    check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
-    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
-    check('status').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro.")
+    check('DocumentTypeId').optional().isInt().withMessage("Deve ser um número inteiro."),
+    check('FunctionId').optional().isInt().withMessage("Deve ser um número inteiro."),
+    check('status').optional().isInt().withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [

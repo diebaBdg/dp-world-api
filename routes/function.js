@@ -13,7 +13,8 @@ router.use(auth.authenticate());
  * @apiName GetFunctions
  * @apiGroup Functions
  * 
- * @apiParam (Query params) {String} DocumentTypeId The filter document type id.
+ * @apiParam (Query params) {Int} DocumentTypeId The filter document type id.
+ * @apiParam (Query params) {Int} status The document status.
  *
  * @apiSuccess {Array} data List of functions
  * 
