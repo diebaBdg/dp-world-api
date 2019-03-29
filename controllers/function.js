@@ -12,9 +12,13 @@ exports.get = async (req, res) => {
                 }
             })
         }
+        let filtro = {}
+        if(req.query.status){
+            filtro.status = req.query.status
+        }
         res.send({
             data: await models.Function.findAll({
-                where: req.query,
+                where: filtro,
                 include,
                 order: [
                     ['id', 'DESC']
