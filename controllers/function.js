@@ -3,19 +3,22 @@ const models = require('../db/models');
 exports.get = async (req, res) => {
     try {
         // validate if there are filter DocumentType
-        const DocumentTypeId = req.query.DocumentTypeId;
-        let include;
-        if(DocumentTypeId){
-            include = [{
+        let include = [];
+        if (req.query.DocumentTypeId) {
+            include.push({
                 model: models.Document,
                 where: {
-                    DocumentTypeId: DocumentTypeId
+                    DocumentTypeId: req.query.DocumentTypeId
                 }
-            }]
+            })
         }
         res.send({
             data: await models.Function.findAll({
-                include
+                where: req.query,
+                include,
+                order: [
+                    ['id', 'DESC']
+                ]
             })
         });
     } catch (err) {
@@ -28,7 +31,7 @@ exports.post = async (req, res) => {
     try {
         const functions = await models.Function.findAll({ where: { description: req.body.description } });
         if (!functions.length) {
-            res.status(201).send({id: (await models.Function.create({ description: req.body.description })).id});
+            res.status(201).send({ id: (await models.Function.create({ description: req.body.description })).id });
         } else {
             res.status(400).send({ msg: "Função já em uso." });
         }
