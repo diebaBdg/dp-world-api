@@ -79,4 +79,23 @@ router.post('/', validators.post, expressValidator.findsValidatorErros() , contr
  */
 router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
 
+/**
+ * @api {delete} /functions/:id Delete a function
+ * @apiName DeleteFunctions
+ * @apiGroup Functions
+ *
+ * @apiParam (Params) {Int} id The function id.
+ * 
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "deleted": 1,
+ *        "msg": "Excluído com sucesso."
+ *    }
+ */
+router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
+
 module.exports = router;
