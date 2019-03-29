@@ -78,6 +78,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiParam (Request body) {Int} status 1 to enable the document and 0 to disable.
  * 
  * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
