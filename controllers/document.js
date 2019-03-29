@@ -6,7 +6,7 @@ exports.get = async (req, res) => {
         let filters = req.query;
         // execute query and send data
         res.send({
-            data: await models.Document.findAll({ 
+            data: await models.Document.findAll({
                 where: filters,
                 order: [
                     ['id', 'DESC']
@@ -24,7 +24,7 @@ exports.post = async (req, res) => {
         // get request body
         let document = req.body;
         document.status = 1;
-        res.status(201).send({ 
+        res.status(201).send({
             id: (await models.Document.create(document)).id,
             msg: "Cadastrado com sucesso."
         });
@@ -41,7 +41,7 @@ exports.put = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.send({ 
+        res.send({
             updated: updated[0],
             msg: "Alterado com sucesso."
         });
@@ -54,7 +54,7 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         // verify if it is used by companytypes
-        if(await models.DocumentToCompanyType.findOne({ where: { DocumentId: req.params.id } })){
+        if (await models.DocumentToCompanyType.findOne({ where: { DocumentId: req.params.id } })) {
             res.status(400).send({ msg: 'Não é possível deletar o documento pois ele está associado a um tipo de empresa.' })
             return
         }
@@ -64,16 +64,14 @@ exports.delete = async (req, res) => {
             res.status(400).send({ msg: 'Não é possível deletar o documento pois ele está associado a um setor.' })
             return
         }
-        const deleted = await models.Document.update({
-            status: 0
-        }, {
-                where: {
-                    id: req.params.id
-                }
-            });
-        res.send({ 
-            deleted: deleted[0],
-            msg: "Desabilitado com sucesso"
+        const deleted = await models.Document.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        res.send({
+            deleted: deleted,
+            msg: "Excluído com sucesso"
         });
     } catch (err) {
         console.log(err);
