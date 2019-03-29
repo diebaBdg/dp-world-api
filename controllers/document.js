@@ -6,6 +6,11 @@ exports.get = async (req, res) => {
         res.send({
             data: await models.Document.findAll({
                 where: req.query,
+                include: [{
+                    model: models.Function
+                },{
+                    model: models.DocumentType
+                }],
                 order: [
                     ['id', 'DESC']
                 ]
