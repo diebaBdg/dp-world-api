@@ -5,7 +5,8 @@ const Op = require('sequelize').Op;
 // specific validator of company routes
 exports.get = [
     check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
-    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro.")
+    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
+    check('status').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [
@@ -37,6 +38,7 @@ exports.put = [
         .isInt()
         .withMessage("Deve ser um inteiro."),
     check('description')
+        .optional()
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres.")
         // verify if description already exists
@@ -54,12 +56,13 @@ exports.put = [
             });
         }),
     check('DocumentTypeId')
+        .optional()
         .isInt()
         .withMessage("Deve ser um número inteiro."),
     check('status')
-        .optional({ nullable: true })
-        .isInt({ min: 1, max: 1 })
-        .withMessage("Se mencionado, deve ser 1."),
+        .optional()
+        .isInt({ min: 0, max: 1 })
+        .withMessage("Deve ser 1 ou 0."),
     check('FunctionId')
         .optional({ nullable: true })
         .isInt()
@@ -71,4 +74,15 @@ exports.delete = [
     check('id')
         .isInt()
         .withMessage("Deve ser um inteiro.")
+        .custom(id => {
+            return models.Document.findOne({
+                where: {
+                    id: id
+                }
+            }).then(document => {
+                if (!document) {
+                    return Promise.reject('Documento não existe.');
+                }
+            });
+        })
 ];
