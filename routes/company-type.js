@@ -49,7 +49,8 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
  *    {
- *        "id": 20
+ *        "id": 20,
+ *        "msg": "Cadastrado com sucesso."
  *    }
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);

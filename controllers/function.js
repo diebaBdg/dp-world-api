@@ -29,12 +29,26 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        const functions = await models.Function.findAll({ where: { description: req.body.description } });
-        if (!functions.length) {
-            res.status(201).send({ id: (await models.Function.create({ description: req.body.description })).id });
-        } else {
-            res.status(400).send({ msg: "Função já em uso." });
-        }
+        let func = req.body;
+        res.status(201).send({ 
+            id: (await models.Function.create(func)).id,
+            msg: "Cadastrado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' });
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const updated = await models.Function.update(req.body,{
+            where: {id: req.params.id}
+        })
+        res.send({ 
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });

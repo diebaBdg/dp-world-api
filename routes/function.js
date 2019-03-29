@@ -46,14 +46,37 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  *
  * @apiParam (Request body) {String} description The function description.
  * 
- * @apiSuccess {Json} function Function inserted
+ * @apiSuccess {Int} id Function inserted
+ * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 201 OK
  *    {
- *        "id": 17
+ *        "id": 17,
+ *        "msg": "Cadastrado com sucesso."
  *    }
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros() , controller.post);
+
+/**
+ * @api {put} /functions/:id Update a function
+ * @apiName PutFunctions
+ * @apiGroup Functions
+ *
+ * @apiParam (Params) {Int} id The function id.
+ * @apiParam (Request body) {String} description The function description.
+ * @apiParam (Request body) {Int} status The function status.
+ * 
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
 
 module.exports = router;

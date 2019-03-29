@@ -48,7 +48,7 @@ router.use(auth.authenticate());
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
- * @api {post} /sectors Create a sector
+ * @api {post} /sectors Create a new sector
  * @apiName PostSectors
  * @apiGroup Sectors
  *

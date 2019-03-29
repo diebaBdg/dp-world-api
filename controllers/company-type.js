@@ -22,7 +22,10 @@ exports.post = async (req, res) => {
         let campanyType = req.body;
         // set status active and create document
         campanyType.status = 1;
-        res.status(201).send({ id: (await models.CompanyType.create(campanyType)).id });
+        res.status(201).send({ 
+            id: (await models.CompanyType.create(campanyType)).id,
+            msg: "Cadastrado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
