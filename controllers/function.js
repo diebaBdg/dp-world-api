@@ -54,3 +54,22 @@ exports.put = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' });
     }
 }
+
+exports.delete = async (req, res) => {
+    try {
+        const deleted = await models.Function.destroy({
+            where: {id: req.params.id}
+        })
+        res.send({ 
+            deleted,
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        if (err.name == 'SequelizeForeignKeyConstraintError') {
+            res.status(400).send({ msg: 'A função não pode ser excluída pois está sendo utilizada.'});
+        } else {
+            console.log(err);
+            res.status(500).send({ msg: 'Internal Error'});
+        }
+    }
+}

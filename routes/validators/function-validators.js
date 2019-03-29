@@ -33,6 +33,9 @@ exports.post = [
 ];
 
 exports.put = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um inteiro."),
     check('description')
         .optional()
         .isLength({ min: 3, max: 200 })
@@ -54,4 +57,21 @@ exports.put = [
         .optional()
         .isInt({ min: 0, max: 1 })
         .withMessage("Deve ser 1 ou 0.")
+];
+
+exports.delete = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um inteiro.")
+        .custom((id) => {
+            return models.Function.findOne({
+                where: {
+                    id: id
+                }
+            }).then(func => {
+                if (!func) {
+                    return Promise.reject('Função já excluída.');
+                }
+            });
+        })
 ];
