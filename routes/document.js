@@ -56,6 +56,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiParam (Request body) {Int} FunctionId The id of the function.
  * 
  * @apiSuccess {Int} id Id of the document inserted
+ * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK

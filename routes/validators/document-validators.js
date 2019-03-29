@@ -46,7 +46,7 @@ exports.put = [
             const id = options.req.params.id;
             return models.Document.findOne({
                 where: {
-                    description: description,
+                    description,
                     id: { [Op.ne]: id }
                 }
             }).then(document => {
