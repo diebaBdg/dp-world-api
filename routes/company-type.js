@@ -45,6 +45,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiParam (Request body) {String} description The company type description.
  * 
  * @apiSuccess {Int} id Id of the company type inserted
+ * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
@@ -83,6 +84,7 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
  * @apiParam (Request body) {String} status Company type status.
  * 
  * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
