@@ -70,6 +70,7 @@ let defaultCompany = [
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('cep')
+        .optional({ nullable: true })
         .isNumeric()
         .isLength({ min: 8, max: 8 })
         .withMessage("Deve ter 8 caracteres"),
