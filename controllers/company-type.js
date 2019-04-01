@@ -2,13 +2,34 @@ const models = require('../db/models');
 
 exports.get = async (req, res) => {
     try {
+        // pagination definition
+        const limit = 10;
+        let offset = undefined;
+        if (req.query.page) {
+            offset = limit * (req.query.page - 1);
+        }
+        // order definiton
+        let order = [];
+        if (req.query.order_by) {
+            order.push([
+                req.query.order_by,
+                req.query.order_direction ? req.query.order_direction : 'ASC']
+            )
+        }
+        // filter definition
+        let filter = {};
+        if (req.query.status !== undefined) {
+            filter.status = req.query.status
+        }
+        // get objects
+        const data = await models.CompanyType.findAndCountAll({
+            where: filter,
+            order: order,
+            limit: limit,
+            offset: offset
+        });
         res.send({
-            data: await models.CompanyType.findAll({
-                where: req.query,
-                order: [
-                    ['id', 'DESC']
-                ]
-            })
+            data: data
         });
     } catch (err) {
         console.log(err);
@@ -22,7 +43,7 @@ exports.post = async (req, res) => {
         let campanyType = req.body;
         // set status active and create document
         campanyType.status = 1;
-        res.status(201).send({ 
+        res.status(201).send({
             id: (await models.CompanyType.create(campanyType)).id,
             msg: "Cadastrado com sucesso."
         });
@@ -45,10 +66,10 @@ exports.delete = async (req, res) => {
         });
     } catch (err) {
         if (err.name == 'SequelizeForeignKeyConstraintError') {
-            res.status(400).send({ msg: 'O tipo de empresa não pode ser excluído pois está sendo utilizado.'});
+            res.status(400).send({ msg: 'O tipo de empresa não pode ser excluído pois está sendo utilizado.' });
         } else {
             console.log(err);
-            res.status(500).send({ msg: 'Internal Error'});
+            res.status(500).send({ msg: 'Internal Error' });
         }
     }
 }

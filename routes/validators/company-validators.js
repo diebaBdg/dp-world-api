@@ -79,6 +79,7 @@ let defaultCompany = [
         .isLength({ min: 10, max: 11 })
         .withMessage("Should be between 10 or 11 characters."),
     check('inscricaoEstadual')
+        .optional({ nullable: true })
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('site')
