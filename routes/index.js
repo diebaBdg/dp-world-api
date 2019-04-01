@@ -10,5 +10,6 @@ exports.routes = (app) => {
     app.use('/sectors', require('./sector'));
     app.use('/user-types', require('./user-types'));
     app.use('/auth', require('./auth'));
+    app.use('/menu', require('./menu'));
     return app;
 }

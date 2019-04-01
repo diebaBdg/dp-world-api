@@ -3,19 +3,26 @@ const models = require('../db/models');
 exports.get = async (req, res) => {
     try {
         // validate if there are filter DocumentType
-        const DocumentTypeId = req.query.DocumentTypeId;
-        let include;
-        if(DocumentTypeId){
-            include = [{
+        let include = [];
+        if (req.query.DocumentTypeId) {
+            include.push({
                 model: models.Document,
                 where: {
-                    DocumentTypeId: DocumentTypeId
+                    DocumentTypeId: req.query.DocumentTypeId
                 }
-            }]
+            })
+        }
+        let filtro = {}
+        if(req.query.status){
+            filtro.status = req.query.status
         }
         res.send({
             data: await models.Function.findAll({
-                include
+                where: filtro,
+                include,
+                order: [
+                    ['id', 'DESC']
+                ]
             })
         });
     } catch (err) {
@@ -26,14 +33,47 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        const functions = await models.Function.findAll({ where: { description: req.body.description } });
-        if (!functions.length) {
-            res.status(201).send({id: (await models.Function.create({ description: req.body.description })).id});
-        } else {
-            res.status(400).send({ msg: "Item already exists." });
-        }
+        let func = req.body;
+        res.status(201).send({ 
+            id: (await models.Function.create(func)).id,
+            msg: "Cadastrado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const updated = await models.Function.update(req.body,{
+            where: {id: req.params.id}
+        })
+        res.send({ 
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' });
+    }
+}
+
+exports.delete = async (req, res) => {
+    try {
+        const deleted = await models.Function.destroy({
+            where: {id: req.params.id}
+        })
+        res.send({ 
+            deleted,
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        if (err.name == 'SequelizeForeignKeyConstraintError') {
+            res.status(400).send({ msg: 'A função não pode ser excluída pois está sendo utilizada.'});
+        } else {
+            console.log(err);
+            res.status(500).send({ msg: 'Internal Error'});
+        }
     }
 }

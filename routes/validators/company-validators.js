@@ -6,90 +6,99 @@ let defaultCompany = [
     check('cnpj')
         .isNumeric()
         .isLength({ min: 14, max: 14 })
-        .withMessage("Should be 14 caracters numerics.")
+        .withMessage("Deve ter 14 caracteres numéricos.")
         .custom((cnpj) => {
             return models.Company.findOne({ where: { cnpj: cnpj } }).then(company => {
                 if (company) {
-                    return Promise.reject('Cnpj already in use');
+                    return Promise.reject('CNPJ já em uso.');
                 }
             });
         }),
     check('socialName')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters.")
+        .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((socialName) => {
             return models.Company.findOne({ where: { socialName: socialName } }).then(company => {
                 if (company) {
-                    return Promise.reject('Social name already in use');
+                    return Promise.reject('Razão social já em uso.');
                 }
             });
         }),
     check('contactEmail')
         .isEmail()
-        .withMessage("Should be an email.")
+        .withMessage("Deve ser um email.")
         .custom((email) => {
             return models.User.findOne({ where: { email: email } }).then(user => {
                 if (user) {
-                    return Promise.reject('Contact email already in use');
+                    return Promise.reject('Email de contato já em uso.');
                 }
             });
         }),
     check('contactName')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('businessName')
         .optional({ nullable: true })
-        .isLength({ min: 3, max: 200 }).withMessage("Should be between 3 and 200 characters.")
+        .isLength({ min: 3, max: 200 }).withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((businessName) => {
             return models.Company.findOne({ where: { businessName: businessName } }).then(company => {
                 if (company) {
-                    return Promise.reject('Business name already in use');
+                    return Promise.reject('Nome fantasia já em uso.');
                 }
             });
         }),
     check('address')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('number')
         .isLength({ min: 1, max: 20 })
-        .withMessage("Should be between 1 and 20 characters."),
+        .withMessage("Deve ter entre 1 e 20 caracteres"),
     check('complement')
         .optional({ nullable: true })
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('district')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('city')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('state')
         .isLength({ min: 2, max: 2 })
         .withMessage("Should be 2 characters."),
     check('country')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('cep')
+        .optional({ nullable: true })
         .isNumeric()
         .isLength({ min: 8, max: 8 })
-        .withMessage("Should be 8 characters."),
+        .withMessage("Deve ter 8 caracteres"),
     check('phone')
         .isNumeric()
         .isLength({ min: 10, max: 11 })
         .withMessage("Should be between 10 or 11 characters."),
     check('inscricaoEstadual')
         .isLength({ min: 3, max: 200 })
-        .withMessage("Should be between 3 and 200 characters."),
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('site')
         .optional({ nullable: true })
         .isURL()
-        .withMessage("Should be a URL."),
+        .withMessage("Deve ser uma URL."),
     check('CompanyTypeId')
         .isNumeric()
-        .withMessage("Should be numeric."),
+        .withMessage("Deve ser numérico"),
     check('CompanyId')
         .optional({ nullable: true })
         .isNumeric()
+];
+
+exports.get = [
+    check('cnpj')
+        .optional({ nullable: true })
+        .isNumeric()
+        .isLength({ min: 14, max: 14 })
+        .withMessage("Deve ter 14 caracteres numéricos.")
 ];
 
 exports.post = defaultCompany;
@@ -97,11 +106,11 @@ exports.post = defaultCompany;
 exports.put = [
     check('id')
         .isNumeric()
-        .withMessage("Should be numeric."),
+        .withMessage("Deve ser numérico"),
     check('SectorId')
         .isNumeric()
-        .withMessage("Should be numeric."),
+        .withMessage("Deve ser numérico"),
     check('CompanyStatusId')
         .isNumeric()
-        .withMessage("Should be numeric.")
+        .withMessage("Deve ser numérico")
 ];

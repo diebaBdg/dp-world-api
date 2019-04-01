@@ -3,11 +3,64 @@ const models = require('../db/models');
 exports.get = async (req, res) => {
     try {
         res.send({
-            data: await models.Sector.findAll()
+            data: await models.Sector.findAll({
+                where: req.query,
+                order: [
+                    ['id', 'DESC']
+                ]
+            })
         });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.post = async (req, res) => {
+    try {
+        let sector = req.body;
+        sector.status = 1;
+        res.send({
+            id: (await models.Sector.create(sector)).id,
+            msg: "Cadastrado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const updated = await models.Sector.update(req.body,{
+            where: {id: req.params.id} 
+        }) 
+        res.send({
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.delete = async (req, res) => {
+    try {
+        const deleted = await models.Sector.destroy({
+            where: {id: req.params.id} 
+        }) 
+        res.send({
+            deleted: deleted,
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        if (err.name == 'SequelizeForeignKeyConstraintError') {
+            res.status(400).send({ msg: 'O setor não pode ser excluído pois está sendo utilizado.'});
+        } else {
+            console.log(err);
+            res.status(500).send({ msg: 'Internal Error'});
+        }
     }
 }
 
@@ -54,7 +107,7 @@ exports.postDocuments = async (req, res) => {
         let documents = await models.Document.findAll({ where: { id: idsDocuments } });
         // associate setor to documents
         await sector.addDocuments(documents);
-        res.send({ msg: "associated" });
+        res.send({ msg: "Documentos associados." });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

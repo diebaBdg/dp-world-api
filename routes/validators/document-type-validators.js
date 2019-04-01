@@ -2,13 +2,7 @@ const { check, validationResult } = require('express-validator/check');
 const models = require('../../db/models');
 const Op = require('sequelize').Op;
 
-// specific validator of company routes
-
 exports.get = [
-    check('DocumentTypeId')
-        .optional()
-        .isInt()
-        .withMessage("Deve ser um número inteiro."),
     check('status')
         .optional()
         .isInt({ min: 0, max: 1 })
@@ -20,13 +14,13 @@ exports.post = [
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom(description => {
-            return models.Function.findOne({
+            return models.DocumentType.findOne({
                 where: {
                     description
                 }
-            }).then(func => {
-                if (func) {
-                    return Promise.reject('Já existe função com essa descrição.');
+            }).then(documentType => {
+                if (documentType) {
+                    return Promise.reject('Já existe um tipo de documento com essa descrição.');
                 }
             });
         })
@@ -35,21 +29,23 @@ exports.post = [
 exports.put = [
     check('id')
         .isInt()
-        .withMessage("Deve ser um inteiro."),
+        .withMessage("Deve ser um número inteiro."),
     check('description')
         .optional()
         .isLength({ min: 3, max: 200 })
         .withMessage("Deve ter entre 3 e 200 caracteres.")
         .custom((description, options) => {
             const id = options.req.params.id;
-            return models.Function.findOne({
+            return models.DocumentType.findOne({
                 where: {
                     description,
-                    id: { [Op.ne]: id }
+                    id: {
+                        [Op.ne]: id
+                    }
                 }
-            }).then(func => {
-                if (func) {
-                    return Promise.reject('Já existe função com essa descrição.');
+            }).then(documentType => {
+                if (documentType) {
+                    return Promise.reject('Descrição já existe.');
                 }
             });
         }),
@@ -62,15 +58,15 @@ exports.put = [
 exports.delete = [
     check('id')
         .isInt()
-        .withMessage("Deve ser um inteiro.")
+        .withMessage("Deve ser um número inteiro.")
         .custom((id) => {
-            return models.Function.findOne({
+            return models.DocumentType.findOne({
                 where: {
                     id: id
                 }
-            }).then(func => {
-                if (!func) {
-                    return Promise.reject('Função já excluída.');
+            }).then(documentType => {
+                if (!documentType) {
+                    return Promise.reject('Tipo de documento já excluído.');
                 }
             });
         })

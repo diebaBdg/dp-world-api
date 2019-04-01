@@ -3,7 +3,12 @@ const models = require('../db/models');
 exports.get = async (req, res) => {
     try {
         res.send({
-            data: await models.CompanyType.findAll({ where: { status: 1 } })
+            data: await models.CompanyType.findAll({
+                where: req.query,
+                order: [
+                    ['id', 'DESC']
+                ]
+            })
         });
     } catch (err) {
         console.log(err);
@@ -15,15 +20,12 @@ exports.post = async (req, res) => {
     try {
         // get request body
         let campanyType = req.body;
-        // get documents and verify if exists document with the same name
-        const campanyTypes = await models.CompanyType.findAll({ where: { description: campanyType.description } });
-        if (!campanyTypes.length) {
-            // set status active and creating document
-            campanyType.status = 1;
-            res.status(201).send({ id: (await models.CompanyType.create(campanyType)).id });
-        } else {
-            res.status(400).send({ msg: "Item already exists." });
-        }
+        // set status active and create document
+        campanyType.status = 1;
+        res.status(201).send({ 
+            id: (await models.CompanyType.create(campanyType)).id,
+            msg: "Cadastrado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
@@ -32,21 +34,41 @@ exports.post = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const id = req.params.id;
-        const deleted = await models.CompanyType.update({
-            status: 0
-        }, {
+        const deleted = await models.CompanyType.destroy({
             where: {
-                id: id
+                id: req.params.id
             }
         })
-        res.send({ id: deleted });
+        res.send({
+            deleted: deleted,
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        if (err.name == 'SequelizeForeignKeyConstraintError') {
+            res.status(400).send({ msg: 'O tipo de empresa não pode ser excluído pois está sendo utilizado.'});
+        } else {
+            console.log(err);
+            res.status(500).send({ msg: 'Internal Error'});
+        }
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const updated = await models.CompanyType.update(req.body, {
+            where: {
+                id: req.params.id
+            }
+        })
+        res.send({
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
     }
 }
-
 
 exports.getDocuments = async (req, res) => {
     try {
@@ -111,11 +133,11 @@ exports.updateDocuments = async (req, res) => {
         const updated = await models.DocumentToCompanyType.update({
             defaultValidity: req.body.defaultValidity
         }, {
-            where: {
-                CompanyTypeId: req.params.id,
-                DocumentId: req.params.DocumentId
-            }
-        });
+                where: {
+                    CompanyTypeId: req.params.id,
+                    DocumentId: req.params.DocumentId
+                }
+            });
         res.status(200).send({ updated: updated[0] });
     } catch (err) {
         console.log(err);

@@ -13,6 +13,8 @@ router.use(auth.authenticate());
  * @apiName GetSectors
  * @apiGroup Sectors
  *
+ * @apiParam (Query params) {String} status Sector status.
+ * 
  * @apiSuccess {Array} data List of sectors
  * 
  * @apiSuccessExample {json} Success (example)
@@ -43,7 +45,66 @@ router.use(auth.authenticate());
  *       ]
  *    }
  */
-router.get('/', controller.get);
+router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
+
+/**
+ * @api {post} /sectors Create a new sector
+ * @apiName PostSectors
+ * @apiGroup Sectors
+ *
+ * @apiParam (Request body) {String} name Sector name.
+ * 
+ * @apiSuccess {Int} id Sector id
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "id": 1,
+ *       "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
+
+/**
+ * @api {put} /sectors/:id Update a sector
+ * @apiName PutSectors
+ * @apiGroup Sectors
+ *
+ * @apiParam (Query params) {Int} id The sector id.
+ * @apiParam (Request body) {String} name Sector name.
+ * @apiParam (Request body) {Int} status Sector status.
+ * 
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "updated": 1,
+ *       "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
+/**
+ * @api {delete} /sectors/:id Delete a sector
+ * @apiName DeleteSectors
+ * @apiGroup Sectors
+ *
+ * @apiParam (Query params) {Int} id The sector id.
+ * 
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "deleted": 1,
+ *       "msg": "Excluído com sucesso."
+ *    }
+ */
+router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
 
 /**
  * @api {get} /sectors/:id/documents List of company sector documents
