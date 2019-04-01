@@ -20,7 +20,8 @@ const validators = require('./validators/company-type-validators');
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "data": [
+ *       "count": 2,
+ *       "rows": [
  *          {
  *               "id": 1,
  *               "description": "Estrangeiro",

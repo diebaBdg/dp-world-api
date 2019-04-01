@@ -28,9 +28,9 @@ exports.get = async (req, res) => {
             limit: limit,
             offset: offset
         });
-        res.send({
-            data: data
-        });
+        res.send(
+            data
+        );
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
