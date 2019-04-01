@@ -10,7 +10,7 @@ var auth = require("./config/auth")();
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: ['http://localhost','http://localhost:3000'],
+  origin: ['http://200.98.200.133','http://200.98.200.133:3000'],
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }
