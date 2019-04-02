@@ -10,14 +10,21 @@ const validators = require('./validators/company-validators');
  * @apiName GetCompanies
  * @apiGroup Companies
  * 
- * @apiParam (Query params) {String} cnpj CNPJ of the company.
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
+ * @apiParam (Query params) {String} cnpj Filter by cnpj.
+ * @apiParam (Query params) {String} socialName  Filter by social name.
  *
- * @apiSuccess {Array} data List of companies
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Array} rows List of companies.
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
- *           "data": [
+ *           "count": 1
+ *           "rows": [
  *               {
  *                  "id": 37,
  *                  "cnpj": "32325649000999",
@@ -47,11 +54,6 @@ const validators = require('./validators/company-validators');
  *                  "CompanyType": {
  *                      "id": 1,
  *                      "description": "Estrangeiro"
- *                  },
- *                  "Users": [{
- *                      "id": 28,
- *                      "name": "Jonathan",
- *                      "email": "velosojonathan5@gmail.com"
  *                  }]
  *              }
  *           ]
@@ -66,8 +68,6 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * 
  * @apiParam (Request body) {String} cnpj Brazilian document number.
  * @apiParam (Request body) {String} socialName Social name.
- * @apiParam (Request body) {String} contactEmail Contact email.
- * @apiParam (Request body) {String} contactName Contact name.
  * @apiParam (Request body) {String} businessName List Business name.
  * @apiParam (Request body) {String} address The local of the company.
  * @apiParam (Request body) {String} number The street number.

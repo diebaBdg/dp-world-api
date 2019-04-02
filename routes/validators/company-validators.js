@@ -24,19 +24,19 @@ let defaultCompany = [
                 }
             });
         }),
-    check('contactEmail')
-        .isEmail()
-        .withMessage("Deve ser um email.")
-        .custom((email) => {
-            return models.User.findOne({ where: { email: email } }).then(user => {
-                if (user) {
-                    return Promise.reject('Email de contato já em uso.');
-                }
-            });
-        }),
-    check('contactName')
-        .isLength({ min: 3, max: 200 })
-        .withMessage("Deve ter entre 3 e 200 caracteres."),
+    // check('contactEmail')
+    //     .isEmail()
+    //     .withMessage("Deve ser um email.")
+    //     .custom((email) => {
+    //         return models.User.findOne({ where: { email: email } }).then(user => {
+    //             if (user) {
+    //                 return Promise.reject('Email de contato já em uso.');
+    //             }
+    //         });
+    //     }),
+    // check('contactName')
+    //     .isLength({ min: 3, max: 200 })
+    //     .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('businessName')
         .optional({ nullable: true })
         .isLength({ min: 3, max: 200 }).withMessage("Deve ter entre 3 e 200 caracteres.")
@@ -99,7 +99,23 @@ exports.get = [
         .optional({ nullable: true })
         .isNumeric()
         .isLength({ min: 14, max: 14 })
-        .withMessage("Deve ter 14 caracteres numéricos.")
+        .withMessage("Deve ter 14 caracteres numéricos."),
+    check('socialName')
+        .optional({ nullable: true })
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres."),
+    check('page')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Deve ser um inteiro maior ou igual a 1."),
+    check('order_by')
+        .optional()
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres."),
+    check('order_direction')
+        .optional()
+        .isIn(['ASC', 'DESC'])
+        .withMessage("Deve ser ASC ou DESC.")
 ];
 
 exports.post = defaultCompany;
