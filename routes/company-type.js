@@ -10,6 +10,9 @@ const validators = require('./validators/company-type-validators');
  * @apiName GetCompanyTypes
  * @apiGroup CompanyTypes
  *
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or Desc).
  * @apiParam (Query params) {String} status Filter by status.
  * 
  * @apiSuccess {Array} data List of company types
@@ -17,7 +20,8 @@ const validators = require('./validators/company-type-validators');
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "data": [
+ *       "count": 2,
+ *       "rows": [
  *          {
  *               "id": 1,
  *               "description": "Estrangeiro",
