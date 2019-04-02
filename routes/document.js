@@ -13,16 +13,21 @@ router.use(auth.authenticate());
  * @apiName GetDocuments
  * @apiGroup Documents
  * 
- * @apiParam (Query params) {String} DocumentTypeId Filter by document type.
- * @apiParam (Query params) {String} FunctionId Filter by collaborator function.
- * @apiParam (Query params) {String} status Filter by status.
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
+ * @apiParam (Query params) {Int} DocumentTypeId Filter by document type.
+ * @apiParam (Query params) {Int} FunctionId Filter by collaborator function.
  *
- * @apiSuccess {Array} data List of documents
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Array} rows List of Documents
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "data": [
+ *       "count": 2,
+ *       "rows": [
  *          {
  *              "id": 3,
  *              "description": "Documento Teste",

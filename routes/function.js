@@ -20,7 +20,7 @@ router.use(auth.authenticate());
  * @apiParam (Query params) {Int} DocumentTypeId Filter by document type id.
  *
  * @apiSuccess {Int} count Number of total items.
- * @apiSuccess {Array} rows List of Document Types
+ * @apiSuccess {Array} rows List of Functions
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
