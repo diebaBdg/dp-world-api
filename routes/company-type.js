@@ -12,7 +12,7 @@ const validators = require('./validators/company-type-validators');
  *
  * @apiParam (Query params) {Int} page The page.
  * @apiParam (Query params) {String} order_by A column to order.
- * @apiParam (Query params) {String} order_direction The order direction (ASC or Desc).
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
  * @apiParam (Query params) {Int} status Filter by status.
  * 
  * @apiSuccess {Int} count Number of total items.
