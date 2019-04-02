@@ -29,7 +29,7 @@ exports.get = async (req, res) => {
                 where: {
                     DocumentTypeId: req.query.DocumentTypeId
                 }
-            })
+            });
         }
         // get objects
         const data = await models.Function.findAndCountAll({
