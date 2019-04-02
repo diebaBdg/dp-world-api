@@ -2,14 +2,33 @@ const models = require('../db/models');
 
 exports.get = async (req, res) => {
     try {
-        res.send({
-            data: await models.DocumentType.findAll({
-                where: req.query,
-                order: [
-                    ['id', 'DESC']
-                ]
-            })
-        });
+        // pagination definition
+        const limit = 10;
+        let offset = undefined;
+        if (req.query.page) {
+            offset = limit * (req.query.page - 1);
+        }
+        // order definiton
+        let order = [];
+        if (req.query.order_by) {
+            order.push([
+                req.query.order_by,
+                req.query.order_direction ? req.query.order_direction : 'ASC'
+            ]);
+        }
+        // filter definition
+        let filter = {};
+        if (req.query.status !== undefined) {
+            filter.status = req.query.status
+        }
+        // get objects
+        const data = await models.DocumentType.findAndCountAll({
+            where: filter,
+            order,
+            limit,
+            offset
+        })
+        res.send(data);
     } catch (err) {
         res.status(500).send({ msg: 'Internal Error' })
     }
