@@ -4,9 +4,30 @@ const Op = require('sequelize').Op;
 
 // specific validator of company routes
 exports.get = [
-    check('DocumentTypeId').optional().isInt().withMessage("Deve ser um número inteiro."),
-    check('FunctionId').optional().isInt().withMessage("Deve ser um número inteiro."),
-    check('status').optional().isInt().withMessage("Deve ser um número inteiro.")
+    check('DocumentTypeId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro."),
+    check('FunctionId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro."),
+    check('status')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro."),
+    check('page')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Deve ser um inteiro maior ou igual a 1."),
+    check('order_by')
+        .optional()
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres."),
+    check('order_direction')
+        .optional()
+        .isIn(['ASC', 'DESC'])
+        .withMessage("Deve ser ASC ou DESC.")
 ];
 
 exports.post = [

@@ -2,20 +2,44 @@ const models = require('../db/models');
 
 exports.get = async (req, res) => {
     try {
-        // execute query and send data
-        res.send({
-            data: await models.Document.findAll({
-                where: req.query,
-                include: [{
-                    model: models.Function
-                },{
-                    model: models.DocumentType
-                }],
-                order: [
-                    ['id', 'DESC']
-                ]
-            })
-        });
+        // pagination definition
+        const limit = 10;
+        let offset = undefined;
+        if (req.query.page) {
+            offset = limit * (req.query.page - 1);
+        }
+        // order definiton
+        let order = [];
+        if (req.query.order_by) {
+            order.push([
+                req.query.order_by,
+                req.query.order_direction ? req.query.order_direction : 'ASC'
+            ]);
+        }
+        // filter definition
+        let filter = {};
+        if (req.query.status !== undefined) {
+            filter.status = req.query.status
+        }
+        if (req.query.DocumentTypeId !== undefined) {
+            filter.DocumentTypeId = req.query.DocumentTypeId
+        }
+        if (req.query.FunctionId !== undefined) {
+            filter.FunctionId = req.query.FunctionId
+        }
+        // get objects
+        const data = await models.Document.findAndCountAll({
+            where: filter,
+            include: [{
+                model: models.Function
+            }, {
+                model: models.DocumentType
+            }],
+            order,
+            limit,
+            offset
+        })
+        res.send(data);
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

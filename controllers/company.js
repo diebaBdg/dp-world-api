@@ -5,18 +5,18 @@ const emailHelper = require('../helpers/email-helper');
 exports.get = async (req, res) => {
     try {
         res.send({
-            data: await models.Company.findAll({ 
+            data: await models.Company.findAll({
                 where: req.query,
                 include: [{
                     model: models.CompanyStatus,
-                    attributes: ['id','description']
-                },{
+                    attributes: ['id', 'description']
+                }, {
                     model: models.CompanyType,
-                    attributes: ['id','description']
-                },{
+                    attributes: ['id', 'description']
+                }, {
                     model: models.User,
-                    attributes: ['id','name', 'email'],
-                    where: {UserStatusId: 1}
+                    attributes: ['id', 'name', 'email'],
+                    where: { UserStatusId: 1 }
                 }]
             })
         });
@@ -46,7 +46,7 @@ exports.post = async (req, res) => {
         emailHelper.sendMail(mailOptions, async (error, info) => {
             if (error) {
                 console.log(error)
-                res.status(500).send({ msg: "Internal Error", error});
+                res.status(500).send({ msg: "Internal Error", error });
                 return;
             }
             // set status and create company
