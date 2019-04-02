@@ -13,8 +13,8 @@ exports.get = async (req, res) => {
         if (req.query.order_by) {
             order.push([
                 req.query.order_by,
-                req.query.order_direction ? req.query.order_direction : 'ASC']
-            )
+                req.query.order_direction ? req.query.order_direction : 'ASC'
+            ]);
         }
         // filter definition
         let filter = {};
@@ -28,9 +28,7 @@ exports.get = async (req, res) => {
             limit: limit,
             offset: offset
         });
-        res.send(
-            data
-        );
+        res.send(data);
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });

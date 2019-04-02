@@ -12,10 +12,11 @@ const validators = require('./validators/company-type-validators');
  *
  * @apiParam (Query params) {Int} page The page.
  * @apiParam (Query params) {String} order_by A column to order.
- * @apiParam (Query params) {String} order_direction The order direction (ASC or Desc).
- * @apiParam (Query params) {String} status Filter by status.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
  * 
- * @apiSuccess {Array} data List of company types
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Array} rows List of company types.
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
@@ -48,8 +49,8 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  *
  * @apiParam (Request body) {String} description The company type description.
  * 
- * @apiSuccess {Int} id Id of the company type inserted
- * @apiSuccess {String} msg Success message
+ * @apiSuccess {Int} id Id of the company type inserted.
+ * @apiSuccess {String} msg Success message.
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
@@ -67,7 +68,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  *
  * @apiParam (Params) {Int} id The company type id.
  * 
- * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not.
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
@@ -87,8 +88,8 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
  * @apiParam (Request body) {String} description Company type description.
  * @apiParam (Request body) {String} status Company type status.
  * 
- * @apiSuccess {Int} updated 1 if was updated or 0 if is not
- * @apiSuccess {String} msg Success message
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not.
+ * @apiSuccess {String} msg Success message.
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 200 OK
@@ -108,7 +109,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  * @apiParam (Query params) {String} DocumentTypeId Filter by document type.
  * @apiParam (Query params) {String} FunctionId Filter by collaborator function.
  *
- * @apiSuccess {Array} data List of documents
+ * @apiSuccess {Array} data List of documents.
  * 
  */
 router.get('/:id/documents', validators.getDocuments, expressValidator.findsValidatorErros(), controller.getDocuments);
@@ -150,7 +151,7 @@ router.post('/:id/documents', validators.postDocuments, expressValidator.findsVa
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Params) {Int} DocumentId The document id.
  *
- * @apiSuccess {Int} deleted 1 if the relation was deleted or 0 if is not
+ * @apiSuccess {Int} deleted 1 if the relation was deleted or 0 if is not.
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
@@ -169,7 +170,7 @@ router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressV
  * @apiParam (Params) {Int} DocumentId The document id.
  * @apiParam (Request body) {String} defaultValidity The new default validity.
  *
- * @apiSuccess {Int} updated 1 if the relation was updated or 0 if is not
+ * @apiSuccess {Int} updated 1 if the relation was updated or 0 if is not.
  * 
  * @apiSuccessExample {json} Success (example):
  *    HTTP/1.1 201 OK
