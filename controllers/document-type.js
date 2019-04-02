@@ -1,33 +1,23 @@
 const models = require('../db/models');
+const Paginator = require('../helpers/paginator-helper');
+const orderHerper = require('../helpers/order-helper');
 
 exports.get = async (req, res) => {
     try {
-        // pagination definition
-        const limit = 10;
-        let offset = undefined;
-        if (req.query.page) {
-            offset = limit * (req.query.page - 1);
-        }
-        // order definiton
-        let order = [];
-        if (req.query.order_by) {
-            order.push([
-                req.query.order_by,
-                req.query.order_direction ? req.query.order_direction : 'ASC'
-            ]);
-        }
+        const paginator = new Paginator(req.query.page);
         // filter definition
         let filter = {};
         if (req.query.status !== undefined) {
             filter.status = req.query.status
         }
         // get objects
-        const data = await models.DocumentType.findAndCountAll({
+        let data = await models.DocumentType.findAndCountAll({
             where: filter,
-            order,
-            limit,
-            offset
+            order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
+            limit: paginator.limit,
+            offset: paginator.offset
         })
+        data.pages = paginator.pagesNumber(data.count);
         res.send(data);
     } catch (err) {
         res.status(500).send({ msg: 'Internal Error' })

@@ -16,12 +16,14 @@ const validators = require('./validators/company-type-validators');
  * @apiParam (Query params) {Int} status Filter by status.
  * 
  * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
  * @apiSuccess {Array} rows List of company types.
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
  *       "count": 2,
+ *       "pages": 1,
  *       "rows": [
  *          {
  *               "id": 1,
