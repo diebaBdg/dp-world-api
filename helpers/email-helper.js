@@ -1,6 +1,7 @@
+'use strict';
 const nodemailer = require("nodemailer");
-exports.sendMail = (mailOptions, callback) => {
 
+exports.sendMail = (mailOptions, callback) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

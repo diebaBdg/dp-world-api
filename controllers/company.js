@@ -1,24 +1,13 @@
 const models = require('../db/models');
 const Op = require('sequelize').Op;
-const md5 = require('md5');
-const emailHelper = require('../helpers/email-helper');
+const Paginator = require('../helpers/paginator-helper');
+const orderHerper = require('../helpers/order-helper');
+// const md5 = require('md5');
+// const emailHelper = require('../helpers/email-helper');
 
 exports.get = async (req, res) => {
     try {
-        // pagination definition
-        const limit = 10;
-        let offset = undefined;
-        if (req.query.page) {
-            offset = limit * (req.query.page - 1);
-        }
-        // order definiton
-        let order = [];
-        if (req.query.order_by) {
-            order.push([
-                req.query.order_by,
-                req.query.order_direction ? req.query.order_direction : 'ASC'
-            ]);
-        }
+        const paginator = new Paginator(req.query.page);
         // filter definition
         let filter = {};
         if (req.query.status !== undefined) {
@@ -33,7 +22,7 @@ exports.get = async (req, res) => {
             }
         }
         // get objects
-        const data = await models.Company.findAndCountAll({
+        let data = await models.Company.findAndCountAll({
             where: filter,
             include: [{
                 model: models.CompanyStatus,
@@ -42,10 +31,11 @@ exports.get = async (req, res) => {
                 model: models.CompanyType,
                 attributes: ['id', 'description']
             }],
-            order,
-            limit,
-            offset
-        })
+            order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
+            limit: paginator.limit,
+            offset: paginator.offset
+        });
+        data.pages = paginator.pagesNumber(data.count);
         res.send(data);
     } catch (err) {
         console.log(err);
@@ -75,23 +65,23 @@ exports.post = async (req, res) => {
         // };
         // sending email
         // emailHelper.sendMail(mailOptions, async (error, info) => {
-            // if (error) {
-            //     console.log(error)
-            //     res.status(500).send({ msg: "Internal Error", error });
-            //     return;
-            // }
-            // set status and create company
-            
-            // create User to a created company
-            // const passwordMd5 = md5(password);
-            // await models.User.create({
-            //     password: passwordMd5,
-            //     email: company.contactEmail,
-            //     name: company.contactName + password,
-            //     UserTypeId: 2,
-            //     UserStatusId: 1,
-            //     CompanyId: companyCreated.id
-            // });
+        // if (error) {
+        //     console.log(error)
+        //     res.status(500).send({ msg: "Internal Error", error });
+        //     return;
+        // }
+        // set status and create company
+
+        // create User to a created company
+        // const passwordMd5 = md5(password);
+        // await models.User.create({
+        //     password: passwordMd5,
+        //     email: company.contactEmail,
+        //     name: company.contactName + password,
+        //     UserTypeId: 2,
+        //     UserStatusId: 1,
+        //     CompanyId: companyCreated.id
+        // });
         // });
     } catch (err) {
         console.log(err);

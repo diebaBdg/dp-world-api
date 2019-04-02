@@ -18,12 +18,14 @@ const validators = require('./validators/company-validators');
  * @apiParam (Query params) {String} socialName  Filter by social name.
  *
  * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
  * @apiSuccess {Array} rows List of companies.
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
- *           "count": 1
+ *           "count": 1,
+ *           "pages": 1,
  *           "rows": [
  *               {
  *                  "id": 37,

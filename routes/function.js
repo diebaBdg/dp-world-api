@@ -20,12 +20,14 @@ router.use(auth.authenticate());
  * @apiParam (Query params) {Int} DocumentTypeId Filter by document type id.
  *
  * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
  * @apiSuccess {Array} rows List of Functions
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
  *       "count": 2,
+ *       "pages": 1,
  *       "rows": [
  *          {
  *              "id": 9,

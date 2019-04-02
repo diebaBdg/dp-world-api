@@ -21,12 +21,14 @@ router.use(auth.authenticate());
  * @apiParam (Query params) {Int} FunctionId Filter by collaborator function.
  *
  * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
  * @apiSuccess {Array} rows List of Documents
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
  *       "count": 2,
+ *       "pages": 1,
  *       "rows": [
  *          {
  *              "id": 3,
