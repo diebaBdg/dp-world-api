@@ -9,7 +9,7 @@ const auth = require("../config/auth")();
 router.use(auth.authenticate());
 
 /**
- * @api {get} /menu List of company sectors
+ * @api {get} /menu List of menu items
  * @apiName GetMenu
  * @apiGroup Menu
  *
