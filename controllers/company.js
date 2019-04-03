@@ -105,3 +105,41 @@ exports.put = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error', err })
     }
 }
+
+exports.getContacts = async (req, res) => {
+    try {
+        const data = await models.User.findAndCountAll({
+            attributes: ['id','name','email','phone','phone2'],
+            where: {
+                CompanyId: req.params.id
+            },
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.send(data);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err })
+    }
+}
+
+exports.postContacts = async (req, res) => {
+    try {
+        // create User to a created company
+        const user = await models.User.create({
+            email: req.body.email,
+            name: req.body.name,
+            UserTypeId: 2,
+            CompanyId: req.params.id,
+            UserStatusId: 1
+        });
+        res.status(201).send({
+            id: user.id,
+            msg: "Cadastrado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err })
+    }
+}

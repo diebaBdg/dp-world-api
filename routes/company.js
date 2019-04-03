@@ -86,7 +86,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiParam (Request body) {Int}    CompanyId If is outsourced, the id of the company contractor.
  * 
  * 
- * @apiSuccess {Json} company Companie inserted
+ * @apiSuccess {Int} id Companie inserted
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
@@ -108,11 +108,48 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiSuccess {Int} updated 1 if the item was updated or 0 if is not
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 201 OK
+ *    HTTP/1.1 200 OK
  *    {
  *        "updated": 1
  *    }
  */
 router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
+/**
+ * @api {get} /companies/:id/contacts List of company contacts
+ * @apiName GetCompaniesContact
+ * @apiGroup Companies-Contact
+ * 
+ * @apiParam (Request body) {Int} id The company id.
+ * 
+ * @apiSuccess {Array} rows List of contacts
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "rows": []
+ *    }
+ */
+router.get('/:id/contacts', validators.getContacts, expressValidator.findsValidatorErros(), controller.getContacts);
+
+/**
+ * @api {post} /companies/:id/contacts Create a new contact
+ * @apiName PostCompaniesContact
+ * @apiGroup Companies-Contact
+ * 
+ * @apiParam (Request body) {Int} id The company id.
+ * @apiParam (Request body) {String} name The contact email.
+ * @apiParam (Request body) {String} email The contact password.
+ * 
+ * @apiSuccess {Int} id Contact inserted
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 1,
+ *        "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.post('/:id/contacts', validators.postContacts, expressValidator.findsValidatorErros(), controller.postContacts);
 
 module.exports = router;
