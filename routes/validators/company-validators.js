@@ -5,8 +5,9 @@ const models = require('../../db/models');
 let defaultCompany = [
     check('cnpj')
         .isNumeric()
+        .withMessage("Deve ser um numérico de 14 caracteres.")
         .isLength({ min: 14, max: 14 })
-        .withMessage("Deve ter 14 caracteres numéricos.")
+        .withMessage("Deve ser um numérico de 14 caracteres.")
         .custom((cnpj) => {
             return models.Company.findOne({ where: { cnpj: cnpj } }).then(company => {
                 if (company) {

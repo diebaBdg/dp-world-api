@@ -48,7 +48,6 @@ exports.post = async (req, res) => {
         // get request body
         let company = req.body;
         company.CompanyStatusId = 1;
-        console.log(company.objectOfContract)
         const companyCreated = await models.Company.create(company);
         res.status(201).send({
             id: companyCreated.id

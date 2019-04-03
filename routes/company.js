@@ -122,12 +122,26 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  * 
  * @apiParam (Request body) {Int} id The company id.
  * 
+ * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Array} rows List of contacts
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *    {
- *        "rows": []
+ *        "count": 2,
+ *        "rows": [{
+ *               "id": 31,
+ *               "name": "José da Silva",
+ *               "email": "velosojonathan7@gmail.com",
+ *               "phone": null,
+ *               "phone2": null
+ *         }, {
+ *               "id": 30,
+ *               "name": "José da Silva",
+ *               "email": "velosojonathan6@gmail.com",
+ *               "phone": null,
+ *               "phone2": null
+ *         }]
  *    }
  */
 router.get('/:id/contacts', validators.getContacts, expressValidator.findsValidatorErros(), controller.getContacts);
