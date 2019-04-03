@@ -78,7 +78,10 @@ let defaultCompany = [
         .withMessage("Deve ser numérico"),
     check('CompanyId')
         .optional({ nullable: true })
-        .isNumeric()
+        .isNumeric(),
+    check('objectOfContract')
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres.")
 ];
 
 exports.get = [
