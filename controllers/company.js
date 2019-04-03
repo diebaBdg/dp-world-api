@@ -2,8 +2,8 @@ const models = require('../db/models');
 const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
-// const md5 = require('md5');
-// const emailHelper = require('../helpers/email-helper');
+const md5 = require('md5');
+const emailHelper = require('../helpers/email-helper');
 
 exports.get = async (req, res) => {
     try {
@@ -52,51 +52,44 @@ exports.post = async (req, res) => {
         res.status(201).send({
             id: companyCreated.id
         });
-        // const password = Math.random().toString(36).slice(-8);
-        // let mailOptions = {
-        //     from: '"noreply dp-world" noreply@speedsoftware.com.br',
-        //     to: company.contactEmail,
-        //     subject: "Cadastro",
-        //     html: ` <p><b>Cadastro na dp-world</b></p>
-        //             <p>Seus dados foram enviados para a avaliação de cadastro. Após confirmados, você receberá um email para realizar o envio dos documentos.</p>
-        //             <p>Dados para login</p>
-        //             <br><p>Usuário: ${company.contactEmail}</p>
-        //             <p>Senha: ${password}</p>`
-        // };
-        // sending email
-        // emailHelper.sendMail(mailOptions, async (error, info) => {
-        // if (error) {
-        //     console.log(error)
-        //     res.status(500).send({ msg: "Internal Error", error });
-        //     return;
-        // }
-        // set status and create company
-
-        // create User to a created company
-        // const passwordMd5 = md5(password);
-        // await models.User.create({
-        //     password: passwordMd5,
-        //     email: company.contactEmail,
-        //     name: company.contactName + password,
-        //     UserTypeId: 2,
-        //     UserStatusId: 1,
-        //     CompanyId: companyCreated.id
-        // });
-        // });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error', err })
     }
 }
 
-exports.put = async (req, res) => {
+exports.patch = async (req, res) => {
     try {
+        const companyStatusId = req.body.CompanyStatusId;
+        const companyId = req.params.id;
+        // case status is 2, create a password to all contacts and send email
+        if (companyStatusId == 2) {
+            const company = await models.Company.findOne({ where: { id: companyId } });
+            let contacts = await company.getUsers();
+            for (contact of contacts) {
+                const randomPassword = Math.random().toString(36).slice(-8);
+                // send email with new password
+                let mailOptions = {
+                    from: '"noreply dp-world" noreply@speedsoftware.com.br',
+                    to: contact.email,
+                    subject: "Cadastro",
+                    html: ` <p><b>Cadastro na dp-world</b></p>
+                            <p>${contact.name}, seus dados foram aprovados e você pode realizar login com os dados abaixo.</p>
+                            <br><p>Usuário: ${contact.email}</p>
+                            <p>Senha: ${randomPassword}</p>`
+                };
+                await emailHelper.sendMail(mailOptions);
+                // update the user data
+                contact.password = md5(randomPassword);
+                await contact.save();
+            }
+        }
         const updated = await models.Company.update({
             SectorId: req.body.SectorId,
-            CompanyStatusId: req.body.CompanyStatusId
+            CompanyStatusId: companyStatusId
         }, {
                 where: {
-                    id: req.params.id
+                    id: companyId
                 }
             });
         res.status(200).send({ updated: updated[0] });
@@ -109,7 +102,7 @@ exports.put = async (req, res) => {
 exports.getContacts = async (req, res) => {
     try {
         const data = await models.User.findAndCountAll({
-            attributes: ['id','name','email','phone','phone2'],
+            attributes: ['id', 'name', 'email', 'phone', 'phone2'],
             where: {
                 CompanyId: req.params.id
             },
@@ -126,6 +119,15 @@ exports.getContacts = async (req, res) => {
 
 exports.postContacts = async (req, res) => {
     try {
+        // send email with new password
+        let mailOptions = {
+            from: '"noreply dp-world" noreply@speedsoftware.com.br',
+            to: req.body.email,
+            subject: "Cadastro",
+            html: ` <p><b>Cadastro na dp-world</b></p>
+                    <p>${req.body.name}, seus dados foram enviados para a avaliação de cadastro. Após confirmados, você receberá um email para realizar o envio dos documentos.</p>`
+        };
+        await emailHelper.sendMail(mailOptions);
         // create User to a created company
         const user = await models.User.create({
             email: req.body.email,
