@@ -24,19 +24,6 @@ let defaultCompany = [
                 }
             });
         }),
-    // check('contactEmail')
-    //     .isEmail()
-    //     .withMessage("Deve ser um email.")
-    //     .custom((email) => {
-    //         return models.User.findOne({ where: { email: email } }).then(user => {
-    //             if (user) {
-    //                 return Promise.reject('Email de contato já em uso.');
-    //             }
-    //         });
-    //     }),
-    // check('contactName')
-    //     .isLength({ min: 3, max: 200 })
-    //     .withMessage("Deve ter entre 3 e 200 caracteres."),
     check('businessName')
         .optional({ nullable: true })
         .isLength({ min: 3, max: 200 }).withMessage("Deve ter entre 3 e 200 caracteres.")
@@ -91,7 +78,10 @@ let defaultCompany = [
         .withMessage("Deve ser numérico"),
     check('CompanyId')
         .optional({ nullable: true })
-        .isNumeric()
+        .isNumeric(),
+    check('objectOfContract')
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres.")
 ];
 
 exports.get = [
@@ -130,4 +120,29 @@ exports.put = [
     check('CompanyStatusId')
         .isNumeric()
         .withMessage("Deve ser numérico")
+];
+
+exports.getContacts = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+]
+
+exports.postContacts = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('email')
+        .isEmail()
+        .withMessage("Deve ser um email válido")
+        .custom((email) => {
+            return models.User.findOne({ where: { email: email } }).then(user => {
+                if (user) {
+                    return Promise.reject('Email já em uso.');
+                }
+            });
+        }),
+    check('name')
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Deve ter entre 3 e 50 caracteres."),
 ];

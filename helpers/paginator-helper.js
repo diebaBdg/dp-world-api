@@ -1,7 +1,6 @@
 'use strict';
-// Alimit of rows in a page
+// A limit of rows in a page
 const LIMIT = 10;
-
 class PaginatorHelper{
     constructor(page){
         this._page = page;
