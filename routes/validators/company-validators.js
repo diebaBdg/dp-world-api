@@ -111,7 +111,7 @@ exports.get = [
 
 exports.post = defaultCompany;
 
-exports.put = [
+exports.patch = [
     check('id')
         .isNumeric()
         .withMessage("Deve ser numérico"),
@@ -121,6 +121,14 @@ exports.put = [
     check('CompanyStatusId')
         .isNumeric()
         .withMessage("Deve ser numérico")
+        .custom((CompanyStatusId, options) => {
+            const id = options.req.params.id;
+            return models.Company.findOne({ where: { id } }).then(company => {
+                if ((company.CompanyStatusId != CompanyStatusId + 1) && (company.CompanyStatusId != CompanyStatusId - 1)) {
+                    return Promise.reject('O status deve avançar ou regredir um valor.');
+                }
+            });
+        })
 ];
 
 exports.getContacts = [

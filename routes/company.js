@@ -97,8 +97,8 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
- * @api {put} /companies/:id Update a company
- * @apiName PutCompanies
+ * @api {patch} /companies/:id Update a company status
+ * @apiName PatchCompanies
  * @apiGroup Companies
  * 
  * @apiParam (Params) {Int} id The company id.
@@ -113,7 +113,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  *        "updated": 1
  *    }
  */
-router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), controller.patch);
 
 /**
  * @api {get} /companies/:id/contacts List of company contacts
