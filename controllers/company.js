@@ -62,7 +62,7 @@ exports.patch = async (req, res) => {
         const company = await models.Company.findOne({ where: { id: req.params.id } });
 
         if (companyStatusId == 2) {
-            let contacts = await company.getUsers();
+            const contacts = await company.getUsers();
             for (contact of contacts) {
                 await contact.enableAndSendEmail();
             }
