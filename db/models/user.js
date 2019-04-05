@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Company);
   };
 
+  // Instance Methods
   User.prototype.enableAndSendEmail = async function (password) {
     password = password ? password : Math.random().toString(36).slice(-8);
     let mailOptions = {

@@ -102,8 +102,8 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  * @apiGroup Companies
  * 
  * @apiParam (Params) {Int} id The company id.
- * @apiParam (Request body) {Int} SectorId Company sector.
- * @apiParam (Request body) {Int} CompanyStatusId Company sector.
+ * @apiParam (Request body) {Int} SectorId Company sector id.
+ * @apiParam (Request body) {Int} CompanyStatusId Company status id.
  * 
  * @apiSuccess {Int} updated 1 if the item was updated or 0 if is not
  * 
