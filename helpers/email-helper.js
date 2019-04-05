@@ -9,6 +9,6 @@ exports.sendMail = (mailOptions, callback) => {
             pass: 'i8GnvK7hZBUm'
         }
     });
-    transporter.sendMail(mailOptions, callback);
+    return transporter.sendMail(mailOptions, callback);
 }
 
