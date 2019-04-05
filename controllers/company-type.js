@@ -1,15 +1,25 @@
 const models = require('../db/models');
+const Paginator = require('../helpers/paginator-helper');
+const orderHerper = require('../helpers/order-helper');
 
 exports.get = async (req, res) => {
     try {
-        res.send({
-            data: await models.CompanyType.findAll({
-                where: req.query,
-                order: [
-                    ['id', 'DESC']
-                ]
-            })
+        const paginator = new Paginator(req.query.page);
+        // filter definition
+        let filter = {};
+        if (req.query.status !== undefined) {
+            filter.status = req.query.status
+        }
+        // get objects
+        let data = await models.CompanyType.findAndCountAll({
+            where: filter,
+            order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
+            limit: paginator.limit,
+            offset: paginator.offset
         });
+        // get pages number
+        data.pages = paginator.pagesNumber(data.count);
+        res.send(data);
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
@@ -22,7 +32,7 @@ exports.post = async (req, res) => {
         let campanyType = req.body;
         // set status active and create document
         campanyType.status = 1;
-        res.status(201).send({ 
+        res.status(201).send({
             id: (await models.CompanyType.create(campanyType)).id,
             msg: "Cadastrado com sucesso."
         });
@@ -45,10 +55,10 @@ exports.delete = async (req, res) => {
         });
     } catch (err) {
         if (err.name == 'SequelizeForeignKeyConstraintError') {
-            res.status(400).send({ msg: 'O tipo de empresa não pode ser excluído pois está sendo utilizado.'});
+            res.status(400).send({ msg: 'O tipo de empresa não pode ser excluído pois está sendo utilizado.' });
         } else {
             console.log(err);
-            res.status(500).send({ msg: 'Internal Error'});
+            res.status(500).send({ msg: 'Internal Error' });
         }
     }
 }

@@ -10,14 +10,23 @@ const validators = require('./validators/company-validators');
  * @apiName GetCompanies
  * @apiGroup Companies
  * 
- * @apiParam (Query params) {String} cnpj CNPJ of the company.
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
+ * @apiParam (Query params) {String} cnpj Filter by cnpj.
+ * @apiParam (Query params) {String} socialName  Filter by social name.
  *
- * @apiSuccess {Array} data List of companies
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
+ * @apiSuccess {Array} rows List of companies.
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 200 OK
  *     {
- *           "data": [
+ *           "count": 1,
+ *           "pages": 1,
+ *           "rows": [
  *               {
  *                  "id": 37,
  *                  "cnpj": "32325649000999",
@@ -47,11 +56,6 @@ const validators = require('./validators/company-validators');
  *                  "CompanyType": {
  *                      "id": 1,
  *                      "description": "Estrangeiro"
- *                  },
- *                  "Users": [{
- *                      "id": 28,
- *                      "name": "Jonathan",
- *                      "email": "velosojonathan5@gmail.com"
  *                  }]
  *              }
  *           ]
@@ -66,8 +70,6 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * 
  * @apiParam (Request body) {String} cnpj Brazilian document number.
  * @apiParam (Request body) {String} socialName Social name.
- * @apiParam (Request body) {String} contactEmail Contact email.
- * @apiParam (Request body) {String} contactName Contact name.
  * @apiParam (Request body) {String} businessName List Business name.
  * @apiParam (Request body) {String} address The local of the company.
  * @apiParam (Request body) {String} number The street number.
@@ -84,7 +86,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * @apiParam (Request body) {Int}    CompanyId If is outsourced, the id of the company contractor.
  * 
  * 
- * @apiSuccess {Json} company Companie inserted
+ * @apiSuccess {Int} id Companie inserted
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
@@ -95,22 +97,73 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
- * @api {put} /companies/:id Update a company
- * @apiName PutCompanies
+ * @api {patch} /companies/:id Update a company status
+ * @apiName PatchCompanies
  * @apiGroup Companies
  * 
  * @apiParam (Params) {Int} id The company id.
- * @apiParam (Request body) {Int} SectorId Company sector.
- * @apiParam (Request body) {Int} CompanyStatusId Company sector.
+ * @apiParam (Request body) {Int} SectorId Company sector id.
+ * @apiParam (Request body) {Int} CompanyStatusId Company status id.
  * 
  * @apiSuccess {Int} updated 1 if the item was updated or 0 if is not
  * 
  * @apiSuccessExample {json} Success (example):
- *    HTTP/1.1 201 OK
+ *    HTTP/1.1 200 OK
  *    {
  *        "updated": 1
  *    }
  */
-router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), controller.patch);
+
+/**
+ * @api {get} /companies/:id/contacts List of company contacts
+ * @apiName GetCompaniesContact
+ * @apiGroup Companies-Contact
+ * 
+ * @apiParam (Request body) {Int} id The company id.
+ * 
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Array} rows List of contacts
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "count": 2,
+ *        "rows": [{
+ *               "id": 31,
+ *               "name": "José da Silva",
+ *               "email": "velosojonathan7@gmail.com",
+ *               "phone": null,
+ *               "phone2": null
+ *         }, {
+ *               "id": 30,
+ *               "name": "José da Silva",
+ *               "email": "velosojonathan6@gmail.com",
+ *               "phone": null,
+ *               "phone2": null
+ *         }]
+ *    }
+ */
+router.get('/:id/contacts', validators.getContacts, expressValidator.findsValidatorErros(), controller.getContacts);
+
+/**
+ * @api {post} /companies/:id/contacts Create a new contact
+ * @apiName PostCompaniesContact
+ * @apiGroup Companies-Contact
+ * 
+ * @apiParam (Request body) {Int} id The company id.
+ * @apiParam (Request body) {String} name The contact email.
+ * @apiParam (Request body) {String} email The contact password.
+ * 
+ * @apiSuccess {Int} id Contact inserted
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 1,
+ *        "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.post('/:id/contacts', validators.postContacts, expressValidator.findsValidatorErros(), controller.postContacts);
 
 module.exports = router;

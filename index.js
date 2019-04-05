@@ -11,7 +11,7 @@ let cors = require('cors');
 const corsOptions = {
   origin: ['http://200.98.200.133','http://200.98.200.133:3000'],
   optionsSuccessStatus: 204,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 }
 app.use(cors(corsOptions));
 

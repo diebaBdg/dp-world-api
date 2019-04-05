@@ -12,13 +12,22 @@ router.use(auth.authenticate());
  * @api {get} /document-types List of document types
  * @apiName GetDocumentTypes
  * @apiGroup DocumentTypes
+ * 
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
  *
- * @apiSuccess {Array} data List of Document Types
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
+ * @apiSuccess {Array} rows List of Document Types
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "data": [
+ *       "count": 3,
+ *       "pages": 1,
+ *       "rows": [
  *          {
  *              "id": 1,
  *              "description": "Empresa",
@@ -43,7 +52,7 @@ router.use(auth.authenticate());
  *       ]
  *    }
  */
-router.get('/', validators.get, expressValidator.findsValidatorErros(),controller.get);
+router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
  * @api {post} /document-types Create a new document type

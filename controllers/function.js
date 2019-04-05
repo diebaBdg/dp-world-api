@@ -1,7 +1,15 @@
 const models = require('../db/models');
+const Paginator = require('../helpers/paginator-helper');
+const orderHerper = require('../helpers/order-helper');
 
 exports.get = async (req, res) => {
     try {
+        const paginator = new Paginator(req.query.page);
+        // filter definition
+        let filter = {};
+        if (req.query.status !== undefined) {
+            filter.status = req.query.status
+        }
         // validate if there are filter DocumentType
         let include = [];
         if (req.query.DocumentTypeId) {
@@ -10,21 +18,18 @@ exports.get = async (req, res) => {
                 where: {
                     DocumentTypeId: req.query.DocumentTypeId
                 }
-            })
+            });
         }
-        let filtro = {}
-        if(req.query.status){
-            filtro.status = req.query.status
-        }
-        res.send({
-            data: await models.Function.findAll({
-                where: filtro,
-                include,
-                order: [
-                    ['id', 'DESC']
-                ]
-            })
+        // get objects
+        let data = await models.Function.findAndCountAll({
+            where: filter,
+            include,
+            order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
+            limit: paginator.limit,
+            offset: paginator.offset
         });
+        data.pages = paginator.pagesNumber(data.count);
+        res.send(data);
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
@@ -34,7 +39,7 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
     try {
         let func = req.body;
-        res.status(201).send({ 
+        res.status(201).send({
             id: (await models.Function.create(func)).id,
             msg: "Cadastrado com sucesso."
         });
@@ -46,10 +51,10 @@ exports.post = async (req, res) => {
 
 exports.put = async (req, res) => {
     try {
-        const updated = await models.Function.update(req.body,{
-            where: {id: req.params.id}
+        const updated = await models.Function.update(req.body, {
+            where: { id: req.params.id }
         })
-        res.send({ 
+        res.send({
             updated: updated[0],
             msg: "Alterado com sucesso."
         });
@@ -62,18 +67,18 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const deleted = await models.Function.destroy({
-            where: {id: req.params.id}
+            where: { id: req.params.id }
         })
-        res.send({ 
+        res.send({
             deleted,
             msg: "Excluído com sucesso."
         });
     } catch (err) {
         if (err.name == 'SequelizeForeignKeyConstraintError') {
-            res.status(400).send({ msg: 'A função não pode ser excluída pois está sendo utilizada.'});
+            res.status(400).send({ msg: 'A função não pode ser excluída pois está sendo utilizada.' });
         } else {
             console.log(err);
-            res.status(500).send({ msg: 'Internal Error'});
+            res.status(500).send({ msg: 'Internal Error' });
         }
     }
 }

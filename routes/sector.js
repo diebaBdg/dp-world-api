@@ -13,14 +13,21 @@ router.use(auth.authenticate());
  * @apiName GetSectors
  * @apiGroup Sectors
  *
- * @apiParam (Query params) {String} status Sector status.
+ * @apiParam (Query params) {Int} page The page.
+ * @apiParam (Query params) {String} order_by A column to order.
+ * @apiParam (Query params) {String} order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) {Int} status Filter by status.
  * 
- * @apiSuccess {Array} data List of sectors
+ * @apiSuccess {Int} count Number of total items.
+ * @apiSuccess {Int} pages Number of pages.
+ * @apiSuccess {Array} rows List of sectors
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "data": [
+ *       "count": 3,
+ *       "pages": 1,
+ *       "rows": [
  *          {
  *              "id": 1,
  *              "name": "RH",

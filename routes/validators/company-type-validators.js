@@ -6,7 +6,19 @@ const Op = require('sequelize').Op;
 exports.get = [
     check('status')
         .optional()
-        .isInt({ min: 0, max: 1 })
+        .isInt({ min: 0, max: 1 }),
+    check('page')
+        .optional()
+        .isInt({ min: 1})
+        .withMessage("Deve ser um inteiro maior ou igual a 1."),
+    check('order_by')
+        .optional()
+        .isLength({ min: 1, max: 200 })
+        .withMessage("Deve ter entre 1 e 200 caracteres."),
+    check('order_direction')
+        .optional()
+        .isIn(['ASC', 'DESC'])
+        .withMessage("Deve ser ASC ou DESC.")
 ];
 
 exports.post = [
