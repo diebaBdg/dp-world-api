@@ -75,6 +75,44 @@ const upload = multer({ storage: storage })
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
+ * @api {get} /companies/:id Get a company
+ * @apiName GetCompany
+ * @apiGroup Companies
+ * 
+ * @apiParam (Query params) {Int} id The company id.
+ *
+ * @apiSuccess {object} data The company data.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 200 OK
+ *     {
+ *          "id": 44,
+ *          "cnpj": "32325649000997",
+ *          "socialName": "Razao teste 7",
+ *          "businessName": null,
+ *          "address": "Rua 1",
+ *          "number": "40",
+ *          "complement": null,
+ *          "district": "Serra",
+ *          "city": "Belo horizonte",
+ *          "state": "MG",
+ *          "country": "Brazil",
+ *          "cep": null,
+ *          "phone": "31989915622",
+ *          "inscricaoEstadual": null,
+ *          "site": null,
+ *          "objectOfContract": null,
+ *          "createdAt": "2019-04-02T03:11:08.954Z",
+ *          "updatedAt": "2019-04-06T02:17:44.828Z",
+ *          "CompanyStatusId": 2,
+ *          "CompanyTypeId": 2,
+ *          "SectorId": 1,
+ *          "CompanyId": null
+ *     }
+ */
+router.get('/:id', validators.get, expressValidator.findsValidatorErros(), controller.getOne);
+
+/**
  * @api {post} /companies Create a new company
  * @apiName PostCompanies
  * @apiGroup Companies

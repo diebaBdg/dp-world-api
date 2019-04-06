@@ -78,14 +78,24 @@ exports.put = async (req, res) => {
 exports.getDocuments = async (req, res) => {
     try {
         const id = req.params.id;
-        const filters = req.query;
+        const filters = {}
+        if(req.query.DocumentTypeId){
+            filters.DocumentTypeId = req.query.DocumentTypeId;
+        }
+        if(req.query.FunctionId){
+            filters.FunctionId = req.query.FunctionId;
+        }
+        const filters2 = {
+            CompanyTypeId: id
+        }
+        if(req.query.isperiodic == 'false'){
+            filters2.defaultValidity = null;
+        }
         const documents = await models.Document.findAll({
             where: filters,
             include: [{
                 model: models.DocumentToCompanyType,
-                where: {
-                    CompanyTypeId: id
-                }
+                where: filters2
             }]
         });
         res.send({ data: documents });

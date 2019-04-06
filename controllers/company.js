@@ -41,6 +41,17 @@ exports.get = async (req, res) => {
     }
 }
 
+exports.getOne = async (req, res) => {
+    try {
+        return res.send({
+            data: await models.Company.findOne({where: {id: req.params.id}})
+        }) 
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' });
+    }
+}
+
 exports.post = async (req, res) => {
     try {
         // get request body
