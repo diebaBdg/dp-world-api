@@ -152,6 +152,17 @@ exports.postAttachment = async (req, res) => {
             CompanyId: req.params.id,
             DocumentId: req.body.DocumentId
         });
+        await models.CompanyAttachment.update({
+            AttachmentStatusId: 3
+        },{
+            where: {
+                CompanyId: req.params.id,
+                DocumentId: req.body.DocumentId,
+                id: {
+                    [Op.ne]: companyAttachmentCreated.id
+                }
+            }
+        })
         res.status(201).send({
             id: companyAttachmentCreated.id,
             msg: "Anexado com sucesso"
