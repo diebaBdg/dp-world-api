@@ -4,6 +4,17 @@ const controller = require('../controllers/company');
 const expressValidator = require('./middlewares/express-validator');
 // validators of this specifics routes
 const validators = require('./validators/company-validators');
+const multer = require('multer');
+// const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop())
+    }
+})
+const upload = multer({ storage: storage })
 
 /**
  * @api {get} /companies List of companies
@@ -165,5 +176,25 @@ router.get('/:id/contacts', validators.getContacts, expressValidator.findsValida
  *    }
  */
 router.post('/:id/contacts', validators.postContacts, expressValidator.findsValidatorErros(), controller.postContacts);
+
+/**
+ * @api {post} /companies/:id/attachments Create a new company attachment
+ * @apiName PostCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Multipart) {File} attachment The attachment file.
+ * @apiParam (Multipart) {Int} id The Document id.
+ * 
+ * @apiSuccess {Int} id Company attachment inserted
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 1,
+ *        "msg": "Anexado com sucesso."
+ *    }
+ */
+router.post('/:id/attachments', upload.single('attachment'), controller.postAttachment);
 
 module.exports = router;

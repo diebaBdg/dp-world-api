@@ -121,3 +121,29 @@ exports.postContacts = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error', err })
     }
 }
+
+exports.postAttachment = async (req, res) => {
+    try {
+        const validityDate = new Date();
+        const companyAttachmentCreated = await models.CompanyAttachment.create({
+            originalName: req.file.originalname,
+            fileName: req.file.filename,
+            encoding: req.file.encoding,
+            mimetype: req.file.mimetype,
+            destination: req.file.destination,
+            size: req.file.size,
+            path: req.file.path,
+            validityDate: validityDate,
+            AttachmentStatusId: 1,
+            CompanyId: req.params.id,
+            DocumentId: req.body.DocumentId
+        });
+        res.status(201).send({
+            id: companyAttachmentCreated.id,
+            msg: "Anexado com sucesso"
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
