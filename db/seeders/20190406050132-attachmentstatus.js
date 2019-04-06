@@ -11,7 +11,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        name: 'Recusado',
+        name: 'Cancelado',
         createdAt: new Date(),
         updatedAt: new Date()
       }], {});

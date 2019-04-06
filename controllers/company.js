@@ -113,7 +113,6 @@ exports.getContacts = async (req, res) => {
 
 exports.postContacts = async (req, res) => {
     try {
-
         const user = await models.User.build({
             email: req.body.email,
             name: req.body.name,
@@ -135,6 +134,10 @@ exports.postContacts = async (req, res) => {
 
 exports.postAttachment = async (req, res) => {
     try {
+        if(!req.file){
+            res.status(422).send({msg: "Deve ser um arquivo"});
+            return false;
+        }
         const validityDate = new Date();
         const companyAttachmentCreated = await models.CompanyAttachment.create({
             originalName: req.file.originalname,
@@ -153,6 +156,33 @@ exports.postAttachment = async (req, res) => {
             id: companyAttachmentCreated.id,
             msg: "Anexado com sucesso"
         });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getAttachments = async (req, res) => {
+    try {
+        const attachments = await models.CompanyAttachment.findAll({
+            where: {
+                CompanyId: req.params.id
+            },
+            include: [{
+                model: models.AttachmentStatus,
+                where:{
+                    id: {
+                        [Op.ne]: 3
+                    }
+                }
+            }],
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.send({
+            rows: attachments
+        })
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
