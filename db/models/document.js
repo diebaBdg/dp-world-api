@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     Document.belongsTo(models.DocumentType);
     Document.belongsTo(models.Function);
     Document.hasMany(models.DocumentToCompanyType);
+    Document.hasMany(models.CompanyAttachment);
     Document.belongsToMany(models.Sector, { through: 'DocumentToSectors' } );
   };
   return Document;

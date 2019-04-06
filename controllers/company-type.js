@@ -5,20 +5,17 @@ const orderHerper = require('../helpers/order-helper');
 exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
-        // filter definition
         let filter = {};
         if (req.query.status !== undefined) {
             filter.status = req.query.status
         }
-        // get objects
         let data = await models.CompanyType.findAndCountAll({
             where: filter,
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
         });
-        // get pages number
-        data.pages = paginator.pagesNumber(data.count);
+        data.pages = paginator.getNumberOfPages(data.count);
         res.send(data);
     } catch (err) {
         console.log(err);
@@ -28,9 +25,7 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        // get request body
         let campanyType = req.body;
-        // set status active and create document
         campanyType.status = 1;
         res.status(201).send({
             id: (await models.CompanyType.create(campanyType)).id,

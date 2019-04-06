@@ -15,7 +15,7 @@ class PaginatorHelper{
         return this._page ? this._limit * (this._page - 1) : undefined;
     }
 
-    pagesNumber(count){
+    getNumberOfPages(count){
         return this._page ? Math.ceil(count / this._limit): undefined;
     }
 }

@@ -17,7 +17,7 @@ exports.get = async (req, res) => {
             limit: paginator.limit,
             offset: paginator.offset
         })
-        data.pages = paginator.pagesNumber(data.count);
+        data.pages = paginator.getNumberOfPages(data.count);
         res.send(data);
     } catch (err) {
         res.status(500).send({ msg: 'Internal Error' })
