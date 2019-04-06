@@ -110,6 +110,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Query params) {String} DocumentTypeId Filter by document type.
  * @apiParam (Query params) {String} FunctionId Filter by collaborator function.
+ * @apiParam (Query params) {String} isperiodic Set true if is periodic or false if is not periodic
  *
  * @apiSuccess {Array} data List of documents.
  * 

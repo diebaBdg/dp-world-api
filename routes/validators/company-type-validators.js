@@ -88,7 +88,8 @@ exports.put = [
 exports.getDocuments = [
     check('id').isInt().withMessage("Deve ser um número inteiro."),
     check('DocumentTypeId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
-    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro.")
+    check('FunctionId').optional({ nullable: true }).isInt().withMessage("Deve ser um número inteiro."),
+    check('isperiodic').optional({ nullable: true }).isIn(['false']).withMessage("Deve ser false se informado.")
 ];
 
 exports.postDocuments = [
