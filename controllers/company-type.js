@@ -5,20 +5,15 @@ const orderHerper = require('../helpers/order-helper');
 exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
-        // filter definition
         let filter = {};
-        if (req.query.status !== undefined) {
-            filter.status = req.query.status
-        }
-        // get objects
+        filter.status = req.query.status
         let data = await models.CompanyType.findAndCountAll({
             where: filter,
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
         });
-        // get pages number
-        data.pages = paginator.pagesNumber(data.count);
+        data.pages = paginator.getNumberOfPages(data.count);
         res.send(data);
     } catch (err) {
         console.log(err);
