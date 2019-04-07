@@ -155,3 +155,18 @@ exports.postContacts = [
         .isLength({ min: 3, max: 50 })
         .withMessage("Deve ter entre 3 e 50 caracteres."),
 ];
+
+exports.postAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('DocumentId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+];
+
+exports.getAttachments = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];

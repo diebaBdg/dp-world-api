@@ -1,14 +1,21 @@
 const router = require('express').Router();
 const controller = require('../controllers/company');
-// middleware to  find erros difined in routes validations
 const expressValidator = require('./middlewares/express-validator');
-// validators of this specifics routes
 const validators = require('./validators/company-validators');
 const multer = require('multer');
-// const upload = multer({ dest: 'uploads/' });
+const mkdirp = require('mkdirp');
+
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads')
+    destination: (req, file, cb) => {
+        const path = './uploads/companies/' + req.params.id;
+        mkdirp(path, (err) => {
+            if (err){
+                console.error(err);
+                cb(error);
+            } else {
+                cb(null, path);
+            }
+        });
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop())
@@ -222,7 +229,7 @@ router.post('/:id/contacts', validators.postContacts, expressValidator.findsVali
  * 
  * @apiParam (Params) {Int} id The company id.
  * @apiParam (Multipart) {File} attachment The attachment file.
- * @apiParam (Multipart) {Int} id The Document id.
+ * @apiParam (Multipart) {Int} DocumentId The Document id.
  * 
  * @apiSuccess {Int} id Company attachment inserted
  * 
@@ -233,6 +240,23 @@ router.post('/:id/contacts', validators.postContacts, expressValidator.findsVali
  *        "msg": "Anexado com sucesso."
  *    }
  */
-router.post('/:id/attachments', upload.single('attachment'), controller.postAttachment);
+router.post('/:id/attachments', upload.single('attachment'), validators.postAttachment, expressValidator.findsValidatorErros(), controller.postAttachment);
+
+/**
+ * @api {get} /companies/:id/attachments List company attachments
+ * @apiName GetCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * 
+ * @apiSuccess {Array} rows List of attachments
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "rows": []
+ *    }
+ */
+router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
 
 module.exports = router;
