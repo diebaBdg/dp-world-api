@@ -2,6 +2,7 @@ const models = require('../db/models');
 const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const fs = 
 
 exports.get = async (req, res) => {
     try {
@@ -181,6 +182,7 @@ exports.getAttachments = async (req, res) => {
             },
             include: [{
                 model: models.AttachmentStatus,
+                attributes: ['id','name'],
                 where:{
                     id: {
                         [Op.ne]: 3
@@ -194,6 +196,18 @@ exports.getAttachments = async (req, res) => {
         res.send({
             rows: attachments
         })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getAttachmentFile = async (req, res) => {
+    try {
+        const attachment = await models.CompanyAttachment.findOne({
+            where: {id: req.params.idAttachment}
+        });
+        res.download(attachment.path);
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
