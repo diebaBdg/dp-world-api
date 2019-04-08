@@ -213,3 +213,22 @@ exports.getAttachmentFile = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.pathAttachment = async (req, res) => {
+    try {
+        const updated = await models.CompanyAttachment.update({
+            AttachmentStatusId: req.body.AttachmentStatusId
+        },{
+            where:{
+                id: req.params.idAttachment
+            }
+        });
+        res.status(200).send({ 
+            updated: updated[0],
+            msg: "Atualizado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
