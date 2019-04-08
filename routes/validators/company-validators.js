@@ -170,3 +170,24 @@ exports.getAttachments = [
         .isNumeric()
         .withMessage("Deve ser numérico")
 ];
+
+exports.getAttachmentFile = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+]
+
+exports.pathAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('AttachmentStatusId')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+]

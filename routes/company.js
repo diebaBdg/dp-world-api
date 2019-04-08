@@ -299,14 +299,33 @@ router.post('/:id/attachments', upload.single('attachment'), validators.postAtta
 router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
 
 /**
- * @api {get} /companies/:id/attachments/:idAttachment/file List company attachments
- * @apiName GetCompaniesAttachment
+ * @api {get} /companies/:id/attachments/:idAttachment/file Download a company attachments
+ * @apiName GetCompaniesAttachmentFile
  * @apiGroup Companies-Attachment
  * 
  * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
  * 
  * @apiSuccess {Array} rows List of attachments
  */
-router.get('/:id/attachments/:idAttachment/file', controller.getAttachmentFile);
+router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
+
+/**
+ * @api {patch} /companies/:id/attachments/:idAttachment Update a attachment status
+ * @apiName PatCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * @apiParam (Request body) {Int} AttachmentStatusId The status.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Atualizado com sucesso."
+ *    }
+ */
+router.patch('/:id/attachments/:idAttachment', validators.pathAttachment, expressValidator.findsValidatorErros(), controller.pathAttachment);
 
 module.exports = router;
