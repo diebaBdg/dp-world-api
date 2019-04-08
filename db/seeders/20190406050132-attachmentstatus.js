@@ -17,6 +17,11 @@ module.exports = {
         name: 'Cancelado',
         createdAt: new Date(),
         updatedAt: new Date()
+      },,{
+        id: 4,
+        name: 'Rejeitado',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 

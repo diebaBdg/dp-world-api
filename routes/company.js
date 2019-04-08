@@ -299,8 +299,8 @@ router.post('/:id/attachments', upload.single('attachment'), validators.postAtta
 router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
 
 /**
- * @api {get} /companies/:id/attachments/:idAttachment/file List company attachments
- * @apiName GetCompaniesAttachment
+ * @api {get} /companies/:id/attachments/:idAttachment/file Download a company attachments
+ * @apiName GetCompaniesAttachmentFile
  * @apiGroup Companies-Attachment
  * 
  * @apiParam (Params) {Int} id The company id.
