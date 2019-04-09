@@ -117,7 +117,7 @@ exports.patch = [
         .withMessage("Deve ser numérico")
         .custom((id) => {
             return models.Company.findOne({ where: { id } }).then(company => {
-                if (!company){
+                if (!company) {
                     return Promise.reject('Empresa não encontrada.');
                 }
             });
@@ -193,8 +193,20 @@ exports.pathAttachment = [
         .withMessage("Deve ser numérico"),
     check('idAttachment')
         .isNumeric()
-        .withMessage("Deve ser numérico"),
+        .withMessage("Deve ser numérico")
+        .custom(idAttachment => {
+            return models.CompanyAttachment.findOne({ where: { id: idAttachment } })
+            .then(attachment => {
+                if (attachment.AttachmentStatusId == 2 || attachment.AttachmentStatusId == 3 || attachment.AttachmentStatusId == 4) {
+                    return Promise.reject('Não é possível alterar o status desse anexo.');
+                }
+            });
+        }),
     check('AttachmentStatusId')
         .isNumeric()
-        .withMessage("Deve ser numérico")
+        .withMessage("Deve ser numérico"),
+    check('note')
+        .optional()
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Deve ter entre 3 e 50 caracteres."),
 ]

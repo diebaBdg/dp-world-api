@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     mimetype: DataTypes.STRING,
     destination: DataTypes.STRING,
     size: DataTypes.BIGINT,
-    path: DataTypes.STRING
+    path: DataTypes.STRING,
+    note: DataTypes.STRING
   }, {});
   CompanyAttachment.associate = function(models) {
     // associations can be defined here
