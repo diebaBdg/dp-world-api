@@ -2,7 +2,6 @@ const models = require('../db/models');
 const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
-const fs = 
 
 exports.get = async (req, res) => {
     try {
@@ -73,10 +72,22 @@ exports.patch = async (req, res) => {
         const companyStatusId = req.body.CompanyStatusId;
         const company = await models.Company.findOne({ where: { id: req.params.id } });
 
+        if(!company.isStatusFlowValid(companyStatusId)){
+            res.status(422).send({ msg: 'O fluxo de status não é válido.' });
+            return false;
+        }
+
         if (companyStatusId == 2) {
             const contacts = await company.getUsers();
             for (contact of contacts) {
                 await contact.enableAndSendEmail();
+            }
+        }if (companyStatusId == 5) {    
+            const attachments = await company.getCompanyAttachments();
+            let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
+            if(rejectedOrNotOk.length){
+                res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                return false;
             }
         }
 

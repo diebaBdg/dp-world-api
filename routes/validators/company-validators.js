@@ -114,7 +114,14 @@ exports.post = defaultCompany;
 exports.patch = [
     check('id')
         .isNumeric()
-        .withMessage("Deve ser numérico"),
+        .withMessage("Deve ser numérico")
+        .custom((id) => {
+            return models.Company.findOne({ where: { id } }).then(company => {
+                if (!company){
+                    return Promise.reject('Empresa não encontrada.');
+                }
+            });
+        }),
     check('SectorId')
         .isNumeric()
         .withMessage("Deve ser numérico"),
@@ -124,8 +131,8 @@ exports.patch = [
         .custom((CompanyStatusId, options) => {
             const id = options.req.params.id;
             return models.Company.findOne({ where: { id } }).then(company => {
-                if ((company.CompanyStatusId != CompanyStatusId + 1) && (company.CompanyStatusId != CompanyStatusId - 1)) {
-                    return Promise.reject('O status deve avançar ou regredir um valor.');
+                if (company.CompanyStatusId == CompanyStatusId) {
+                    return Promise.reject('O status não deve permanecer o mesmo.');
                 }
             });
         })
