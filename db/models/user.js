@@ -48,5 +48,15 @@ module.exports = (sequelize, DataTypes) => {
     return emailHelper.sendMail(mailOptions);
   }
 
+  User.prototype.SendEmail = async function (msg) {
+    let mailOptions = {
+      from: '"noreply dp-world" noreply@speedsoftware.com.br',
+      to: this.email,
+      subject: "Cadastro",
+      html: msg
+    };
+    return emailHelper.sendMail(mailOptions);
+  }
+
   return User;
 };
