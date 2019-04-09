@@ -2,79 +2,170 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Menus', [{
-      id: 1,
-      link: '/accreditation', 
-      name: 'Credenciamento', 
-      icon: 'fa fa-user-o',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      link: '/requests', 
-      name: 'Solicitacoes', 
-      icon:'mdi mdi-chevron-right', 
-      MenuId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },{
-      id: 3,
-      link: '/register', 
-      name: 'Cadastros', 
-      icon:'mdi mdi-chevron-right', 
-      MenuId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 4,
-      link: '/', 
-      name: 'Documentos', 
-      icon:'mdi mdi-chevron-right',
-      MenuId: 1,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },{
-      id: 5,
-      link: '/permission', 
-      name: 'Permissões', 
-      icon:'mdi mdi-chevron-right',
-      MenuId: 4,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },{
-      id: 6,
-      link: '/configuration', 
-      name: 'Configurações', 
-      icon:'mdi mdi-chevron-right',
-      MenuId: 4,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },{
-      id: 7,
-      link: '/tpo-empresa', 
-      name: 'Relatórios', 
-      icon:'fa fa-files-o',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },{
-      id: 8,
-      link: '/empresa', 
-      name: 'Integrações', 
-      icon:'fa fa-gears',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 9,
-      link: '/empresa', 
-      name: 'Auditoria', 
-      icon:'fa fa-file-text-o',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-    ], {});
+    return queryInterface.bulkInsert('Menus', [
+      {
+          "id": 4,
+          "link": "/solicitations",
+          "name": "Solicitações",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 2
+      },
+      {
+          "id": 5,
+          "link": "/registers",
+          "name": "Cadastros",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 2
+      },
+      {
+          "id": 6,
+          "link": "/",
+          "name": "Documentos",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 2
+      },
+      {
+          "id": 7,
+          "link": "/permissions",
+          "name": "Permissões",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 6
+      },
+      {
+          "id": 9,
+          "link": "/reports",
+          "name": "Relatórios",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 10,
+          "link": "/integrations",
+          "name": "Integrações",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 11,
+          "link": "/audits",
+          "name": "Auditoria",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 12,
+          "link": "/",
+          "name": "Configurações",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 13,
+          "link": "/documents",
+          "name": "Documentos",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 12
+      },
+      {
+          "id": 14,
+          "link": "/documents-types",
+          "name": "Tipos de Documentos",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 12
+      },
+      {
+          "id": 16,
+          "link": "/sectors",
+          "name": "Setores",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 12
+      },
+      {
+          "id": 17,
+          "link": "/functions",
+          "name": "Funções",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 12
+      },
+      {
+          "id": 18,
+          "link": "/",
+          "name": "Documentos Cadastrais",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 19,
+          "link": "/",
+          "name": "Documentos Mensais",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 20,
+          "link": "/",
+          "name": "Funcionários",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 21,
+          "link": "/",
+          "name": "Contatos",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      },
+      {
+          "id": 8,
+          "link": "/configurations",
+          "name": "Configurações",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 6
+      },
+      {
+          "id": 15,
+          "link": "/companies-types",
+          "name": "Tipos de Empresas",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date(),
+          "MenuId": 12
+      },
+      {
+          "id": 2,
+          "link": "/",
+          "name": "Credenciamento",
+          "icon": "mdi mdi-chevron-right",
+          "createdAt": new Date(),
+          "updatedAt": new Date()
+      }
+  ], {});
   },
 
   down: (queryInterface, Sequelize) => {
