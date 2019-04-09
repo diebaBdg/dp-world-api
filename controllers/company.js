@@ -89,7 +89,7 @@ exports.patch = async (req, res) => {
                 await contact.SendEmail('Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.');
             }
         }
-        if (companyStatusId == 5) {    
+        if (companyStatusId == 5) {
             let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
             if(rejectedOrNotOk.length){
                 res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
