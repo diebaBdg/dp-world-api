@@ -238,7 +238,8 @@ exports.getAttachmentFile = async (req, res) => {
 exports.pathAttachment = async (req, res) => {
     try {
         const updated = await models.CompanyAttachment.update({
-            AttachmentStatusId: req.body.AttachmentStatusId
+            AttachmentStatusId: req.body.AttachmentStatusId,
+            note: req.body.note
         },{
             where:{
                 id: req.params.idAttachment

@@ -318,6 +318,7 @@ router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, 
  * @apiParam (Params) {Int} id The company id.
  * @apiParam (Params) {Int} idAttachment The attachment id.
  * @apiParam (Request body) {Int} AttachmentStatusId The status.
+ * @apiParam (Request body) {String} note A note about the alteration.
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
