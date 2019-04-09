@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     site: DataTypes.STRING,
     objectOfContract: DataTypes.STRING
   }, {});
-  Company.associate = function(models) {
+  Company.associate = function (models) {
     // associations can be defined here
     Company.belongsTo(models.CompanyStatus);
     Company.belongsTo(models.CompanyType);
@@ -26,5 +26,26 @@ module.exports = (sequelize, DataTypes) => {
     Company.hasMany(models.User);
     Company.hasMany(models.CompanyAttachment);
   };
+
+  Company.prototype.getStatusFlow = function () {
+    return [{
+      status: 1, next: 2
+    }, {
+      status: 2, next: 3
+    }, {
+      status: 3, next: 4
+    }, {
+      status: 4, next: 3
+    }, {
+      status: 3, next: 5
+    }]
+  }
+
+  Company.prototype.isStatusFlowValid = function (newStatus) {
+    const flowList = this.getStatusFlow();
+    const flow = flowList.find(item => item.status == this.CompanyStatusId && item.next == newStatus);
+    return flow ? true : false;
+  }
+
   return Company;
 };

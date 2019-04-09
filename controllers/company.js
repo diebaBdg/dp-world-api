@@ -2,7 +2,6 @@ const models = require('../db/models');
 const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
-const fs = 
 
 exports.get = async (req, res) => {
     try {
@@ -72,11 +71,33 @@ exports.patch = async (req, res) => {
     try {
         const companyStatusId = req.body.CompanyStatusId;
         const company = await models.Company.findOne({ where: { id: req.params.id } });
+        const contacts = await company.getUsers();
+        const attachments = await company.getCompanyAttachments();
+
+        if(!company.isStatusFlowValid(companyStatusId)){
+            res.status(422).send({ msg: 'O fluxo de status não é válido.' });
+            return false;
+        }
 
         if (companyStatusId == 2) {
-            const contacts = await company.getUsers();
             for (contact of contacts) {
                 await contact.enableAndSendEmail();
+            }
+        }
+        if (companyStatusId == 4) {
+            for (contact of contacts) {
+                await contact.SendEmail('Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.');
+            }
+        }
+        if (companyStatusId == 5) {    
+            let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
+            if(rejectedOrNotOk.length){
+                res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                return false;
+            }else{
+                for (contact of contacts) {
+                    await contact.SendEmail('Documentos da empresa aprovados. Credencie os colaboradores.');
+                }
             }
         }
 
