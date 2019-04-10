@@ -7,7 +7,9 @@ Esta é a API para o sistema de gerencaimanto de documentos de terceiros da DP W
 ### Requisitos
 
 Git
+
 Node JS 8.x ou superior
+
 Postgres
 
 ### Baixar projeto e suas bibliotecas
