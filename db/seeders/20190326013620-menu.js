@@ -133,7 +133,7 @@ module.exports = {
       },
       {
           "id": 21,
-          "link": "/",
+          "link": "/contacts",
           "name": "Contatos",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),

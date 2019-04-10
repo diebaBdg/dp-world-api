@@ -208,8 +208,8 @@ router.get('/:id/contacts', validators.getContacts, expressValidator.findsValida
  * @apiGroup Companies-Contact
  * 
  * @apiParam (Request body) {Int} id The company id.
- * @apiParam (Request body) {String} name The contact email.
- * @apiParam (Request body) {String} email The contact password.
+ * @apiParam (Request body) {String} name The contact name.
+ * @apiParam (Request body) {String} email The contact email.
  * 
  * @apiSuccess {Int} id Contact inserted
  * 
