@@ -49,8 +49,6 @@ node index.js
 ### Docuentação da API
 
 Baixe a biblioteca de documentação com o script:
-
-Rode a aplicação com o comando:
 ```
 npm install apidoc -g
 ```
