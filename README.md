@@ -1,6 +1,6 @@
 # DP WORLD API
 
-Esta é a API para o sistema de gerencaimanto de documentos de terceiros da DP WORLD
+Esta é a API para o sistema de gerencaimanto de documentos de integração da DP WORLD
 
 ## Getting Started
 
