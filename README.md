@@ -1,88 +1,61 @@
 # DP WORLD API
 
-It is the API for the supplier management web system at Dp World
+Esta é a API para o sistema de gerencaimanto de documentos de terceiros da DP WORLD
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Requisitos
 
-### Prerequisites
+Git
+Node JS 8.x ou superior
+Postgres
 
-What things you need to install the software and how to install them
+### Baixar projeto e suas bibliotecas
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Clone o projeto com o comando:
 
 ```
-Give the example
+git clone https://github.com/velosojonathan5/dp-world-api.git
 ```
 
-And repeat
-
+Na raiz do projeto baixe as bibliotecas com o comando:
 ```
-until finished
+npm install
 ```
+### Configurar banco de dados
 
-End with an example of getting some data out of the system or using it for a little demo
+No Postgres crie um banco de dados chamado dp_world.
 
-## Running the tests
+Insira as configurações de acesso ao banco de dados no arquivo ./config/database.json no item "development".
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+Crie as tabelas com o comando:
 ```
-Give an example
+sequelize db:migrate
 ```
-
-### And coding style tests
-
-Explain what these tests test and why
-
+Popule as tabelas com o comando:
 ```
-Give an example
+sequelize db:seed:all
 ```
 
-## Deployment
+### Rodar a aplicação
 
-Add additional notes about how to deploy this on a live system
+Rode a aplicação com o comando:
+```
+node index.js
+```
 
-## Built With
+### Docuentação da API
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+Baixe a biblioteca de documentação com o script:
 
-## Contributing
+Rode a aplicação com o comando:
+```
+npm install apidoc -g
+```
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Gere a documentação da API com o comando:
+```
+npm run doc
+```
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+Acesse no browser o endereço http://localhost:3000/apidoc
