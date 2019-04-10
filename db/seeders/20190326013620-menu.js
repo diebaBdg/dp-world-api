@@ -109,7 +109,7 @@ module.exports = {
       },
       {
           "id": 18,
-          "link": "/",
+          "link": "/documents-company",
           "name": "Documentos Cadastrais",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
@@ -133,7 +133,7 @@ module.exports = {
       },
       {
           "id": 21,
-          "link": "/",
+          "link": "/contacts",
           "name": "Contatos",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
