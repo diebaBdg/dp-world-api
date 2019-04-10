@@ -46,7 +46,7 @@ Rode a aplicação com o comando:
 node index.js
 ```
 
-### Docuentação da API
+### Documentação da API
 
 Baixe a biblioteca de documentação com o script:
 ```
