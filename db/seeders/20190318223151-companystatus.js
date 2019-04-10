@@ -9,21 +9,31 @@ module.exports = {
         updatedAt: new Date()
       },{
         id: 2,
-        description: "Envio de documentos",
+        description: "Envio de documentos da empresa",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 3,
-        description: "Documentos pendentes",
+        description: "Aprovação de documentos da empresa",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 4,
-        description: "Habilitado",
+        description: "Documentos da empresa rejeitados",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 5,
+        description: "Credenciamento de colaboradores",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        id: 6,
+        description: "Habilitado",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        id: 7,
         description: "Desativado",
         createdAt: new Date(),
         updatedAt: new Date()

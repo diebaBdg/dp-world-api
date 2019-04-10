@@ -1,9 +1,27 @@
 const router = require('express').Router();
 const controller = require('../controllers/company');
-// middleware to  find erros difined in routes validations
 const expressValidator = require('./middlewares/express-validator');
-// validators of this specifics routes
 const validators = require('./validators/company-validators');
+const multer = require('multer');
+const mkdirp = require('mkdirp');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const path = './uploads/companies/' + req.params.id;
+        mkdirp(path, (err) => {
+            if (err){
+                console.error(err);
+                cb(error);
+            } else {
+                cb(null, path);
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop())
+    }
+})
+const upload = multer({ storage: storage })
 
 /**
  * @api {get} /companies List of companies
@@ -62,6 +80,44 @@ const validators = require('./validators/company-validators');
  *       }
  */
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
+
+/**
+ * @api {get} /companies/:id Get a company
+ * @apiName GetCompany
+ * @apiGroup Companies
+ * 
+ * @apiParam (Query params) {Int} id The company id.
+ *
+ * @apiSuccess {object} data The company data.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 200 OK
+ *     {
+ *          "id": 44,
+ *          "cnpj": "32325649000997",
+ *          "socialName": "Razao teste 7",
+ *          "businessName": null,
+ *          "address": "Rua 1",
+ *          "number": "40",
+ *          "complement": null,
+ *          "district": "Serra",
+ *          "city": "Belo horizonte",
+ *          "state": "MG",
+ *          "country": "Brazil",
+ *          "cep": null,
+ *          "phone": "31989915622",
+ *          "inscricaoEstadual": null,
+ *          "site": null,
+ *          "objectOfContract": null,
+ *          "createdAt": "2019-04-02T03:11:08.954Z",
+ *          "updatedAt": "2019-04-06T02:17:44.828Z",
+ *          "CompanyStatusId": 2,
+ *          "CompanyTypeId": 2,
+ *          "SectorId": 1,
+ *          "CompanyId": null
+ *     }
+ */
+router.get('/:id', validators.get, expressValidator.findsValidatorErros(), controller.getOne);
 
 /**
  * @api {post} /companies Create a new company
@@ -152,8 +208,8 @@ router.get('/:id/contacts', validators.getContacts, expressValidator.findsValida
  * @apiGroup Companies-Contact
  * 
  * @apiParam (Request body) {Int} id The company id.
- * @apiParam (Request body) {String} name The contact email.
- * @apiParam (Request body) {String} email The contact password.
+ * @apiParam (Request body) {String} name The contact name.
+ * @apiParam (Request body) {String} email The contact email.
  * 
  * @apiSuccess {Int} id Contact inserted
  * 
@@ -165,5 +221,112 @@ router.get('/:id/contacts', validators.getContacts, expressValidator.findsValida
  *    }
  */
 router.post('/:id/contacts', validators.postContacts, expressValidator.findsValidatorErros(), controller.postContacts);
+
+/**
+ * @api {post} /companies/:id/attachments Create a new company attachment
+ * @apiName PostCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Multipart) {File} attachment The attachment file.
+ * @apiParam (Multipart) {Int} DocumentId The Document id.
+ * 
+ * @apiSuccess {Int} id Company attachment inserted
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 1,
+ *        "msg": "Anexado com sucesso."
+ *    }
+ */
+router.post('/:id/attachments', upload.single('attachment'), validators.postAttachment, expressValidator.findsValidatorErros(), controller.postAttachment);
+
+/**
+ * @api {get} /companies/:id/attachments List company attachments
+ * @apiName GetCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * 
+ * @apiSuccess {Array} rows List of attachments
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "rows": [{
+ *          "id": 26,
+ *          "originalName": "relatorioD45.csv",
+ *          "fileName": "attachment-1554686665843.csv",
+ *          "validityDate": "2019-04-08T01:24:26.021Z",
+ *          "encoding": "7bit",
+ *          "mimetype": "text/csv",
+ *          "destination": "./uploads/companies/44",
+ *          "size": "9295856",
+ *          "path": "uploads\\companies\\44\\attachment-1554686665843.csv",
+ *          "createdAt": "2019-04-08T01:24:26.024Z",
+ *          "updatedAt": "2019-04-08T01:24:26.024Z",
+ *          "AttachmentStatusId": 1,
+ *          "CompanyId": 44,
+ *          "DocumentId": 2,
+ *          "AttachmentStatus": {
+ *              "id": 1,
+ *              "name": "Aguardando Aprovação",
+ *           }
+ *       },
+ *       {
+ *          "id": 24,
+ *          "originalName": "relatorioD45.csv",
+ *          "fileName": "attachment-1554592781596.csv",
+ *          "validityDate": "2019-04-06T23:19:41.778Z",
+ *          "encoding": "7bit",
+ *          "mimetype": "text/csv",
+ *          "destination": "./uploads/companies/44",
+ *          "size": "9295856",
+ *          "path": "uploads\\companies\\44\\attachment-1554592781596.csv",
+ *          "createdAt": "2019-04-06T23:19:41.778Z",
+ *          "updatedAt": "2019-04-06T23:19:41.778Z",
+ *          "AttachmentStatusId": 1,
+ *          "CompanyId": 44,
+ *          "DocumentId": 3,
+ *          "AttachmentStatus": {
+ *              "id": 1,
+ *              "name": "Aguardando Aprovação"
+ *          }
+ *      }]
+ *    }
+ */
+router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
+
+/**
+ * @api {get} /companies/:id/attachments/:idAttachment/file Download a company attachments
+ * @apiName GetCompaniesAttachmentFile
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * 
+ * @apiSuccess {Array} rows List of attachments
+ */
+router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
+
+/**
+ * @api {patch} /companies/:id/attachments/:idAttachment Update a attachment status
+ * @apiName PatCompaniesAttachment
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * @apiParam (Request body) {Int} AttachmentStatusId The status.
+ * @apiParam (Request body) {String} note A note about the alteration.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Atualizado com sucesso."
+ *    }
+ */
+router.patch('/:id/attachments/:idAttachment', validators.pathAttachment, expressValidator.findsValidatorErros(), controller.pathAttachment);
 
 module.exports = router;

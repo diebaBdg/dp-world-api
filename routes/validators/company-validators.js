@@ -114,7 +114,14 @@ exports.post = defaultCompany;
 exports.patch = [
     check('id')
         .isNumeric()
-        .withMessage("Deve ser numérico"),
+        .withMessage("Deve ser numérico")
+        .custom((id) => {
+            return models.Company.findOne({ where: { id } }).then(company => {
+                if (!company) {
+                    return Promise.reject('Empresa não encontrada.');
+                }
+            });
+        }),
     check('SectorId')
         .isNumeric()
         .withMessage("Deve ser numérico"),
@@ -124,8 +131,8 @@ exports.patch = [
         .custom((CompanyStatusId, options) => {
             const id = options.req.params.id;
             return models.Company.findOne({ where: { id } }).then(company => {
-                if ((company.CompanyStatusId != CompanyStatusId + 1) && (company.CompanyStatusId != CompanyStatusId - 1)) {
-                    return Promise.reject('O status deve avançar ou regredir um valor.');
+                if (company.CompanyStatusId == CompanyStatusId) {
+                    return Promise.reject('O status não deve permanecer o mesmo.');
                 }
             });
         })
@@ -155,3 +162,51 @@ exports.postContacts = [
         .isLength({ min: 3, max: 50 })
         .withMessage("Deve ter entre 3 e 50 caracteres."),
 ];
+
+exports.postAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('DocumentId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+];
+
+exports.getAttachments = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
+exports.getAttachmentFile = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+]
+
+exports.pathAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+        .custom(idAttachment => {
+            return models.CompanyAttachment.findOne({ where: { id: idAttachment } })
+            .then(attachment => {
+                if (attachment.AttachmentStatusId == 2 || attachment.AttachmentStatusId == 3 || attachment.AttachmentStatusId == 4) {
+                    return Promise.reject('Não é possível alterar o status desse anexo.');
+                }
+            });
+        }),
+    check('AttachmentStatusId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('note')
+        .optional()
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Deve ter entre 3 e 50 caracteres."),
+]
