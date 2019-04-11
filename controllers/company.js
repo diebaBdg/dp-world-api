@@ -3,6 +3,7 @@ const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
 
+
 exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
@@ -44,8 +45,8 @@ exports.get = async (req, res) => {
 exports.getOne = async (req, res) => {
     try {
         return res.send({
-            data: await models.Company.findOne({where: {id: req.params.id}})
-        }) 
+            data: await models.Company.findOne({ where: { id: req.params.id } })
+        })
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
@@ -74,7 +75,7 @@ exports.patch = async (req, res) => {
         const contacts = await company.getUsers();
         const attachments = await company.getCompanyAttachments();
 
-        if(!company.isStatusFlowValid(companyStatusId)){
+        if (!company.isStatusFlowValid(companyStatusId)) {
             res.status(422).send({ msg: 'O fluxo de status não é válido.' });
             return false;
         }
@@ -91,10 +92,10 @@ exports.patch = async (req, res) => {
         }
         if (companyStatusId == 5) {
             let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
-            if(rejectedOrNotOk.length){
+            if (rejectedOrNotOk.length) {
                 res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
                 return false;
-            }else{
+            } else {
                 for (contact of contacts) {
                     await contact.SendEmail('Documentos da empresa aprovados. Credencie os colaboradores.');
                 }
@@ -105,7 +106,7 @@ exports.patch = async (req, res) => {
             SectorId: req.body.SectorId,
             CompanyStatusId: companyStatusId
         });
-        res.status(200).send({ 
+        res.status(200).send({
             updated: 1,
             msg: "Atualizado com sucesso."
         });
@@ -156,11 +157,13 @@ exports.postContacts = async (req, res) => {
 
 exports.postAttachment = async (req, res) => {
     try {
-        if(!req.file){
-            res.status(422).send({msg: "Deve ser um arquivo"});
+        if (!req.file) {
+            res.status(422).send({ msg: "Deve ser um arquivo" });
             return false;
         }
-        const validityDate = new Date();
+        const company = await models.Company.findOne({ where: { id: req.params.id } });
+        const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
+
         const companyAttachmentCreated = await models.CompanyAttachment.create({
             originalName: req.file.originalname,
             fileName: req.file.filename,
@@ -169,22 +172,22 @@ exports.postAttachment = async (req, res) => {
             destination: req.file.destination,
             size: req.file.size,
             path: req.file.path,
-            validityDate: validityDate,
+            validityDate: documentToCompanyType.generateValidityDate(),
             AttachmentStatusId: 1,
             CompanyId: req.params.id,
             DocumentId: req.body.DocumentId
         });
         await models.CompanyAttachment.update({
             AttachmentStatusId: 3
-        },{
-            where: {
-                CompanyId: req.params.id,
-                DocumentId: req.body.DocumentId,
-                id: {
-                    [Op.ne]: companyAttachmentCreated.id
+        }, {
+                where: {
+                    CompanyId: req.params.id,
+                    DocumentId: req.body.DocumentId,
+                    id: {
+                        [Op.ne]: companyAttachmentCreated.id
+                    }
                 }
-            }
-        })
+            })
         res.status(201).send({
             id: companyAttachmentCreated.id,
             msg: "Anexado com sucesso"
@@ -203,8 +206,8 @@ exports.getAttachments = async (req, res) => {
             },
             include: [{
                 model: models.AttachmentStatus,
-                attributes: ['id','name'],
-                where:{
+                attributes: ['id', 'name'],
+                where: {
                     id: {
                         [Op.ne]: 3
                     }
@@ -226,7 +229,7 @@ exports.getAttachments = async (req, res) => {
 exports.getAttachmentFile = async (req, res) => {
     try {
         const attachment = await models.CompanyAttachment.findOne({
-            where: {id: req.params.idAttachment}
+            where: { id: req.params.idAttachment }
         });
         res.download(attachment.path);
     } catch (err) {
@@ -240,12 +243,12 @@ exports.pathAttachment = async (req, res) => {
         const updated = await models.CompanyAttachment.update({
             AttachmentStatusId: req.body.AttachmentStatusId,
             note: req.body.note
-        },{
-            where:{
-                id: req.params.idAttachment
-            }
-        });
-        res.status(200).send({ 
+        }, {
+                where: {
+                    id: req.params.idAttachment
+                }
+            });
+        res.status(200).send({
             updated: updated[0],
             msg: "Atualizado com sucesso."
         });

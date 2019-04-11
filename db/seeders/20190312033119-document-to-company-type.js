@@ -4,14 +4,14 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('DocumentToCompanyTypes', [{
         id: 1,
-        defaultValidity: '1week',
+        defaultValidity: '1-weeks',
         DocumentId: 1,
         CompanyTypeId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 2,
-        defaultValidity: '1month',
+        defaultValidity: '1months',
         DocumentId: 2,
         CompanyTypeId: 1,
         createdAt: new Date(),
@@ -24,21 +24,21 @@ module.exports = {
         updatedAt: new Date()
       },{
         id: 4,
-        defaultValidity: '1year',
+        defaultValidity: '1-years',
         DocumentId: 4,
         CompanyTypeId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 5,
-        defaultValidity: '1year',
+        defaultValidity: '1-years',
         DocumentId: 3,
         CompanyTypeId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 6,
-        defaultValidity: '1year',
+        defaultValidity: '1-years',
         DocumentId: 4,
         CompanyTypeId: 2,
         createdAt: new Date(),
