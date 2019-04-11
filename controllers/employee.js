@@ -24,3 +24,18 @@ exports.get = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.post = async (req, res) => {
+    try {
+        let employee = req.body;
+        employee.EmployeeStatusId = 1;
+        const employeeCreated = models.Employee.create(employee);
+        res.send({
+            id: employeeCreated.id,
+            msg: "Cadastrado com sucesso."
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
