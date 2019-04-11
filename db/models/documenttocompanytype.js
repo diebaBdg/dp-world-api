@@ -13,10 +13,14 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   DocumentToCompanyType.prototype.generateValidityDate = function () {
-    const arrayValidity = this.defaultValidity.split('-');
-    const number = arrayValidity[0];
-    const period = arrayValidity[1];
-    return moment().add(number, period);
+    if (this.defaultValidity) {
+      const arrayValidity = this.defaultValidity.split('-');
+      const number = arrayValidity[0];
+      const period = arrayValidity[1];
+      return moment().add(number, period);
+    }else{
+      return null;
+    }
   }
 
   return DocumentToCompanyType;
