@@ -107,5 +107,5 @@ exports.deleteDocuments = [
 exports.updateDocuments = [
     check('id').isInt().withMessage("Deve ser um número inteiro."),
     check('DocumentId').isInt().withMessage("Deve ser um número inteiro."),
-    check('defaultValidity').isAlphanumeric().withMessage("Deve ser alfanumérico")
+    // check('defaultValidity').isAlphanumeric().withMessage("Deve ser alfanumérico")
 ];
