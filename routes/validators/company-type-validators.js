@@ -95,8 +95,8 @@ exports.getDocuments = [
 exports.postDocuments = [
     check('id').isInt().withMessage("Deve ser um número inteiro."),
     check('documents').isArray().isLength({ min: 1 }).withMessage("Deve ser uma lista com ao menos 1 item."),
-    check('documents.*.DocumentId').isInt().withMessage("Deve ser um número inteiro."),
-    check('documents.*.defaultValidity').optional({ nullable: true }).isAlphanumeric().withMessage("Deve ser alfanumérico")
+    check('documents.*.DocumentId').isInt().withMessage("Deve ser um número inteiro.")
+    // check('documents.*.defaultValidity').optional({ nullable: true }).isAlphanumeric().withMessage("Deve ser alfanumérico")
 ];
 
 exports.deleteDocuments = [
