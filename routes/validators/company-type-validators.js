@@ -1,6 +1,7 @@
 const { check, validationResult } = require('express-validator/check');
 const models = require('../../db/models');
 const Op = require('sequelize').Op;
+const regexValidity = /^[0-9]{1,8}-(days|weeks|months|years)$/;
 
 // specific validator of company routes
 exports.get = [
@@ -96,7 +97,7 @@ exports.postDocuments = [
     check('id').isInt().withMessage("Deve ser um número inteiro."),
     check('documents').isArray().isLength({ min: 1 }).withMessage("Deve ser uma lista com ao menos 1 item."),
     check('documents.*.DocumentId').isInt().withMessage("Deve ser um número inteiro."),
-    check('documents.*.defaultValidity').optional({ nullable: true }).isAlphanumeric().withMessage("Deve ser alfanumérico")
+    check('documents.*.defaultValidity').matches(regexValidity).withMessage("Deve conter um formato válido, ex: 2-days")
 ];
 
 exports.deleteDocuments = [
@@ -107,5 +108,5 @@ exports.deleteDocuments = [
 exports.updateDocuments = [
     check('id').isInt().withMessage("Deve ser um número inteiro."),
     check('DocumentId').isInt().withMessage("Deve ser um número inteiro."),
-    check('defaultValidity').isAlphanumeric().withMessage("Deve ser alfanumérico")
+    check('defaultValidity').matches(regexValidity).withMessage("Deve conter um formato válido, ex: 2-days")
 ];
