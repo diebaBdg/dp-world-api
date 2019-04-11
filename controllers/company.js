@@ -163,6 +163,10 @@ exports.postAttachment = async (req, res) => {
         }
         const company = await models.Company.findOne({ where: { id: req.params.id } });
         const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
+        if(!documentToCompanyType){
+            res.status(422).send({ msg: "Não é anexar pois o documento não está associado ao tipode empresa" });
+            return false;
+        }
 
         const companyAttachmentCreated = await models.CompanyAttachment.create({
             originalName: req.file.originalname,
