@@ -196,11 +196,11 @@ exports.pathAttachment = [
         .withMessage("Deve ser numérico")
         .custom(idAttachment => {
             return models.CompanyAttachment.findOne({ where: { id: idAttachment } })
-            .then(attachment => {
-                if (attachment.AttachmentStatusId == 2 || attachment.AttachmentStatusId == 3 || attachment.AttachmentStatusId == 4) {
-                    return Promise.reject('Não é possível alterar o status desse anexo.');
-                }
-            });
+                .then(attachment => {
+                    if (attachment.AttachmentStatusId == 2 || attachment.AttachmentStatusId == 3 || attachment.AttachmentStatusId == 4) {
+                        return Promise.reject('Não é possível alterar o status desse anexo.');
+                    }
+                });
         }),
     check('AttachmentStatusId')
         .isNumeric()
