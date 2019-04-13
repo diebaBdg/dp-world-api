@@ -133,4 +133,23 @@ router.get('/:id/attachments', validators.getAttachments, expressValidator.finds
  */
 router.post('/:id/attachments', upload.single('attachment'), validators.postAttachment, expressValidator.findsValidatorErros(), controller.postAttachment);
 
+/**
+ * @api {patch} /employees/:id/attachments/:idAttachment Update a attachment status
+ * @apiName PatchEmployeesAttachment
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * @apiParam (Request body) {Int} AttachmentStatusId The status.
+ * @apiParam (Request body) {String} note A note about the alteration.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Atualizado com sucesso."
+ *    }
+ */
+router.patch('/:id/attachments/:idAttachment', validators.pathAttachment, expressValidator.findsValidatorErros(), controller.pathAttachment);
+
 module.exports = router;
