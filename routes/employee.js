@@ -85,6 +85,23 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
+ * @api {get} /employees/:id/attachments List employee attachments
+ * @apiName GetEmployeesAttachment
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * 
+ * @apiSuccess {Array} rows List of attachments
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "rows": []
+ *    }
+ */
+router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
+
+/**
  * @api {post} /employees/:id/attachments Create a new employee attachment
  * @apiName PostEmployeesAttachment
  * @apiGroup Employees-Attachment

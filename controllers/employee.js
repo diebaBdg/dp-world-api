@@ -88,3 +88,31 @@ exports.postAttachment = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.getAttachments = async (req, res) => {
+    try {
+        const attachments = await models.EmployeeAttachment.findAll({
+            where: {
+                EmployeeId: req.params.id
+            },
+            include: [{
+                model: models.AttachmentStatus,
+                attributes: ['id', 'name'],
+                where: {
+                    id: {
+                        [Op.ne]: 3
+                    }
+                }
+            }],
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.send({
+            rows: attachments
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}

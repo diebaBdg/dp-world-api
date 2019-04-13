@@ -103,3 +103,9 @@ exports.postAttachment = [
         .isNumeric()
         .withMessage("Deve ser numérico"),
 ];
+
+exports.getAttachments = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
