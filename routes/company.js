@@ -306,7 +306,7 @@ router.get('/:id/attachments', validators.getAttachments, expressValidator.finds
  * @apiParam (Params) {Int} id The company id.
  * @apiParam (Params) {Int} idAttachment The attachment id.
  * 
- * @apiSuccess {Array} rows List of attachments
+ * @apiSuccess {File} file The attachment file
  */
 router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
 

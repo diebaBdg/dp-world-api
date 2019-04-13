@@ -116,3 +116,15 @@ exports.getAttachments = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.getAttachmentFile = async (req, res) => {
+    try {
+        const attachment = await models.EmployeeAttachment.findOne({
+            where: { id: req.params.idAttachment }
+        });
+        res.download(attachment.path);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}

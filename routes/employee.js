@@ -85,6 +85,18 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
+ * @api {get} /employees/:id/attachments/:idAttachment/file Download a employee attachments
+ * @apiName GetEmployeesAttachmentFile
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * 
+ * @apiSuccess {File} file The attachment file
+ */
+router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
+
+/**
  * @api {get} /employees/:id/attachments List employee attachments
  * @apiName GetEmployeesAttachment
  * @apiGroup Employees-Attachment
@@ -120,6 +132,5 @@ router.get('/:id/attachments', validators.getAttachments, expressValidator.finds
  *    }
  */
 router.post('/:id/attachments', upload.single('attachment'), validators.postAttachment, expressValidator.findsValidatorErros(), controller.postAttachment);
-
 
 module.exports = router;
