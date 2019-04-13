@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   AttachmentStatus.associate = function(models) {
     // associations can be defined here
     AttachmentStatus.hasMany(models.CompanyAttachment);
+    AttachmentStatus.hasMany(models.EmployeeAttachment);
   };
   return AttachmentStatus;
 };

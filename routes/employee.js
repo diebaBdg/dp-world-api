@@ -4,6 +4,26 @@ const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/employee-validators');
 const auth = require("../config/auth")();
 router.use(auth.authenticate());
+const multer = require('multer');
+const mkdirp = require('mkdirp');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const path = './uploads/employee/' + req.params.id;
+        mkdirp(path, (err) => {
+            if (err){
+                console.error(err);
+                cb(error);
+            } else {
+                cb(null, path);
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.').pop())
+    }
+})
+const upload = multer({ storage: storage })
 
 /**
  * @api {get} /employees List of employees
@@ -64,5 +84,72 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
+/**
+ * @api {get} /employees/:id/attachments/:idAttachment/file Download a employee attachments
+ * @apiName GetEmployeesAttachmentFile
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * 
+ * @apiSuccess {File} file The attachment file
+ */
+router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
+
+/**
+ * @api {get} /employees/:id/attachments List employee attachments
+ * @apiName GetEmployeesAttachment
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * 
+ * @apiSuccess {Array} rows List of attachments
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "rows": []
+ *    }
+ */
+router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
+
+/**
+ * @api {post} /employees/:id/attachments Create a new employee attachment
+ * @apiName PostEmployeesAttachment
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Multipart) {File} attachment The attachment file.
+ * @apiParam (Multipart) {Int} DocumentId The Document id.
+ * 
+ * @apiSuccess {Int} id Company attachment inserted
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 1,
+ *        "msg": "Anexado com sucesso."
+ *    }
+ */
+router.post('/:id/attachments', upload.single('attachment'), validators.postAttachment, expressValidator.findsValidatorErros(), controller.postAttachment);
+
+/**
+ * @api {patch} /employees/:id/attachments/:idAttachment Update a attachment status
+ * @apiName PatchEmployeesAttachment
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * @apiParam (Request body) {Int} AttachmentStatusId The status.
+ * @apiParam (Request body) {String} note A note about the alteration.
+ * 
+ * @apiSuccessExample {json} Sucesso (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Atualizado com sucesso."
+ *    }
+ */
+router.patch('/:id/attachments/:idAttachment', validators.pathAttachment, expressValidator.findsValidatorErros(), controller.pathAttachment);
 
 module.exports = router;
