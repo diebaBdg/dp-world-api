@@ -1,6 +1,7 @@
 const models = require('../db/models');
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const Op = require('sequelize').Op;
 
 exports.get = async (req, res) => {
     try {
@@ -34,6 +35,54 @@ exports.post = async (req, res) => {
             id: employeeCreated.id,
             msg: "Cadastrado com sucesso."
         })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.postAttachment = async (req, res) => {
+    try {
+        if (!req.file) {
+            res.status(422).send({ msg: "Deve ser um arquivo" });
+            return false;
+        }
+        const employee = await models.Employee.findOne({ where: { id: req.params.id } });
+        const company = await employee.getCompany();
+        const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
+        if(!documentToCompanyType){
+            res.status(422).send({ msg: "Não é anexar pois o documento não está associado ao tipo de empresa" });
+            return false;
+        }
+
+        const employeeAttachmentCreated = await models.EmployeeAttachment.create({
+            originalName: req.file.originalname,
+            fileName: req.file.filename,
+            encoding: req.file.encoding,
+            mimetype: req.file.mimetype,
+            destination: req.file.destination,
+            size: req.file.size,
+            path: req.file.path,
+            validityDate: documentToCompanyType.generateValidityDate(),
+            AttachmentStatusId: 1,
+            EmployeeId: req.params.id,
+            DocumentId: req.body.DocumentId
+        });
+        await models.EmployeeAttachment.update({
+            AttachmentStatusId: 3
+        }, {
+                where: {
+                    EmployeeId: req.params.id,
+                    DocumentId: req.body.DocumentId,
+                    id: {
+                        [Op.ne]: employeeAttachmentCreated.id
+                    }
+                }
+            })
+        res.status(201).send({
+            id: employeeAttachmentCreated.id,
+            msg: "Anexado com sucesso"
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

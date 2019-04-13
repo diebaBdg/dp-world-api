@@ -94,3 +94,12 @@ exports.post = [
         .isInt()
         .withMessage("Deve ser um número inteiro.")
 ];
+
+exports.postAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('DocumentId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+];
