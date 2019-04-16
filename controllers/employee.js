@@ -11,9 +11,18 @@ exports.get = async (req, res) => {
         if (req.query.CompanyId !== undefined) {
             filter.CompanyId = req.query.CompanyId
         }
+        if (req.query.EmployeeStatusId !== undefined) {
+            filter.EmployeeStatusId = req.query.EmployeeStatusId
+        }
         // get objects
         let data = await models.Employee.findAndCountAll({
             where: filter,
+            include: [{
+                model: models.EmployeeStatus
+            },{
+                attributes: ['id','cnpj', 'socialName'],
+                model: models.Company
+            }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
