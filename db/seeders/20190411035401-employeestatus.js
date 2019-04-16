@@ -4,21 +4,31 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('EmployeeStatuses', [{
       id: 1,
-      description: "Pendente de aprovação",
+      description: "Envio de documentos",
       createdAt: new Date(),
       updatedAt: new Date()
     },{
       id: 2,
-      description: "pendente de integração.",
+      description: "Aprovação de documentos",
       createdAt: new Date(),
       updatedAt: new Date()
     },{
       id: 3,
-      description: "Habilitado",
+      description: "Documentos rejeitados",
       createdAt: new Date(),
       updatedAt: new Date()
     },{
       id: 4,
+      description: "Pendente de integração.",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },{
+      id: 5,
+      description: "Habilitado",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },{
+      id: 6,
       description: "Desativado",
       createdAt: new Date(),
       updatedAt: new Date()

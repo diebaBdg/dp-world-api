@@ -321,7 +321,7 @@ router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, 
  * @apiParam (Request body) {String} note A note about the alteration.
  * 
  * @apiSuccessExample {json} Sucesso (example)
- *    HTTP/1.1 201 OK
+ *    HTTP/1.1 200 OK
  *    {
  *        "updated": 1,
  *        "msg": "Atualizado com sucesso."

@@ -17,10 +17,30 @@ module.exports = (sequelize, DataTypes) => {
     country: DataTypes.STRING,
     cep: DataTypes.STRING,
   }, {});
-  Employee.associate = function(models) {
+  Employee.associate = function (models) {
     Employee.belongsTo(models.Function);
     Employee.belongsTo(models.Company);
     Employee.belongsTo(models.EmployeeStatus);
+    Employee.hasMany(models.EmployeeAttachment);
   };
+
+  Employee.prototype.getStatusFlow = function () {
+    return [{
+      status: 1, next: 2
+    }, {
+      status: 2, next: 3
+    }, {
+      status: 3, next: 2
+    }, {
+      status: 2, next: 4
+    }]
+  }
+
+  Employee.prototype.isStatusFlowValid = function (newStatus) {
+    const flowList = this.getStatusFlow();
+    const flow = flowList.find(item => item.status == this.EmployeeStatusId && item.next == newStatus);
+    return flow ? true : false;
+  }
+
   return Employee;
 };

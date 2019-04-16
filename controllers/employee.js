@@ -26,6 +26,49 @@ exports.get = async (req, res) => {
     }
 }
 
+exports.patch = async (req, res) => {
+    try {
+        const employeeStatusId = req.body.EmployeeStatusId;
+        const employee = await models.Employee.findOne({where: {id: req.params.id}});
+        const company = await employee.getCompany();
+        const contacts = await company.getUsers();
+        const attachments = await employee.getEmployeeAttachments();
+
+        if (!employee.isStatusFlowValid(employeeStatusId)) {
+            res.status(422).send({ msg: 'O fluxo de status não é válido.' });
+            return false;
+        }
+
+        if(employeeStatusId == 3){
+            for (contact of contacts) {
+                await contact.SendEmail(`Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.`);
+            }
+        }
+        if (employeeStatusId == 4) {
+            let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
+            if (rejectedOrNotOk.length) {
+                res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                return false;
+            } else {
+                for (contact of contacts) {
+                    await contact.SendEmail(`Documentos do colaborador ${employee.name} aprovados. Agende a integração.`);
+                }
+            }
+        }
+        
+        await employee.update({
+            EmployeeStatusId: employeeStatusId
+        });
+        res.send({
+            updated: 1,
+            msg: "Atualizado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
 exports.post = async (req, res) => {
     try {
         let employee = req.body;

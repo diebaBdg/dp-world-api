@@ -84,6 +84,13 @@ exports.patch = async (req, res) => {
             for (contact of contacts) {
                 await contact.enableAndSendEmail();
             }
+            if(!req.body.SectorId){
+                res.status(422).send({ msg: 'SectorId obrigatório.' });
+                return false;
+            }
+            await company.update({
+                SectorId: req.body.SectorId
+            });
         }
         if (companyStatusId == 4) {
             for (contact of contacts) {
@@ -101,9 +108,7 @@ exports.patch = async (req, res) => {
                 }
             }
         }
-
         await company.update({
-            SectorId: req.body.SectorId,
             CompanyStatusId: companyStatusId
         });
         res.status(200).send({
