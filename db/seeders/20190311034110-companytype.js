@@ -26,6 +26,18 @@ module.exports = {
         status: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
+      },{
+        id: 5,
+        description: "Serviços emergenciais (até 7 dias)",
+        status: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },{
+        id: 6,
+        description: "Mão de obra acima de 15 dias",
+        status: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }], {});
   },
 

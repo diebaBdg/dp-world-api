@@ -9,7 +9,7 @@ module.exports = {
       email: 'velosojonathan5@gmail.com',
       phone: '37999223568',
       phone2: '31989915622',
-      password: 'adb2131696d5a2cf35a973cc5c3abaaa',
+      password: '202cb962ac59075b964b07152d234b70',
       UserTypeId: 1,
       UserStatusId: 1,
       SectorId: 1,

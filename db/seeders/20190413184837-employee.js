@@ -11,7 +11,7 @@ module.exports = {
       rg: "MG45875255",
       cpf: "10463904656",
       phone: "999223568",
-      email: "velosojonathan5@gmail.com",
+      email: "velosojonathan55@gmail.com",
       address: "aaa",
       number: "aaa",
       complement: "aaa",
