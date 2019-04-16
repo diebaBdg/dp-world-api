@@ -125,7 +125,7 @@ module.exports = {
       },
       {
           "id": 20,
-          "link": "/",
+          "link": "/employees",
           "name": "Funcionários",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
