@@ -21,6 +21,15 @@ exports.get = [
         .withMessage("Deve ser ASC ou DESC.")
 ];
 
+exports.patch = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('EmployeeStatusId')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
 exports.post = [
     check('name')
         .isLength({ min: 3, max: 50 })

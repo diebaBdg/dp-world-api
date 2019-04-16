@@ -42,12 +42,54 @@ const upload = multer({ storage: storage })
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *       "count": 2,
+ *       "count": 1,
  *       "pages": 1,
- *       "rows": []
+ *       "rows": [{
+            "id": 4,
+            "name": "João",
+            "birthDate": "2009-01-07T00:00:00.000Z",
+            "sector": "Compras",
+            "rg": "MG45875255",
+            "cpf": "10463904657",
+            "phone": "37999223568",
+            "email": "velosojonathan6@gmail.com",
+            "address": "aaa",
+            "number": "aaa",
+            "complement": "aaa",
+            "district": "aaa",
+            "city": "aaa",
+            "state": "MG",
+            "country": "aaa",
+            "cep": "30130012",
+            "createdAt": "2019-04-11T04:37:53.000Z",
+            "updatedAt": "2019-04-16T01:33:25.980Z",
+            "CompanyId": 1,
+            "FunctionId": 1,
+            "EmployeeStatusId": 1
+         }]
  *    }
  */
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
+
+/**
+ * @api {patch} /employees/:id Update a employee status
+ * @apiName PatchEmployees
+ * @apiGroup Employees
+ * 
+ * @apiParam (Query params) id The employee id.
+ * @apiParam (Request body) EmployeeStatusId A employee status id.
+ *
+ * @apiSuccess {Int} updated If was updated.
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Atualizado com sucesso."
+ *    }
+ */
+router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), controller.patch);
 
 /**
  * @api {post} /employees Create a employee

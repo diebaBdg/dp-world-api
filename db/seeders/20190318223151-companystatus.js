@@ -24,16 +24,11 @@ module.exports = {
         updatedAt: new Date()
       },{
         id: 5,
-        description: "Credenciamento de colaboradores",
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },{
-        id: 6,
         description: "Habilitado",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        id: 7,
+        id: 6,
         description: "Desativado",
         createdAt: new Date(),
         updatedAt: new Date()

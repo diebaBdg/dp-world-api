@@ -32,12 +32,26 @@ module.exports = {
       },{
         id: 5,
         defaultValidity: '1-years',
-        DocumentId: 3,
+        DocumentId: 1,
         CompanyTypeId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 6,
+        defaultValidity: '1-years',
+        DocumentId: 2,
+        CompanyTypeId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        id: 7,
+        defaultValidity: '1-years',
+        DocumentId: 3,
+        CompanyTypeId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        id: 8,
         defaultValidity: '1-years',
         DocumentId: 4,
         CompanyTypeId: 2,
