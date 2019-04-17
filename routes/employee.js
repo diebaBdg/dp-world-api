@@ -90,12 +90,44 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * 
  * @apiParam (Query params) id The employee id.
  *
- * @apiSuccess {OBject} data The employee data.
+ * @apiSuccess {Object} data The employee data.
  * 
  * @apiSuccessExample {json} Success (example)
  *    HTTP/1.1 200 OK
  *    {
- *    }
+ *           "id": 1,
+ *           "name": "João",
+ *           "birthDate": "2009-01-07T04:36:14.000Z",
+ *           "sector": "Compras",
+ *           "rg": "MG45875255",
+ *           "cpf": "10463904656",
+ *           "phone": "999223568",
+ *           "email": "velosojonathan55@gmail.com",
+ *           "address": "aaa",
+ *           "number": "aaa",
+ *           "complement": "aaa",
+ *           "district": "aaa",
+ *           "city": "aa",
+ *           "state": "aaa",
+ *           "country": "aaa",
+ *           "cep": "aaa",
+ *           "createdAt": "2019-04-16T00:01:59.705Z",
+ *           "updatedAt": "2019-04-16T01:37:15.555Z",
+ *           "CompanyId": 1,
+ *           "FunctionId": 1,
+ *           "EmployeeStatusId": 4,
+ *           "EmployeeStatus": {
+ *               "id": 4,
+ *               "description": "Desativado",
+ *               "createdAt": "2019-04-16T00:01:59.660Z",
+ *               "updatedAt": "2019-04-16T00:01:59.660Z"
+ *           },
+ *           "Company": {
+ *               "id": 1,
+ *               "cnpj": "1636270000108",
+ *               "socialName": "Empresa Teste"
+ *           }
+ *      }
  */
 router.get('/:id', validators.getOne, expressValidator.findsValidatorErros(), controller.getOne);
 
