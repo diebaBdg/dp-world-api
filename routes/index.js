@@ -12,5 +12,6 @@ exports.routes = (app) => {
     app.use('/auth', require('./auth'));
     app.use('/menu', require('./menu'));
     app.use('/employees', require('./employee'));
+    app.use('/integrations', require('./integration'));
     return app;
 }

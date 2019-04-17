@@ -21,6 +21,21 @@ exports.get = [
         .withMessage("Deve ser ASC ou DESC.")
 ];
 
+exports.getOne = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
+exports.patch = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('EmployeeStatusId')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
 exports.post = [
     check('name')
         .isLength({ min: 3, max: 50 })
@@ -94,3 +109,51 @@ exports.post = [
         .isInt()
         .withMessage("Deve ser um número inteiro.")
 ];
+
+exports.postAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('DocumentId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+];
+
+exports.getAttachments = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
+exports.getAttachmentFile = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+]
+
+exports.pathAttachment = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('idAttachment')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+        .custom(idAttachment => {
+            return models.EmployeeAttachment.findOne({ where: { id: idAttachment } })
+                .then(attachment => {
+                    if (attachment.AttachmentStatusId == 2 || attachment.AttachmentStatusId == 3 || attachment.AttachmentStatusId == 4) {
+                        return Promise.reject('Não é possível alterar o status desse anexo.');
+                    }
+                });
+        }),
+    check('AttachmentStatusId')
+        .isNumeric()
+        .withMessage("Deve ser numérico"),
+    check('note')
+        .optional()
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Deve ter entre 3 e 50 caracteres."),
+]

@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     let mailOptions = {
       from: '"noreply dp-world" noreply@speedsoftware.com.br',
       to: this.email,
-      subject: "Cadastro",
+      subject: "Notificação",
       html: msg
     };
     return emailHelper.sendMail(mailOptions);

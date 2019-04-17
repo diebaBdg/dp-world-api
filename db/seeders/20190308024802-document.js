@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Documents', [{
       id: 1,
-      description: "Formulário de requisição de credenciamento",
+      description: "Cópia simples do Cartão CNPJ",
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -13,38 +13,29 @@ module.exports = {
     },
     {
       id: 2,
-      description: "Certidão estadual",
+      description: "Comprovante IR",
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-      DocumentTypeId: 1,
+      DocumentTypeId: 2,
       FunctionId: 1
     },
     {
       id: 3,
-      description: "Certidão da justiça federal",
+      description: "Cópia do CPF",
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-      DocumentTypeId: 1,
+      DocumentTypeId: 3,
       FunctionId: null
     },
     {
       id: 4,
-      description: "Certidão da polícia federal",
+      description: "Exame de saúde periódico",
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-      DocumentTypeId: 1,
-      FunctionId: null
-    },
-    {
-      id: 5,
-      description: "Cópia do CTPS (foto, qualificação civil e contrato de trabalho)",
-      status: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      DocumentTypeId: 1,
+      DocumentTypeId: 4,
       FunctionId: null
     }], {});
   },

@@ -1,6 +1,7 @@
 const models = require('../db/models');
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const Op = require('sequelize').Op;
 
 exports.get = async (req, res) => {
     try {
@@ -10,15 +11,85 @@ exports.get = async (req, res) => {
         if (req.query.CompanyId !== undefined) {
             filter.CompanyId = req.query.CompanyId
         }
-        // get objects
+        if (req.query.EmployeeStatusId !== undefined) {
+            filter.EmployeeStatusId = req.query.EmployeeStatusId
+        }
         let data = await models.Employee.findAndCountAll({
             where: filter,
+            include: [{
+                model: models.EmployeeStatus
+            }, {
+                attributes: ['id', 'cnpj', 'socialName'],
+                model: models.Company
+            }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
         });
         data.pages = paginator.getNumberOfPages(data.count);
         res.send(data);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getOne = async (req, res) => {
+    try {
+        res.send(await models.Employee.findOne({ 
+            where: { 
+                id: req.params.id 
+            },
+            include: [{
+                model: models.EmployeeStatus
+            }, {
+                attributes: ['id', 'cnpj', 'socialName'],
+                model: models.Company
+            }]
+        }));
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.patch = async (req, res) => {
+    try {
+        const employeeStatusId = req.body.EmployeeStatusId;
+        const employee = await models.Employee.findOne({ where: { id: req.params.id } });
+        const company = await employee.getCompany();
+        const contacts = await company.getUsers();
+        const attachments = await employee.getEmployeeAttachments();
+
+        if (!employee.isStatusFlowValid(employeeStatusId)) {
+            res.status(422).send({ msg: 'O fluxo de status não é válido.' });
+            return false;
+        }
+
+        if (employeeStatusId == 3) {
+            for (contact of contacts) {
+                await contact.SendEmail(`Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.`);
+            }
+        }
+        if (employeeStatusId == 4) {
+            let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
+            if (rejectedOrNotOk.length) {
+                res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                return false;
+            } else {
+                for (contact of contacts) {
+                    await contact.SendEmail(`Documentos do colaborador ${employee.name} aprovados. Agende a integração.`);
+                }
+            }
+        }
+
+        await employee.update({
+            EmployeeStatusId: employeeStatusId
+        });
+        res.send({
+            updated: 1,
+            msg: "Atualizado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
@@ -34,6 +105,114 @@ exports.post = async (req, res) => {
             id: employeeCreated.id,
             msg: "Cadastrado com sucesso."
         })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.postAttachment = async (req, res) => {
+    try {
+        if (!req.file) {
+            res.status(422).send({ msg: "Deve ser um arquivo" });
+            return false;
+        }
+        const employee = await models.Employee.findOne({ where: { id: req.params.id } });
+        const company = await employee.getCompany();
+        const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
+        if (!documentToCompanyType) {
+            res.status(422).send({ msg: "Não é anexar pois o documento não está associado ao tipo de empresa" });
+            return false;
+        }
+
+        const employeeAttachmentCreated = await models.EmployeeAttachment.create({
+            originalName: req.file.originalname,
+            fileName: req.file.filename,
+            encoding: req.file.encoding,
+            mimetype: req.file.mimetype,
+            destination: req.file.destination,
+            size: req.file.size,
+            path: req.file.path,
+            validityDate: documentToCompanyType.generateValidityDate(),
+            AttachmentStatusId: 1,
+            EmployeeId: req.params.id,
+            DocumentId: req.body.DocumentId
+        });
+        await models.EmployeeAttachment.update({
+            AttachmentStatusId: 3
+        }, {
+                where: {
+                    EmployeeId: req.params.id,
+                    DocumentId: req.body.DocumentId,
+                    id: {
+                        [Op.ne]: employeeAttachmentCreated.id
+                    }
+                }
+            })
+        res.status(201).send({
+            id: employeeAttachmentCreated.id,
+            msg: "Anexado com sucesso"
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getAttachments = async (req, res) => {
+    try {
+        const attachments = await models.EmployeeAttachment.findAll({
+            where: {
+                EmployeeId: req.params.id
+            },
+            include: [{
+                model: models.AttachmentStatus,
+                attributes: ['id', 'name'],
+                where: {
+                    id: {
+                        [Op.ne]: 3
+                    }
+                }
+            }],
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.send({
+            rows: attachments
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getAttachmentFile = async (req, res) => {
+    try {
+        const attachment = await models.EmployeeAttachment.findOne({
+            where: { id: req.params.idAttachment }
+        });
+        res.download(attachment.path);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.pathAttachment = async (req, res) => {
+    try {
+        const updated = await models.EmployeeAttachment.update({
+            AttachmentStatusId: req.body.AttachmentStatusId,
+            note: req.body.note
+        }, {
+                where: {
+                    id: req.params.idAttachment
+                }
+            });
+        res.status(200).send({
+            updated: updated[0],
+            msg: "Atualizado com sucesso."
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
