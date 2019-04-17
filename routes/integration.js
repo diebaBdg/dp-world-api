@@ -44,4 +44,26 @@ router.use(auth.authenticate());
  */
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
+/**
+ * @api {post} /integrations Create a integration
+ * @apiName PostIntegrations
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Request body) {Date} date A integration date and hour in format YYYY-MM-DD HH:MM:SS.
+ * @apiParam (Request body) {Int} vacancies The amount of vacancies in integration.
+ * @apiParam (Request body) {String} instructor The intrictor of integration.
+ * @apiParam (Request body) {String} note A note about the integration.
+ *
+ * @apiSuccess {Int} id Integration inserted
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *       "id": 17,
+ *       "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
+
 module.exports = router;

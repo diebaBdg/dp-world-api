@@ -20,3 +20,16 @@ exports.get = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.post = async (req, res) => {
+    try {
+        const integrationCreated = await models.Integration.create(req.body);
+        res.send({
+            id: integrationCreated.id,
+            msg: "Cadastrado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
