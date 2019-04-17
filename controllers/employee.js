@@ -14,7 +14,6 @@ exports.get = async (req, res) => {
         if (req.query.EmployeeStatusId !== undefined) {
             filter.EmployeeStatusId = req.query.EmployeeStatusId
         }
-        // get objects
         let data = await models.Employee.findAndCountAll({
             where: filter,
             include: [{
