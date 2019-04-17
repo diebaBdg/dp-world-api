@@ -84,6 +84,22 @@ const upload = multer({ storage: storage })
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
+ * @api {get} /employees/:id Get a employee
+ * @apiName GetEmployee
+ * @apiGroup Employees
+ * 
+ * @apiParam (Query params) id The employee id.
+ *
+ * @apiSuccess {OBject} data The employee data.
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *    }
+ */
+router.get('/:id', validators.getOne, expressValidator.findsValidatorErros(), controller.getOne);
+
+/**
  * @api {patch} /employees/:id Update a employee status
  * @apiName PatchEmployees
  * @apiGroup Employees
