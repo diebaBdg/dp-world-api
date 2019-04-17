@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Companies', [{
       id: 1,
-      cnpj: '1636270000108',
+      cnpj: '16362700001089',
       socialName: "Empresa Teste",
       businessName: "Empresa Teste",
       address: "Av Afonso Pena 3148",
