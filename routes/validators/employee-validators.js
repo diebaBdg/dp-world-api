@@ -21,6 +21,12 @@ exports.get = [
         .withMessage("Deve ser ASC ou DESC.")
 ];
 
+exports.getOne = [
+    check('id')
+        .isNumeric()
+        .withMessage("Deve ser numérico")
+];
+
 exports.patch = [
     check('id')
         .isNumeric()

@@ -46,31 +46,58 @@ const upload = multer({ storage: storage })
  *       "count": 1,
  *       "pages": 1,
  *       "rows": [{
-            "id": 4,
-            "name": "João",
-            "birthDate": "2009-01-07T00:00:00.000Z",
-            "sector": "Compras",
-            "rg": "MG45875255",
-            "cpf": "10463904657",
-            "phone": "37999223568",
-            "email": "velosojonathan6@gmail.com",
-            "address": "aaa",
-            "number": "aaa",
-            "complement": "aaa",
-            "district": "aaa",
-            "city": "aaa",
-            "state": "MG",
-            "country": "aaa",
-            "cep": "30130012",
-            "createdAt": "2019-04-11T04:37:53.000Z",
-            "updatedAt": "2019-04-16T01:33:25.980Z",
-            "CompanyId": 1,
-            "FunctionId": 1,
-            "EmployeeStatusId": 1
-         }]
+ *           "id": 4,
+ *           "name": "João",
+ *           "birthDate": "2009-01-07T00:00:00.000Z",
+ *           "sector": "Compras",
+ *           "rg": "MG45875255",
+ *           "cpf": "10463904657",
+ *           "phone": "37999223568",
+ *           "email": "velosojonathan6@gmail.com",
+ *           "address": "aaa",
+ *           "number": "aaa",
+ *           "complement": "aaa",
+ *           "district": "aaa",
+ *           "city": "aaa",
+ *           "state": "MG",
+ *           "country": "aaa",
+ *           "cep": "30130012",
+ *           "createdAt": "2019-04-11T04:37:53.000Z",
+ *           "updatedAt": "2019-04-16T01:33:25.980Z",
+ *           "CompanyId": 1,
+ *           "FunctionId": 1,
+ *           "EmployeeStatusId": 1,
+ *           "EmployeeStatus": {
+ *               "id": 1,
+ *               "description": "Pendente de aprovação",
+ *               "createdAt": "2019-04-16T00:01:59.660Z",
+ *               "updatedAt": "2019-04-16T00:01:59.660Z"
+ *           },
+ *           "Company": {
+ *               "id": 1,
+ *               "cnpj": "1636270000108",
+ *               "socialName": "Empresa Teste"
+ *           }
+ *        }]
  *    }
  */
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
+
+/**
+ * @api {get} /employees/:id Get a employee
+ * @apiName GetEmployee
+ * @apiGroup Employees
+ * 
+ * @apiParam (Query params) id The employee id.
+ *
+ * @apiSuccess {OBject} data The employee data.
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *    }
+ */
+router.get('/:id', validators.getOne, expressValidator.findsValidatorErros(), controller.getOne);
 
 /**
  * @api {patch} /employees/:id Update a employee status
@@ -151,7 +178,27 @@ router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
  *    {
- *        "rows": []
+ *        "rows": [{
+ *           "id": 11,
+ *           "originalName": "empty.csv",
+ *           "fileName": "attachment-1554956328223.csv",
+ *           "validityDate": null,
+ *           "encoding": "7bit",
+ *           "mimetype": "text/csv",
+ *           "destination": "./uploads/companies/1",
+ *           "size": "9295856",
+ *           "path": "uploads\\companies\\1\\attachment-1554956328223.csv",
+ *           "note": null,
+ *           "createdAt": "2019-04-16T00:01:59.749Z",
+ *           "updatedAt": "2019-04-16T00:01:59.749Z",
+ *           "AttachmentStatusId": 2,
+ *           "EmployeeId": 1,
+ *           "DocumentId": 3,
+ *           "AttachmentStatus": {
+ *                "id": 2,
+ *               "name": "Aprovado"
+ *           }
+ *        }]
  *    }
  */
 router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);

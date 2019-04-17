@@ -19,8 +19,8 @@ exports.get = async (req, res) => {
             where: filter,
             include: [{
                 model: models.EmployeeStatus
-            },{
-                attributes: ['id','cnpj', 'socialName'],
+            }, {
+                attributes: ['id', 'cnpj', 'socialName'],
                 model: models.Company
             }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
@@ -35,10 +35,29 @@ exports.get = async (req, res) => {
     }
 }
 
+exports.getOne = async (req, res) => {
+    try {
+        res.send(await models.Employee.findOne({ 
+            where: { 
+                id: req.params.id 
+            },
+            include: [{
+                model: models.EmployeeStatus
+            }, {
+                attributes: ['id', 'cnpj', 'socialName'],
+                model: models.Company
+            }]
+        }));
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
 exports.patch = async (req, res) => {
     try {
         const employeeStatusId = req.body.EmployeeStatusId;
-        const employee = await models.Employee.findOne({where: {id: req.params.id}});
+        const employee = await models.Employee.findOne({ where: { id: req.params.id } });
         const company = await employee.getCompany();
         const contacts = await company.getUsers();
         const attachments = await employee.getEmployeeAttachments();
@@ -48,7 +67,7 @@ exports.patch = async (req, res) => {
             return false;
         }
 
-        if(employeeStatusId == 3){
+        if (employeeStatusId == 3) {
             for (contact of contacts) {
                 await contact.SendEmail(`Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.`);
             }
@@ -64,7 +83,7 @@ exports.patch = async (req, res) => {
                 }
             }
         }
-        
+
         await employee.update({
             EmployeeStatusId: employeeStatusId
         });
@@ -102,7 +121,7 @@ exports.postAttachment = async (req, res) => {
         const employee = await models.Employee.findOne({ where: { id: req.params.id } });
         const company = await employee.getCompany();
         const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
-        if(!documentToCompanyType){
+        if (!documentToCompanyType) {
             res.status(422).send({ msg: "Não é anexar pois o documento não está associado ao tipo de empresa" });
             return false;
         }
