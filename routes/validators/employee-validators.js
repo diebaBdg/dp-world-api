@@ -154,6 +154,6 @@ exports.pathAttachment = [
         .withMessage("Deve ser numérico"),
     check('note')
         .optional()
-        .isLength({ min: 3, max: 50 })
-        .withMessage("Deve ter entre 3 e 50 caracteres."),
+        .isLength({ min: 3, max: 200 })
+        .withMessage("Deve ter entre 3 e 200 caracteres."),
 ]
