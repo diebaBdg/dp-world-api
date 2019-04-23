@@ -66,6 +66,7 @@ exports.post = [
         .isLength({ min: 10, max: 11 })
         .withMessage("Deve ter 10 ou 11 caracteres."),
     check('email')
+        .optional({ nullable: true })
         .isEmail()
         .withMessage("Deve ser um email válido")
         .custom((email) => {
