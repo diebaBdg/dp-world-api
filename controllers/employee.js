@@ -14,6 +14,9 @@ exports.get = async (req, res) => {
         if (req.query.EmployeeStatusId !== undefined) {
             filter.EmployeeStatusId = req.query.EmployeeStatusId
         }
+        if (req.query.name !== undefined) {
+            filter.name = { [Op.like]: `%${req.query.name}%` }
+        }
         let data = await models.Employee.findAndCountAll({
             where: filter,
             include: [{
@@ -36,9 +39,9 @@ exports.get = async (req, res) => {
 
 exports.getOne = async (req, res) => {
     try {
-        res.send(await models.Employee.findOne({ 
-            where: { 
-                id: req.params.id 
+        res.send(await models.Employee.findOne({
+            where: {
+                id: req.params.id
             },
             include: [{
                 model: models.EmployeeStatus
@@ -72,7 +75,7 @@ exports.patch = async (req, res) => {
         }
 
         if (employeeStatusId == 3) {
-            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note?item.note:'não informado.'}`).join('<br>');
+            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note ? item.note : 'não informado.'}`).join('<br>');
             for (contact of contacts) {
                 await contact.SendEmail(`Olá,<br>Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br>` + refuseText);
             }

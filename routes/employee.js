@@ -35,6 +35,7 @@ const upload = multer({ storage: storage })
  * @apiParam (Query params) order_direction The order direction (ASC or DESC).
  * @apiParam (Query params) CompanyId The company id.
  * @apiParam (Query params) EmployeeStatusId The status id.
+ * @apiParam (Query params) name The employee name.
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.
