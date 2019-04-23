@@ -50,5 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     return flow ? true : false;
   }
 
+  // Company.prototype.getAmountEmployeesPending = function () {
+  //   return 10;
+  // }
+
   return Company;
 };
