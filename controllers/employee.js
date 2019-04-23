@@ -107,7 +107,7 @@ exports.post = async (req, res) => {
         let employee = req.body;
         employee.EmployeeStatusId = 1;
         const employeeCreated = models.Employee.create(employee);
-        res.send({
+        res.status(201).send({
             id: employeeCreated.id,
             msg: "Cadastrado com sucesso."
         })

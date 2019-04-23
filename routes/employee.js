@@ -178,7 +178,7 @@ router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), c
  * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example)
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *        "id": 17,
  *        "msg": "Cadastrado com sucesso."
