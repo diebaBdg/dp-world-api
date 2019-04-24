@@ -1,12 +1,23 @@
 const models = require('../db/models');
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const moment = require('moment');
+const Op = require('sequelize').Op;
 
 exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
+        const now = moment().format();
         // filter definition
         let filter = {};
+        if(req.query.occurrence){
+            const occurrence = req.query.occurrence.toUpperCase();
+            if(occurrence == 'FUTURE'){
+                filter.date = {[Op.gte]: now};
+            }else if(occurrence == 'PAST'){
+                filter.date = {[Op.lte]: now};
+            }
+        }
         let data = await models.Integration.findAndCountAll({
             where: filter,
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
