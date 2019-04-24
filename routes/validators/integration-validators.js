@@ -13,7 +13,11 @@ exports.get = [
     check('order_direction')
         .optional()
         .isIn(['ASC', 'DESC'])
-        .withMessage("Deve ser ASC ou DESC.")
+        .withMessage("Deve ser ASC ou DESC."),
+    check('occurrence')
+        .optional()
+        .isIn(['PAST','past', 'FUTURE','future'])
+        .withMessage("Deve ser PAST ou FUTURE.")
 ];
 
 exports.post = [
@@ -27,7 +31,7 @@ exports.post = [
         .custom(date => {
             const now = moment();
             const dateMoment = moment(date);
-            return now.isBefore(dateMoment,'day')
+            return now.isBefore(dateMoment, 'day')
         })
         .withMessage("A data deve ser ao menos 1 dia após a data atual."),
     check('vacancies')

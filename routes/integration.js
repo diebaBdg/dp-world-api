@@ -13,6 +13,7 @@ router.use(auth.authenticate());
  * @apiParam (Query params) page The page.
  * @apiParam (Query params) order_by A column to order.
  * @apiParam (Query params) order_direction The order direction (ASC or DESC).
+ * @apiParam (Query params) occurrence The occurrence (PAST or FUTURE).
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.

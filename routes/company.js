@@ -34,6 +34,7 @@ const upload = multer({ storage: storage })
  * @apiParam (Query params) {Int} status Filter by status.
  * @apiParam (Query params) {String} cnpj Filter by cnpj.
  * @apiParam (Query params) {String} socialName  Filter by social name.
+ * @apiParam (Query params) {String} CompanyStatusId  Filter by company status.
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.
