@@ -1,6 +1,5 @@
-const auth = require("../config/auth")();
+'use strict'
 
-// difinig routes
 exports.routes = (app) => {
     app.use('/companies', require('./company'));
     app.use('/documents', require('./document'));
