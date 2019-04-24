@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Integration.associate = function(models) {
     // associations can be defined here
+    Integration.hasMany(models.IntegrationSchedule);
   };
   return Integration;
 };
