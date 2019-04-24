@@ -35,6 +35,7 @@ const upload = multer({ storage: storage })
  * @apiParam (Query params) order_direction The order direction (ASC or DESC).
  * @apiParam (Query params) CompanyId The company id.
  * @apiParam (Query params) EmployeeStatusId The status id.
+ * @apiParam (Query params) name The employee name.
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.
@@ -178,7 +179,7 @@ router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), c
  * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example)
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *        "id": 17,
  *        "msg": "Cadastrado com sucesso."

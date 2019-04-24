@@ -55,7 +55,6 @@ exports.getOne = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        // get request body
         let company = req.body;
         company.CompanyStatusId = 1;
         const companyCreated = await models.Company.create(company);
@@ -68,12 +67,35 @@ exports.post = async (req, res) => {
     }
 }
 
+exports.put = async (req, res) => {
+    try {
+        const company = req.body;
+        const updated = await models.Company.update(company,{
+            where: {
+                id: req.params.id
+            }
+        });
+        res.send({
+            updated: updated[0],
+            msg: "Alterado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err })
+    }
+}
+
 exports.patch = async (req, res) => {
     try {
         const companyStatusId = req.body.CompanyStatusId;
         const company = await models.Company.findOne({ where: { id: req.params.id } });
         const contacts = await company.getUsers();
-        const attachments = await company.getCompanyAttachments();
+        const attachments = await company.getCompanyAttachments({
+            include: [{
+                model: models.Document,
+                attributes: ['id', 'description']
+            }]
+        });
 
         if (!company.isStatusFlowValid(companyStatusId)) {
             res.status(422).send({ msg: 'O fluxo de status não é válido.' });
@@ -93,18 +115,19 @@ exports.patch = async (req, res) => {
             });
         }
         if (companyStatusId == 4) {
+            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note?item.note:'não informado.'}`).join('<br>');
             for (contact of contacts) {
-                await contact.SendEmail('Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.');
+                await contact.SendEmail(`Olá,<br>Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br> ` + refuseText);
             }
         }
         if (companyStatusId == 5) {
             let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
             if (rejectedOrNotOk.length) {
-                res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                res.status(422).send({ msg: 'Olá,<br>Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
                 return false;
             } else {
                 for (contact of contacts) {
-                    await contact.SendEmail('Documentos da empresa aprovados. Credencie os colaboradores.');
+                    await contact.SendEmail('Olá,<br>Documentos da empresa aprovados. Credencie os colaboradores.');
                 }
             }
         }
@@ -221,6 +244,9 @@ exports.getAttachments = async (req, res) => {
                         [Op.ne]: 3
                     }
                 }
+            },{
+                model: models.Document,
+                attributes: ['id', 'description']
             }],
             order: [
                 ['id', 'DESC']

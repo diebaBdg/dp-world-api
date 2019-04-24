@@ -14,6 +14,9 @@ exports.get = async (req, res) => {
         if (req.query.EmployeeStatusId !== undefined) {
             filter.EmployeeStatusId = req.query.EmployeeStatusId
         }
+        if (req.query.name !== undefined) {
+            filter.name = { [Op.like]: `%${req.query.name}%` }
+        }
         let data = await models.Employee.findAndCountAll({
             where: filter,
             include: [{
@@ -36,9 +39,9 @@ exports.get = async (req, res) => {
 
 exports.getOne = async (req, res) => {
     try {
-        res.send(await models.Employee.findOne({ 
-            where: { 
-                id: req.params.id 
+        res.send(await models.Employee.findOne({
+            where: {
+                id: req.params.id
             },
             include: [{
                 model: models.EmployeeStatus
@@ -59,7 +62,12 @@ exports.patch = async (req, res) => {
         const employee = await models.Employee.findOne({ where: { id: req.params.id } });
         const company = await employee.getCompany();
         const contacts = await company.getUsers();
-        const attachments = await employee.getEmployeeAttachments();
+        const attachments = await employee.getEmployeeAttachments({
+            include: [{
+                model: models.Document,
+                attributes: ['id', 'description']
+            }]
+        });
 
         if (!employee.isStatusFlowValid(employeeStatusId)) {
             res.status(422).send({ msg: 'O fluxo de status não é válido.' });
@@ -67,8 +75,9 @@ exports.patch = async (req, res) => {
         }
 
         if (employeeStatusId == 3) {
+            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note ? item.note : 'não informado.'}`).join('<br>');
             for (contact of contacts) {
-                await contact.SendEmail(`Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.`);
+                await contact.SendEmail(`Olá,<br>Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br>` + refuseText);
             }
         }
         if (employeeStatusId == 4) {
@@ -101,7 +110,7 @@ exports.post = async (req, res) => {
         let employee = req.body;
         employee.EmployeeStatusId = 1;
         const employeeCreated = models.Employee.create(employee);
-        res.send({
+        res.status(201).send({
             id: employeeCreated.id,
             msg: "Cadastrado com sucesso."
         })

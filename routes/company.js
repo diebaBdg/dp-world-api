@@ -153,6 +153,41 @@ router.get('/:id', validators.get, expressValidator.findsValidatorErros(), contr
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 /**
+ * @api {put} /companies/:id Update a company
+ * @apiName PutCompany
+ * @apiGroup Companies
+ * 
+ * @apiParam (Query params) {Int} id The company id.
+ * @apiParam (Request body) {String} cnpj Brazilian document number.
+ * @apiParam (Request body) {String} socialName Social name.
+ * @apiParam (Request body) {String} businessName List Business name.
+ * @apiParam (Request body) {String} address The local of the company.
+ * @apiParam (Request body) {String} number The street number.
+ * @apiParam (Request body) {String} complement The complement address.
+ * @apiParam (Request body) {String} district The district.
+ * @apiParam (Request body) {String} city The city.
+ * @apiParam (Request body) {String} state The state or province.
+ * @apiParam (Request body) {String} country The country.
+ * @apiParam (Request body) {String} cep The postal code.
+ * @apiParam (Request body) {String} phone The phone number.
+ * @apiParam (Request body) {String} inscricaoEstadual Brazilian document number.
+ * @apiParam (Request body) {String} site Company web site.
+ * @apiParam (Request body) {Int}    CompanyTypeId Company type.
+ * @apiParam (Request body) {Int}    CompanyId If is outsourced, the id of the company contractor.
+ *
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
+
+/**
  * @api {patch} /companies/:id Update a company status
  * @apiName PatchCompanies
  * @apiGroup Companies
