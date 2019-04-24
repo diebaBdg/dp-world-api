@@ -55,12 +55,29 @@ exports.getOne = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        // get request body
         let company = req.body;
         company.CompanyStatusId = 1;
         const companyCreated = await models.Company.create(company);
         res.status(201).send({
             id: companyCreated.id
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error', err })
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const company = req.body;
+        const updated = await models.Company.update(company,{
+            where: {
+                id: req.params.id
+            }
+        });
+        res.send({
+            updated: updated[0],
+            msg: "Alterado com sucesso."
         });
     } catch (err) {
         console.log(err);
