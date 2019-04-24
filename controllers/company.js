@@ -20,6 +20,9 @@ exports.get = async (req, res) => {
                 [Op.like]: req.query.socialName + '%'
             }
         }
+        if (req.query.CompanyStatusId) {
+            filter.CompanyStatusId = req.query.CompanyStatusId
+        }
         // get objects
         let data = await models.Company.findAndCountAll({
             where: filter,

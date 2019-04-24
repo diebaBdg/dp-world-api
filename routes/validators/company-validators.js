@@ -23,7 +23,11 @@ exports.get = [
     check('order_direction')
         .optional()
         .isIn(['ASC', 'DESC'])
-        .withMessage("Deve ser ASC ou DESC.")
+        .withMessage("Deve ser ASC ou DESC."),
+    check('EmployeeStatusId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [
