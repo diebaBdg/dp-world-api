@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     Employee.belongsTo(models.Company);
     Employee.belongsTo(models.EmployeeStatus);
     Employee.hasMany(models.EmployeeAttachment);
+    Employee.hasMany(models.IntegrationSchedule);
   };
 
   Employee.prototype.getStatusFlow = function () {
