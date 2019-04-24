@@ -1,15 +1,15 @@
 const router = require('express').Router();
-const controller = require('../controllers/employee-status');
+const controller = require('../controllers/company-status');
 const auth = require("../config/auth")();
 router.use(auth.authenticate());
 
 /**
- * @api {get} /employee-status List of employees status
- * @apiName GetEmployeesStatus
- * @apiGroup Employees
+ * @api {get} /company-status List of company status
+ * @apiName GetCompanyStatus
+ * @apiGroup Companies
  * 
  * @apiSuccess {Int} count Number of total items.
- * @apiSuccess {Array} rows List of employee status
+ * @apiSuccess {Array} rows List of company status
  * 
  */
 router.get('/', controller.get);
