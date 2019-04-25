@@ -67,4 +67,25 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  */
 router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
 
+/**
+ * @api {patch} /integration-schedules/:id Set presence in integration schedule
+ * @apiName PatchIntegrationSchedules
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Params) {Int} id  Integration schedule id.
+ * 
+ * @apiParam (Request body) {Boolean} showedUp If presence occursed (true or false).
+ *
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
+ *    }
+ */
+router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), controller.patch);
+
 module.exports = router;

@@ -91,3 +91,17 @@ exports.delete = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.patch = async (req, res) => {
+    try {
+        const integrationSchedule = await models.IntegrationSchedule.findOne({where: {id: req.params.id}});
+        integrationSchedule.showedUp = req.body.showedUp;
+        await integrationSchedule.save();
+        res.send({
+            msg: "Atualizado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}

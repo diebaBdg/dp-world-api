@@ -65,3 +65,23 @@ exports.delete = [
             });
         })
 ];
+
+exports.patch = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.IntegrationSchedule.findOne({
+                where: {
+                    id
+                }
+            }).then(schedule => {
+                if (!schedule) {
+                    return Promise.reject('Agendamento não existe.');
+                }
+            });
+        }),
+    check('showedUp')
+        .isBoolean()
+        .withMessage("Deve ser true ou false.")
+];
