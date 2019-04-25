@@ -20,6 +20,10 @@ exports.get = async (req, res) => {
         }
         let data = await models.Integration.findAndCountAll({
             where: filter,
+            include:[{
+                model: models.IntegrationSchedule,
+                attributes: ['id', 'EmployeeId']
+            }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
