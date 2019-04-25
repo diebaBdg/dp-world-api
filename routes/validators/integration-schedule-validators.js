@@ -15,7 +15,15 @@ exports.get = [
     check('order_direction')
         .optional()
         .isIn(['ASC', 'DESC'])
-        .withMessage("Deve ser ASC ou DESC.")
+        .withMessage("Deve ser ASC ou DESC."),
+    check('EmployeeId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro."),
+    check('IntegrationId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [

@@ -7,7 +7,14 @@ exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
         let filter = {};
+        if(req.query.EmployeeId){
+            filter.EmployeeId = req.query.EmployeeId;
+        }
+        if(req.query.IntegrationId){
+            filter.IntegrationId = req.query.IntegrationId;
+        }
         let data = await models.IntegrationSchedule.findAndCountAll({
+            where: filter,
             include: [{
                 model: models.Integration,
                 attributes: ['id', 'date']
