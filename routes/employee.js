@@ -2,8 +2,8 @@ const router = require('express').Router();
 const controller = require('../controllers/employee');
 const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/employee-validators');
-const auth = require("../config/auth")();
-router.use(auth.authenticate());
+// const auth = require("../config/auth")();
+// router.use(auth.authenticate());
 const multer = require('multer');
 const mkdirp = require('mkdirp');
 
@@ -175,7 +175,7 @@ router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), c
  * @apiParam (Request body) {Int} CompanyId The company id.
  * @apiParam (Request body) {Int} FunctionId The function id.
  *
- * @apiSuccess {Int} id Function inserted
+ * @apiSuccess {Int} id Employee inserted
  * @apiSuccess {String} msg Success message
  * 
  * @apiSuccessExample {json} Success (example)

@@ -1,10 +1,12 @@
 const router = require('express').Router();
 const controller = require('../controllers/integration-schedule');
+const expressValidator = require('./middlewares/express-validator');
+const validators = require('./validators/integration-schedule-validators');
 const auth = require("../config/auth")();
 router.use(auth.authenticate());
 
 /**
- * @api {get} /integrations-schedules List of integration schedules
+ * @api {get} /integration-schedules List of integration schedules
  * @apiName GetIntegrationSchedules
  * @apiGroup Integrations
  * 
@@ -24,6 +26,26 @@ router.use(auth.authenticate());
  *       "rows": []
  *    }
  */
-router.get('/', controller.get);
+router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
+
+/**
+ * @api {post} /integration-schedules Create a integration schedule
+ * @apiName PostIntegrationSchedules
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Request body) {Int} IntegrationId  Integration id.
+ * @apiParam (Request body) {Int} EmployeeId Employee id.
+ *
+ * @apiSuccess {Int} id Integration schedule inserted
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "id": 17,
+ *        "msg": "Cadastrado com sucesso."
+ *    }
+ */
+router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
 module.exports = router;

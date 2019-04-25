@@ -113,7 +113,7 @@ exports.post = async (req, res) => {
         res.status(201).send({
             id: employeeCreated.id,
             msg: "Cadastrado com sucesso."
-        })
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
