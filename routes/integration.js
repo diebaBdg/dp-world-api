@@ -52,7 +52,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
  * 
  * @apiParam (Request body) {Date} date A integration date and hour in format YYYY-MM-DD HH:MM:SS.
  * @apiParam (Request body) {Int} vacancies The amount of vacancies in integration.
- * @apiParam (Request body) {String} instructor The intrictor of integration.
+ * @apiParam (Request body) {String} instructor The instructor of the integration.
  * @apiParam (Request body) {String} note A note about the integration.
  *
  * @apiSuccess {Int} id Integration inserted
