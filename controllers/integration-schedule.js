@@ -29,9 +29,6 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
     try {
-        // validar se a data da integração já passou
-        // validar se possuem vagas nessa integração
-        // validar se o usuário já está cadastrado para essa integração
         const now = moment().format();
         const integration = await models.Integration.findOne({where: {id: req.body.IntegrationId}});
         const integrationSchedule = await models.IntegrationSchedule.findOne({
@@ -42,7 +39,12 @@ exports.post = async (req, res) => {
         });
         const integrationDate = moment(integration.date);
         const amountRegistrations = (await integration.getIntegrationSchedules()).length;
+        const employee = await models.Employee.findOne({where: {id: req.body.EmployeeId}})
 
+        if(employee.EmployeeStatusId != 4){
+            res.status(400).send({msg: "O status do funcionário é inválido."})
+            return false;
+        }
         if(amountRegistrations >= integration.vacancies){
             res.status(400).send({msg: "Não há vagas disponíveis."})
             return false;
@@ -52,9 +54,10 @@ exports.post = async (req, res) => {
             return false;
         }
         if(integrationDate.isBefore(now)){
-            res.status(400).send({msg: "A data da integração já passsou e por isso não é possivel fazer o agendamento."})
+            res.status(400).send({msg: "A data da integração já passou e por isso não é possivel fazer o agendamento."})
             return false;
         }
+        
 
         const scheduleCreated = await models.IntegrationSchedule.create(req.body);
         res.status(201).send({
