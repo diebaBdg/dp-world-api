@@ -69,3 +69,25 @@ exports.post = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.delete = async (req, res) => {
+    try {
+        const now = moment().format();
+        const integrationSchedule = await models.IntegrationSchedule.findOne({where: {id: req.params.id}});
+        const integration = await integrationSchedule.getIntegration();
+        const integrationDate = moment(integration.date);
+
+        if(integrationDate.isBefore(now)){
+            res.status(400).send({msg: "A data da integração já passou e por isso não é possivel deletar o agendamento."})
+            return false;
+        }
+
+        await integrationSchedule.destroy();
+        res.send({
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}

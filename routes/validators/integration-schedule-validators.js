@@ -20,7 +20,6 @@ exports.get = [
 
 exports.post = [
     check('IntegrationId')
-        .optional()
         .isInt()
         .withMessage("Deve ser um número inteiro.")
         .custom((IntegrationId) => {
@@ -35,7 +34,6 @@ exports.post = [
             });
         }),
     check('EmployeeId')
-        .optional()
         .isInt()
         .withMessage("Deve ser um número inteiro.")
         .custom((EmployeeId) => {
@@ -46,6 +44,23 @@ exports.post = [
             }).then(schedule => {
                 if (!schedule) {
                     return Promise.reject('Funcionário não existe.');
+                }
+            });
+        })
+];
+
+exports.delete = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.IntegrationSchedule.findOne({
+                where: {
+                    id
+                }
+            }).then(schedule => {
+                if (!schedule) {
+                    return Promise.reject('Agendamento não existe.');
                 }
             });
         })
