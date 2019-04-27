@@ -106,17 +106,32 @@ exports.getPresenceList = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const deleted = await models.Integration.destroy({where: {id: req.params.id}});
+        const deleted = await models.Integration.destroy({ where: { id: req.params.id } });
         res.send({
             deleted: deleted,
             msg: "Excluído com sucesso."
         });
     } catch (err) {
-        if(err.name == 'SequelizeForeignKeyConstraintError'){
+        if (err.name == 'SequelizeForeignKeyConstraintError') {
             res.status(400).send({ msg: 'Não é possivel deletar porque a integração possui agendamentos cadastrados.' })
-        }else{
+        } else {
             console.log(err);
             res.status(500).send({ msg: 'Internal Error' })
         }
+    }
+}
+
+exports.put = async (req, res) => {
+    try {
+        const updated = models.Integration.update(req.body, {
+            where: { id: req.params.id }
+        })
+        res.send({
+            updated: updated[0],
+            msg: "Atualizado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
     }
 }

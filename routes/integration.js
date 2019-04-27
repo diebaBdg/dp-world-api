@@ -95,6 +95,29 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  *        "msg": "Excluído com sucesso."
  *    }
  */
-router.delete('/:id', controller.delete);
+router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(), controller.delete);
+
+/**
+ * @api {put} /integrations/:id Update a integration
+ * @apiName PutIntegrations
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Params) {Int} id  Integration id.
+ * @apiParam (Request body) {Date} date A integration date and hour in format YYYY-MM-DD HH:MM:SS.
+ * @apiParam (Request body) {Int} vacancies The amount of vacancies in integration.
+ * @apiParam (Request body) {String} instructor The instructor of the integration.
+ * @apiParam (Request body) {String} note A note about the integration.
+ *
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
+ *    }
+ */
+router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
 
 module.exports = router;

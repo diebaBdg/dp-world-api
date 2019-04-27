@@ -8,7 +8,7 @@ const validators = require('./validators/company-type-validators');
 /**
  * @api {get} /company-types List of company types
  * @apiName GetCompanyTypes
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  *
  * @apiParam (Query params) {Int} page The page.
  * @apiParam (Query params) {String} order_by A column to order.
@@ -47,7 +47,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 /**
  * @api {post} /company-types Create a new company type
  * @apiName PostCompanyTypes
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  *
  * @apiParam (Request body) {String} description The company type description.
  * 
@@ -66,7 +66,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
 /**
  * @api {delete} /company-types/:id Delete a company type
  * @apiName DeleteCompanyTypes
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  *
  * @apiParam (Params) {Int} id The company type id.
  * 
@@ -84,7 +84,7 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
 /**
  * @api {put} /company-types/:id Update a company type
  * @apiName PutCompanyTypes
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  *
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Request body) {String} description Company type description.
@@ -105,7 +105,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
 /**
  * @api {get} /company-types/:id/documents List the company type's documents
  * @apiName GetCompanyTypesDocumets
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  * 
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Query params) {String} DocumentTypeId Filter by document type.
@@ -120,7 +120,7 @@ router.get('/:id/documents', validators.getDocuments, expressValidator.findsVali
 /**
  * @api {post} /company-types/:id/documents Create company types's documents
  * @apiName PostCompanyTypesDocumets
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  * 
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Request body) {Array} documents List of documents.
@@ -149,7 +149,7 @@ router.post('/:id/documents', validators.postDocuments, expressValidator.findsVa
 /**
  * @api {delete} /company-types/:id/documents/:DocumentId Delete company type's document
  * @apiName DeleteCompanyTypesDocumets
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  * 
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Params) {Int} DocumentId The document id.
@@ -167,7 +167,7 @@ router.delete('/:id/documents/:DocumentId', validators.deleteDocuments, expressV
 /**
  * @api {put} /company-types/:id/documents/:DocumentId Update validity default of the company type's document
  * @apiName UpdateCompanyTypesDocumets
- * @apiGroup CompanyTypes
+ * @apiGroup Company-Types
  * 
  * @apiParam (Params) {Int} id The company type id.
  * @apiParam (Params) {Int} DocumentId The document id.
