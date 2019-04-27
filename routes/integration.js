@@ -78,4 +78,23 @@ router.get('/:id/presence-list', controller.getPresenceList);
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
+/**
+ * @api {delete} /integrations/:id Delete a integration
+ * @apiName DeleteIntegrations
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Params) {Int} id  Integration id.
+ *
+ * @apiSuccess {Int} deleted 1 if was deleted or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "deleted": 1,
+ *        "msg": "Excluído com sucesso."
+ *    }
+ */
+router.delete('/:id', controller.delete);
+
 module.exports = router;

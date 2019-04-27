@@ -93,13 +93,6 @@ exports.getPresenceList = async (req, res) => {
             </tbody>
         </table>
         </html>`;
-        // pdf.create(presenceList).toStream( (err, stream) => {
-        //     if (err){
-        //         return res.status(500).send(err);
-        //     } 
-        //     res.type('pdf');
-        //     stream.pipe(res);
-        // });
         pdf.create(presenceList).toBuffer(function (err, buffer) {
             if (err) return res.send(err);
             res.type('pdf');
@@ -108,5 +101,22 @@ exports.getPresenceList = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.delete = async (req, res) => {
+    try {
+        const deleted = await models.Integration.destroy({where: {id: req.params.id}});
+        res.send({
+            deleted: deleted,
+            msg: "Excluído com sucesso."
+        });
+    } catch (err) {
+        if(err.name == 'SequelizeForeignKeyConstraintError'){
+            res.status(400).send({ msg: 'Não é possivel deletar porque a integração possui agendamentos cadastrados.' })
+        }else{
+            console.log(err);
+            res.status(500).send({ msg: 'Internal Error' })
+        }
     }
 }
