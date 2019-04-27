@@ -12,7 +12,8 @@ exports.get = async (req, res) => {
                         UserTypeId: userTypeid
                     }
                 },
-            }]
+            }],
+            order: [['id','ASC']]
         });
         res.send({data: user.Menus});
     } catch (err) {

@@ -11,7 +11,7 @@ router.use(auth.authenticate());
 /**
  * @api {get} /document-types List of document types
  * @apiName GetDocumentTypes
- * @apiGroup DocumentTypes
+ * @apiGroup Document-Types
  * 
  * @apiParam (Query params) {Int} page The page.
  * @apiParam (Query params) {String} order_by A column to order.
@@ -57,7 +57,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 /**
  * @api {post} /document-types Create a new document type
  * @apiName PostDocumentTypes
- * @apiGroup DocumentTypes
+ * @apiGroup Document-Types
  *
  * @apiParam (Request body) {String} description The document type description.
  * 
@@ -76,7 +76,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
 /**
  * @api {put} /document-types/:id Update a document type
  * @apiName PutDocumentTypes
- * @apiGroup DocumentTypes
+ * @apiGroup Document-Types
  *
  * @apiParam (Params) {Int} id The document type id.
  * @apiParam (Request body) {String} description The document type description.
@@ -97,7 +97,7 @@ router.put('/:id', validators.put, expressValidator.findsValidatorErros(), contr
 /**
  * @api {delete} /document-types/:id Delete a document type
  * @apiName DeleteDocumentTypes
- * @apiGroup DocumentTypes
+ * @apiGroup Document-Types
  *
  * @apiParam (Params) {Int} id The document type id.
  * 

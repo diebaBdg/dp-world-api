@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.UserStatus);
     User.belongsTo(models.Sector);
     User.belongsTo(models.Company);
+    User.hasMany(models.Notification);
   };
 
   // Instance Methods
