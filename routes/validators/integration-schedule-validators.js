@@ -15,12 +15,19 @@ exports.get = [
     check('order_direction')
         .optional()
         .isIn(['ASC', 'DESC'])
-        .withMessage("Deve ser ASC ou DESC.")
+        .withMessage("Deve ser ASC ou DESC."),
+    check('EmployeeId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro."),
+    check('IntegrationId')
+        .optional()
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
 ];
 
 exports.post = [
     check('IntegrationId')
-        .optional()
         .isInt()
         .withMessage("Deve ser um número inteiro.")
         .custom((IntegrationId) => {
@@ -35,7 +42,6 @@ exports.post = [
             });
         }),
     check('EmployeeId')
-        .optional()
         .isInt()
         .withMessage("Deve ser um número inteiro.")
         .custom((EmployeeId) => {
@@ -49,4 +55,41 @@ exports.post = [
                 }
             });
         })
+];
+
+exports.delete = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.IntegrationSchedule.findOne({
+                where: {
+                    id
+                }
+            }).then(schedule => {
+                if (!schedule) {
+                    return Promise.reject('Agendamento não existe.');
+                }
+            });
+        })
+];
+
+exports.patch = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.IntegrationSchedule.findOne({
+                where: {
+                    id
+                }
+            }).then(schedule => {
+                if (!schedule) {
+                    return Promise.reject('Agendamento não existe.');
+                }
+            });
+        }),
+    check('showedUp')
+        .isBoolean()
+        .withMessage("Deve ser true ou false.")
 ];

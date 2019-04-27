@@ -3,7 +3,7 @@ const controller = require('../controllers/integration');
 const expressValidator = require('./middlewares/express-validator');
 const validators = require('./validators/integration-validators');
 const auth = require("../config/auth")();
-router.use(auth.authenticate());
+// router.use(auth.authenticate());
 
 /**
  * @api {get} /integrations List of integrations
@@ -46,13 +46,24 @@ router.use(auth.authenticate());
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
 /**
+ * @api {get} /integrations/:id/presence-list Get a presence list
+ * @apiName GetIntegrationsPresenceList
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Query params) id The integration id.
+ *
+ * @apiSuccess {File} pdf
+ */
+router.get('/:id/presence-list', controller.getPresenceList);
+
+/**
  * @api {post} /integrations Create a integration
  * @apiName PostIntegrations
  * @apiGroup Integrations
  * 
  * @apiParam (Request body) {Date} date A integration date and hour in format YYYY-MM-DD HH:MM:SS.
  * @apiParam (Request body) {Int} vacancies The amount of vacancies in integration.
- * @apiParam (Request body) {String} instructor The intrictor of integration.
+ * @apiParam (Request body) {String} instructor The instructor of the integration.
  * @apiParam (Request body) {String} note A note about the integration.
  *
  * @apiSuccess {Int} id Integration inserted

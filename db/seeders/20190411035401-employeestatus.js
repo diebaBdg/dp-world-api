@@ -19,7 +19,7 @@ module.exports = {
       updatedAt: new Date()
     },{
       id: 4,
-      description: "Pendente de integração.",
+      description: "Pendente de integração",
       createdAt: new Date(),
       updatedAt: new Date()
     },{
