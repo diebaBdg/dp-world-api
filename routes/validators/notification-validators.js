@@ -28,3 +28,25 @@ exports.get = [
         .isIn(['true', 'false', 'TRUE', 'FALSE'])
         .withMessage("Deve ser true ou false.")
 ];
+
+exports.patch = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.Notification.findOne({
+                where: {
+                    id
+                }
+            }).then(notification => {
+                if (!notification) {
+                    return Promise.reject('Notificação não existe.');
+                }
+            });
+        }),
+    check('visualized')
+        .optional()
+        .isBoolean()
+        .withMessage("Deve ser true ou false.")
+
+];

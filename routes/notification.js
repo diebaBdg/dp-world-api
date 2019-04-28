@@ -24,4 +24,25 @@ router.use(auth.authenticate());
  */
 router.get('/', validators.get, expressValidator.findsValidatorErros(), controller.get);
 
+/**
+ * @api {patch} /notifications/:id Set notification visualized
+ * @apiName PatchNotifications
+ * @apiGroup Notifications
+ * 
+ * @apiParam (Params) {Int} id Notification id.
+ * 
+ * @apiParam (Request body) {Boolean} visualized If it is visualized (true or false).
+ *
+ * @apiSuccess {Int} updated 1 if was updated or 0 if is not
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ *    {
+ *        "updated": 1,
+ *        "msg": "Alterado com sucesso."
+ *    }
+ */
+router.patch('/:id', validators.patch, expressValidator.findsValidatorErros(), controller.patch);
+
 module.exports = router;

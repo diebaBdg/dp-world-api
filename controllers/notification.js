@@ -36,3 +36,19 @@ exports.get = async (req, res) => {
         res.status(500).send({ msg: 'Internal Error' })
     }
 }
+
+exports.patch = async (req, res) => {
+    try {
+        const visualized = req.body.visualized;
+        const updated = await models.Notification.update({visualized},{
+            where: {id: req.params.id}
+        })
+        res.send({
+            updated: updated[0],
+            msg: "Atualizado com sucesso."
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
