@@ -61,6 +61,19 @@ exports.post = async (req, res) => {
         let company = req.body;
         company.CompanyStatusId = 1;
         const companyCreated = await models.Company.create(company);
+
+        const users = await models.User.findAll({UserTypeId: 1});
+        const notifications = users.map(user=>{
+            return models.Notification.build({
+                UserId: user.id,
+                message: `Existe uma nova solicitação de credenciamento para análise. ${companyCreated.cnpj} – ${companyCreated.socialName}.`
+            })
+        })
+        for(notification of notifications){
+            await notification.sendEmail();
+            await notification.save();
+        }
+
         res.status(201).send({
             id: companyCreated.id
         });
