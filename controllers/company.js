@@ -132,8 +132,16 @@ exports.patch = async (req, res) => {
         }
         if (companyStatusId == 4) {
             let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note?item.note:'não informado.'}`).join('<br>');
-            for (contact of contacts) {
-                await contact.SendEmail(`Olá,<br>Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br> ` + refuseText);
+
+            const notifications = contacts.map(user=>{
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `Olá,<br>Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br> ` + refuseText
+                })
+            });
+            for(notification of notifications){
+                await notification.sendEmail();
+                await notification.save();
             }
         }
         if (companyStatusId == 5) {
