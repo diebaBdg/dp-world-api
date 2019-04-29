@@ -135,7 +135,7 @@ exports.patch = async (req, res) => {
             const notifications = users.map(user => {
                 return models.Notification.build({
                     UserId: user.id,
-                    message: `O cadastro ${companyCreated.cnpj} – ${companyCreated.socialName} encaminhou os documentos para análise.`
+                    message: `O cadastro ${company.cnpj} – ${company.socialName} encaminhou os documentos para análise.`
                 })
             })
             for (notification of notifications) {
@@ -159,11 +159,18 @@ exports.patch = async (req, res) => {
         if (companyStatusId == 5) {
             let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
             if (rejectedOrNotOk.length) {
-                res.status(422).send({ msg: 'Olá,<br>Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                res.status(400).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
                 return false;
             } else {
-                for (contact of contacts) {
-                    await contact.SendEmail('Olá,<br>Documentos da empresa aprovados. Credencie os colaboradores.');
+                const notifications = contacts.map(user => {
+                    return models.Notification.build({
+                        UserId: user.id,
+                        message: `Olá,<br>Documentos da empresa aprovados. Credencie os colaboradores.`
+                    })
+                });
+                for (notification of notifications) {
+                    await notification.sendEmail();
+                    await notification.save();
                 }
             }
         }
