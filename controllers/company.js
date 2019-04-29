@@ -62,14 +62,14 @@ exports.post = async (req, res) => {
         company.CompanyStatusId = 1;
         const companyCreated = await models.Company.create(company);
 
-        const users = await models.User.findAll({UserTypeId: 1});
-        const notifications = users.map(user=>{
+        const users = await models.User.findAll({ UserTypeId: 1 });
+        const notifications = users.map(user => {
             return models.Notification.build({
                 UserId: user.id,
                 message: `Existe uma nova solicitação de credenciamento para análise. ${companyCreated.cnpj} – ${companyCreated.socialName}.`
             })
         })
-        for(notification of notifications){
+        for (notification of notifications) {
             await notification.sendEmail();
             await notification.save();
         }
@@ -86,7 +86,7 @@ exports.post = async (req, res) => {
 exports.put = async (req, res) => {
     try {
         const company = req.body;
-        const updated = await models.Company.update(company,{
+        const updated = await models.Company.update(company, {
             where: {
                 id: req.params.id
             }
@@ -122,7 +122,7 @@ exports.patch = async (req, res) => {
             for (contact of contacts) {
                 await contact.enableAndSendEmail();
             }
-            if(!req.body.SectorId){
+            if (!req.body.SectorId) {
                 res.status(422).send({ msg: 'SectorId obrigatório.' });
                 return false;
             }
@@ -130,16 +130,28 @@ exports.patch = async (req, res) => {
                 SectorId: req.body.SectorId
             });
         }
+        if (companyStatusId == 3) {
+            const users = await models.User.findAll({ UserTypeId: 1 });
+            const notifications = users.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `O cadastro ${company.cnpj} – ${company.socialName} encaminhou os documentos para análise.`
+                })
+            })
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
+            }
+        }
         if (companyStatusId == 4) {
-            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note?item.note:'não informado.'}`).join('<br>');
-
-            const notifications = contacts.map(user=>{
+            let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note ? item.note : 'não informado.'}`).join('<br>');
+            const notifications = contacts.map(user => {
                 return models.Notification.build({
                     UserId: user.id,
                     message: `Olá,<br>Você teve documento(s) da empresa rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br> ` + refuseText
                 })
             });
-            for(notification of notifications){
+            for (notification of notifications) {
                 await notification.sendEmail();
                 await notification.save();
             }
@@ -147,11 +159,18 @@ exports.patch = async (req, res) => {
         if (companyStatusId == 5) {
             let rejectedOrNotOk = attachments.filter(attachment => attachment.AttachmentStatusId == 4 || attachment.AttachmentStatusId == 1);
             if (rejectedOrNotOk.length) {
-                res.status(422).send({ msg: 'Olá,<br>Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
+                res.status(400).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
                 return false;
             } else {
-                for (contact of contacts) {
-                    await contact.SendEmail('Olá,<br>Documentos da empresa aprovados. Credencie os colaboradores.');
+                const notifications = contacts.map(user => {
+                    return models.Notification.build({
+                        UserId: user.id,
+                        message: `Olá,<br>Documentos da empresa aprovados. Credencie os colaboradores.`
+                    })
+                });
+                for (notification of notifications) {
+                    await notification.sendEmail();
+                    await notification.save();
                 }
             }
         }
@@ -215,7 +234,7 @@ exports.postAttachment = async (req, res) => {
         }
         const company = await models.Company.findOne({ where: { id: req.params.id } });
         const documentToCompanyType = await models.DocumentToCompanyType.findOne({ where: { CompanyTypeId: company.CompanyTypeId, DocumentId: req.body.DocumentId } });
-        if(!documentToCompanyType){
+        if (!documentToCompanyType) {
             res.status(422).send({ msg: "Não é anexar pois o documento não está associado ao tipode empresa" });
             return false;
         }
@@ -268,7 +287,7 @@ exports.getAttachments = async (req, res) => {
                         [Op.ne]: 3
                     }
                 }
-            },{
+            }, {
                 model: models.Document,
                 attributes: ['id', 'description']
             }],

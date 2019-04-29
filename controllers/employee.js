@@ -24,6 +24,8 @@ exports.get = async (req, res) => {
             }, {
                 attributes: ['id', 'cnpj', 'socialName'],
                 model: models.Company
+            }, {
+                model: models.IntegrationSchedule
             }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
