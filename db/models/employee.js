@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     Employee.belongsTo(models.EmployeeStatus);
     Employee.hasMany(models.EmployeeAttachment);
     Employee.hasMany(models.IntegrationSchedule);
+    Employee.hasMany(models.Notification);
   };
 
   Employee.prototype.getStatusFlow = function () {
@@ -34,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       status: 3, next: 2
     }, {
       status: 2, next: 4
+    }, {
+      status: 4, next: 5
     }]
   }
 

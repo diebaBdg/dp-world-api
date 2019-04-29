@@ -8,7 +8,7 @@ router.use(auth.authenticate());
 /**
  * @api {get} /integration-schedules List of integration schedules
  * @apiName GetIntegrationSchedules
- * @apiGroup Integrations
+ * @apiGroup Integration-Schedule
  * 
  * @apiParam (Query params) page The page.
  * @apiParam (Query params) order_by A column to order.
@@ -33,7 +33,7 @@ router.get('/', validators.get, expressValidator.findsValidatorErros(), controll
 /**
  * @api {post} /integration-schedules Create a integration schedule
  * @apiName PostIntegrationSchedules
- * @apiGroup Integrations
+ * @apiGroup Integration-Schedule
  * 
  * @apiParam (Request body) {Int} IntegrationId  Integration id.
  * @apiParam (Request body) {Int} EmployeeId Employee id.
@@ -53,7 +53,7 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
 /**
  * @api {delete} /integration-schedules/:id Delete a integration schedule
  * @apiName DeleteIntegrationSchedules
- * @apiGroup Integrations
+ * @apiGroup Integration-Schedule
  * 
  * @apiParam (Params) {Int} id  Integration schedule id.
  *
@@ -72,7 +72,7 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
 /**
  * @api {patch} /integration-schedules/:id Set presence in integration schedule
  * @apiName PatchIntegrationSchedules
- * @apiGroup Integrations
+ * @apiGroup Integration-Schedule
  * 
  * @apiParam (Params) {Int} id  Integration schedule id.
  * 
