@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       status: 3, next: 2
     }, {
       status: 2, next: 4
+    }, {
+      status: 4, next: 5
     }]
   }
 
