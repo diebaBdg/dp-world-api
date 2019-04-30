@@ -123,11 +123,29 @@ exports.delete = async (req, res) => {
 
 exports.put = async (req, res) => {
     try {
-        const updated = models.Integration.update(req.body, {
-            where: { id: req.params.id }
-        })
+        const integration = await models.Integration.findOne({ where: { id: req.params.id } });
+        const schedules = await integration.getIntegrationSchedules({
+            includes: [{
+                attributes: ['email'],
+                model: models.Employee,
+            }]
+        });
+
+        if(req.body.date){
+            const notifications = schedules.map(schedule => {
+                return models.Notification.build({
+                    EmployeeId: schedule.EmployeeId,
+                    message: `Olá, a data da integração foi alterada para ${moment(req.body.date).format('DD/MM/YYYY HH:MM')}.`
+                })
+            });
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
+            }
+        }
+
+        await integration.update(req.body);
         res.send({
-            updated: updated[0],
             msg: "Atualizado com sucesso."
         });
     } catch (err) {
