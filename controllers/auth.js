@@ -23,7 +23,45 @@ exports.post = async (req, res, next) => {
             user.password = undefined;
             res.json({ token: token, user });
         } else {
-            res.status(400).send({ msg: "Usuário ou senha inválidos." });
+            // try login in LDAP server,
+            ad.authenticate(email, req.body.password, async (err, auth) => {
+                if (err) {
+                    console.log('ERROR: ' + JSON.stringify(err));
+                    if(err.lde_message == "Invalid Credentials"){
+                        res.status(400).send({ msg: "Usuário ou senha inválidos." })
+                        return;
+                    }
+                    res.status(500).send({ msg: "Não foi possivel conectgar ao LDAP." })
+                    return;
+                }
+                if (auth) {
+                    console.log('Authenticated!');
+                    try {
+                        let user1 = await models.User.findOne({ where: { email } });
+                        if (!user1) {
+                            user1 = await models.User.create({
+                                email: email,
+                                password: password,
+                                UserTypeId: 1,
+                                UserStatusId: 1
+                            });
+                        }
+                        var payload = { id: user1.id };
+                        var token = jwt.encode(payload, cfg.jwtSecret);
+                        user1.password = undefined;
+                        res.json({ token: token, user1 });
+                    } catch (err) {
+                        console.log(err);
+                        res.status(500).send({ msg: "Internal error" })
+                    }
+
+                }
+                else {
+                    console.log('Authentication failed!');
+                    res.status(400).send({ msg: "Usuário ou senha inválidos." });
+                }
+            });
+
         }
     } catch (err) {
         console.log(err);
@@ -46,17 +84,17 @@ exports.testSincronize = async (req, res, next) => {
 
             console.log('Groups');
             _.each(results.groups, function (group) {
-                console.log('  ' + group);
+                console.log(JSON.stringify(group));
             });
 
             console.log('Users');
             _.each(results.users, function (user) {
-                console.log('  ' + user);
+                console.log(JSON.stringify(user));
             });
 
             console.log('Other');
             _.each(results.other, function (other) {
-                console.log(other);
+                console.log(JSON.stringify(other));
             });
             res.send({ msg: 'foi' })
         });
