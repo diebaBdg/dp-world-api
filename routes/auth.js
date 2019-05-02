@@ -38,4 +38,12 @@ const validators = require('./validators/auth-validators');
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
+
+// test sincronize users
+router.get('/test-sincronize', controller.testSincronize);
+
+// test sincronize users
+router.post('/test-authenticate', controller.testAuthenticate);
+
+
 module.exports = router;

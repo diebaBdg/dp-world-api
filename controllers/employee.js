@@ -76,10 +76,30 @@ exports.patch = async (req, res) => {
             return false;
         }
 
+        if (employeeStatusId == 2) {
+            const users = await models.User.findAll({ UserTypeId: 1 });
+            const notifications = users.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `O cadastro ${company.cnpj} – ${company.socialName} encaminhou documentos de colaboradores.`
+                })
+            })
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
+            }
+        }
         if (employeeStatusId == 3) {
             let refuseText = attachments.filter(item => item.AttachmentStatusId == 4).map(item => `<b>Documento</b>: ${item.Document.description}. <b>Motivo</b>: ${item.note ? item.note : 'não informado.'}`).join('<br>');
-            for (contact of contacts) {
-                await contact.SendEmail(`Olá,<br>Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br>` + refuseText);
+            const notifications = contacts.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `Olá,<br>Você teve documento(s) do colaborador ${employee.name} rejeitado(s). Acesse o sistema e faça o envio novamente.<br><br>` + refuseText
+                })
+            });
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
             }
         }
         if (employeeStatusId == 4) {
@@ -88,9 +108,28 @@ exports.patch = async (req, res) => {
                 res.status(422).send({ msg: 'Não é possivel alterar o status por há arquivos aguardando aprovação ou rejeitados' });
                 return false;
             } else {
-                for (contact of contacts) {
-                    await contact.SendEmail(`Documentos do colaborador ${employee.name} aprovados. Agende a integração.`);
+                const notifications = contacts.map(user => {
+                    return models.Notification.build({
+                        UserId: user.id,
+                        message: `Olá, Documentos do colaborador ${employee.name} aprovados. Agende a integração.`
+                    })
+                });
+                for (notification of notifications) {
+                    await notification.sendEmail();
+                    await notification.save();
                 }
+            }
+        }
+        if (employeeStatusId == 5) {
+            const notifications = contacts.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `Olá, o colaborador ${employee.name} foi habilitado.`
+                })
+            });
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
             }
         }
 

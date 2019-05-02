@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Notification.prototype.sendEmail = async function () {
     const user = await this.getUser();
-    // const employee = await this.getEmployee();
-    // const to = [user.email, employee.email];
+    const employee = await this.getEmployee();
+    const email = user?user.email:employee.email;
     let mailOptions = {
       from: '"noreply dp-world" noreply@speedsoftware.com.br',
-      to: user.email,
+      to: email,
       subject: "Notificação",
       html: this.message
     };

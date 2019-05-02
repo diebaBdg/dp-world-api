@@ -49,7 +49,7 @@ module.exports = {
       },
       {
           "id": 10,
-          "link": "/integrations",
+          "link": "/integrations-manger",
           "name": "Integrações",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
