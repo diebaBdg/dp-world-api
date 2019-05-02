@@ -43,7 +43,8 @@ exports.post = async (req, res, next) => {
                                 email: email,
                                 password: password,
                                 UserTypeId: 1,
-                                UserStatusId: 1
+                                UserStatusId: 1,
+                                SectorId: 3
                             });
                         }
                         var payload = { id: user1.id };
