@@ -44,7 +44,8 @@ exports.post = async (req, res, next) => {
                                 password: password,
                                 UserTypeId: 1,
                                 UserStatusId: 1,
-                                SectorId: 3
+                                SectorId: 3,
+                                CompanyId: 1
                             });
                         }
                         var payload = { id: user1.id };
