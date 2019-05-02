@@ -16,7 +16,7 @@ router.use(auth.authenticate());
  * @apiParam (Query params) occurrence The occurrence (PAST or FUTURE).
  * @apiParam (Query params) UserId Filter by user id.
  * @apiParam (Query params) EmployeeId Filter by employee id.
- * @apiParam (Query params) vizualized Filter by vizualized (true or false).
+ * @apiParam (Query params) visualized Filter by vizualized (true or false).
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.
