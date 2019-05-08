@@ -14,44 +14,50 @@ var ad = new ActiveDirectory(config);
 
 exports.post = async (req, res, next) => {
     try {
-        var email = req.body.email;
-        var password = md5(req.body.password);
-        let user = await models.User.findOne({ where: { email, password, UserStatusId: 1 } });
-        if (user) {
-            var payload = { id: user.id };
-            var token = jwt.encode(payload, cfg.jwtSecret);
-            user.password = undefined;
-            res.json({ token: token, user });
-        } else {
-            // try login in LDAP server,
+        const email = req.body.email;
+        const password = md5(req.body.password);
+        let user = await models.User.findOne({ where: { email, UserStatusId: 1 } });
+        ad.findUser(email, async (err, userAD) => {
+            // try LDAP altentication
             ad.authenticate(email, req.body.password, async (err, auth) => {
                 if (err) {
                     console.log('ERROR: ' + JSON.stringify(err));
-                    if(err.lde_message == "Invalid Credentials"){
-                        res.status(400).send({ msg: "Usuário ou senha inválidos." })
+                    if (err.lde_message == "Invalid Credentials") {
+                        // try local altentication
+                        if (user && user.password == password) {
+                            let payload = { id: user.id };
+                            let token = jwt.encode(payload, cfg.jwtSecret);
+                            user.password = undefined;
+                            res.json({ token: token, user });
+                        } else {
+                            res.status(400).send({ msg: "Usuário ou senha inválidos." })
+                        }
                         return;
                     }
-                    res.status(500).send({ msg: "Não foi possivel conectgar ao LDAP." })
+                    res.status(500).send({ msg: "Não foi possivel conectgar ao LDAP." });
                     return;
                 }
                 if (auth) {
-                    console.log('Authenticated!');
                     try {
-                        let user1 = await models.User.findOne({ where: { email } });
-                        if (!user1) {
-                            user1 = await models.User.create({
+                        if (!user) {
+                            user = await models.User.create({
                                 email: email,
-                                password: password,
+                                password: null,
+                                name: userAD ? userAD.cn : null,
                                 UserTypeId: 1,
                                 UserStatusId: 1,
                                 SectorId: 3,
                                 CompanyId: 1
                             });
+                        } else {
+                            user.update({
+                                password: null
+                            })
                         }
-                        var payload = { id: user1.id };
-                        var token = jwt.encode(payload, cfg.jwtSecret);
-                        user1.password = undefined;
-                        res.json({ token: token, user1 });
+                        let payload = { id: user.id };
+                        let token = jwt.encode(payload, cfg.jwtSecret);
+                        user.password = undefined;
+                        res.json({ token: token, user });
                     } catch (err) {
                         console.log(err);
                         res.status(500).send({ msg: "Internal error" })
@@ -63,8 +69,7 @@ exports.post = async (req, res, next) => {
                     res.status(400).send({ msg: "Usuário ou senha inválidos." });
                 }
             });
-
-        }
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
