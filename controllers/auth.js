@@ -18,6 +18,8 @@ exports.post = async (req, res, next) => {
         const password = md5(req.body.password);
         let user = await models.User.findOne({ where: { email, UserStatusId: 1 } });
         ad.findUser(email, async (err, userAD) => {
+            console.log('userAD', userAD);
+            console.log('err', err);
             // try LDAP altentication
             ad.authenticate(email, req.body.password, async (err, auth) => {
                 if (err) {
