@@ -24,19 +24,14 @@ exports.post = async (req, res, next) => {
             ad.authenticate(email, req.body.password, async (err, auth) => {
                 if (err) {
                     console.log('ERROR: ' + JSON.stringify(err));
-                    if (err.lde_message == "Invalid Credentials") {
-                        // try local altentication
-                        if (user && user.password == password) {
-                            let payload = { id: user.id };
-                            let token = jwt.encode(payload, cfg.jwtSecret);
-                            user.password = undefined;
-                            res.json({ token: token, user });
-                        } else {
-                            res.status(400).send({ msg: "Usuário ou senha inválidos." })
-                        }
-                        return;
+                    if (user && user.password == password) {
+                        let payload = { id: user.id };
+                        let token = jwt.encode(payload, cfg.jwtSecret);
+                        user.password = undefined;
+                        res.json({ token: token, user });
+                    } else {
+                        res.status(400).send({ msg: "Usuário ou senha inválidos." })
                     }
-                    res.status(500).send({ msg: "Não foi possivel conectgar ao LDAP." });
                     return;
                 }
                 if (auth) {

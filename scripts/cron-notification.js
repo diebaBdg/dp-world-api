@@ -43,4 +43,4 @@ new CronJob('00 00 00 * * *', async () => {
         console.log(err)
     }
 
-});
+}, null, true, 'America/Sao_Paulo');
