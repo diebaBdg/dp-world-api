@@ -4,11 +4,12 @@ const cfg = require("../config/config-auth");
 const md5 = require('md5');
 const ActiveDirectory = require('activedirectory2');
 var config = {
-    url: 'ldap://ldap.forumsys.com',
-    baseDN: 'dc=example,dc=com',
-    username: '',
-    password: ''
+    url: 'ldap://embraport.net',
+    baseDN: 'dc=embraport,dc=net',
+    username: 'speedsoft@embraport.net',
+    password: 'Sp33dqu@18'
 }
+
 var ad = new ActiveDirectory(config);
 
 
@@ -20,8 +21,9 @@ exports.post = async (req, res, next) => {
         ad.findUser(email, async (err, userAD) => {
             console.log('userAD', userAD);
             console.log('err', err);
+		console.log(req.body.password);
             // try LDAP altentication
-            ad.authenticate(email, req.body.password, async (err, auth) => {
+            ad.authenticate(userAD.distinguishedName, req.body.password, async (err, auth) => {
                 if (err) {
                     console.log('ERROR: ' + JSON.stringify(err));
                     if (user && user.password == password) {
@@ -76,7 +78,7 @@ exports.post = async (req, res, next) => {
 exports.testSincronize = async (req, res, next) => {
     try {
         var _ = require('underscore');
-        var query = 'cn=*';
+        var query = '(&(objectClass=user)(objectCategory=person))';
 
         ad.find(query, function (err, results) {
             if ((err) || (!results)) {
@@ -113,7 +115,15 @@ exports.testAuthenticate = async (req, res, next) => {
     try {
         var username = req.body.username;
         var password = req.body.password;
-        ad.authenticate(username, password, function (err, auth) {
+
+	ad.findUser(username, async (err, userAD) => {
+	    console.log('userAD', userAD);
+            console.log('err', err);
+
+ 	
+	console.log(userAD.distinguishedName);
+	console.log(password);
+        ad.authenticate(userAD.distinguishedName, password, function (err, auth) {
             if (err) {
                 console.log('ERROR: ' + JSON.stringify(err));
                 res.status(500).send(err)
@@ -122,12 +132,23 @@ exports.testAuthenticate = async (req, res, next) => {
 
             if (auth) {
                 console.log('Authenticated!');
-            }
+                console.log(auth);
+		ad.getGroupMembershipForUser('monalizab', function(err, groups) {
+                	if (err) {
+                		console.log('ERROR: ' +JSON.stringify(err));
+                 		return;
+               		}
+
+ 			if (! groups) console.log('User: ' + sAMAccountName + ' not found.');
+  			else console.log(groups);
+		});
+	    }
             else {
                 console.log('Authentication failed!');
             }
             res.send({ msg: auth })
         });
+	});  		
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
