@@ -3,6 +3,7 @@ const jwt = require("jwt-simple");
 const cfg = require("../config/config-auth");
 const md5 = require('md5');
 const ActiveDirectory = require('activedirectory2');
+const Op = require('sequelize').Op;
 var config = {
     url: 'ldap://embraport.net',
     baseDN: 'dc=embraport,dc=net',
@@ -17,7 +18,14 @@ exports.post = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = md5(req.body.password);
-        let user = await models.User.findOne({ where: { email, UserStatusId: 1 } });
+        console.log('test 1');
+        let user = await models.User.findOne({ 
+            where: {
+                [Op.or]: [{email: email}, {userName: email}],
+                UserStatusId: 1 
+            } 
+        });
+        console.log('test 222');
         ad.findUser(email, async (err, userAD) => {
             console.log('userAD', userAD);
             console.log('err', err);
@@ -40,7 +48,8 @@ exports.post = async (req, res, next) => {
                     try {
                         if (!user) {
                             user = await models.User.create({
-                                email: email,
+                                userName: userAD.sAMAccountName,
+                                email: userAD.mail,
                                 password: null,
                                 name: userAD ? userAD.cn : null,
                                 UserTypeId: 1,
