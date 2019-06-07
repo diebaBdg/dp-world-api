@@ -299,7 +299,7 @@ exports.getAttachmentFile = [
     check('idAttachment')
         .isNumeric()
         .withMessage("Deve ser numérico")
-]
+];
 
 exports.pathAttachment = [
     check('id')

@@ -25,15 +25,15 @@ exports.post = async (req, res, next) => {
                 UserStatusId: 1 
             } 
         });
-        console.log('test 222');
-        ad.findUser(email, async (err, userAD) => {
-            console.log('userAD', userAD);
-            console.log('err', err);
-		console.log(req.body.password);
-            // try LDAP altentication
-            ad.authenticate(userAD.distinguishedName, req.body.password, async (err, auth) => {
-                if (err) {
-                    console.log('ERROR: ' + JSON.stringify(err));
+        // console.log('test 222');
+        // ad.findUser(email, async (err, userAD) => {
+        //     console.log('userAD', userAD);
+        //     console.log('err', err);
+		// console.log(req.body.password);
+        //     // try LDAP altentication
+        //     ad.authenticate(userAD.distinguishedName, req.body.password, async (err, auth) => {
+        //         if (err) {
+        //             console.log('ERROR: ' + JSON.stringify(err));
                     if (user && user.password == password) {
                         let payload = { id: user.id };
                         let token = jwt.encode(payload, cfg.jwtSecret);
@@ -43,41 +43,41 @@ exports.post = async (req, res, next) => {
                         res.status(400).send({ msg: "Usuário ou senha inválidos." })
                     }
                     return;
-                }
-                if (auth) {
-                    try {
-                        if (!user) {
-                            user = await models.User.create({
-                                userName: userAD.sAMAccountName,
-                                email: userAD.mail,
-                                password: null,
-                                name: userAD ? userAD.cn : null,
-                                UserTypeId: 1,
-                                UserStatusId: 1,
-                                SectorId: 3,
-                                CompanyId: 1
-                            });
-                        } else {
-                            user.update({
-                                password: null
-                            })
-                        }
-                        let payload = { id: user.id };
-                        let token = jwt.encode(payload, cfg.jwtSecret);
-                        user.password = undefined;
-                        res.json({ token: token, user });
-                    } catch (err) {
-                        console.log(err);
-                        res.status(500).send({ msg: "Internal error" })
-                    }
+                // }
+                // if (auth) {
+                //     try {
+                //         if (!user) {
+                //             user = await models.User.create({
+                //                 userName: userAD.sAMAccountName,
+                //                 email: userAD.mail,
+                //                 password: null,
+                //                 name: userAD ? userAD.cn : null,
+                //                 UserTypeId: 1,
+                //                 UserStatusId: 1,
+                //                 SectorId: 3,
+                //                 CompanyId: 1
+                //             });
+                //         } else {
+                //             user.update({
+                //                 password: null
+                //             })
+                //         }
+                //         let payload = { id: user.id };
+                //         let token = jwt.encode(payload, cfg.jwtSecret);
+                //         user.password = undefined;
+                //         res.json({ token: token, user });
+                //     } catch (err) {
+                //         console.log(err);
+                //         res.status(500).send({ msg: "Internal error" })
+                //     }
 
-                }
-                else {
-                    console.log('Authentication failed!');
-                    res.status(400).send({ msg: "Usuário ou senha inválidos." });
-                }
-            });
-        });
+                // }
+                // else {
+                //     console.log('Authentication failed!');
+                //     res.status(400).send({ msg: "Usuário ou senha inválidos." });
+                // }
+            // });
+        // });
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
