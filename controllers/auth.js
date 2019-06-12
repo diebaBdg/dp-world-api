@@ -31,6 +31,23 @@ exports.post = async (req, res, next) => {
         ad.findUser(email, async (err, userAD) => {
             console.log('userAD', userAD);
             console.log('err', err);
+		    console.log(req.body.password);
+
+
+	    if (userAD == undefined) {
+                    console.log('ERROR: ' + JSON.stringify(err));
+                    if (user && user.password == password) {
+                        let payload = { id: user.id };
+                        let token = jwt.encode(payload, cfg.jwtSecret);
+                        user.password = undefined;
+                        res.json({ token: token, user });
+                    } else {
+                        res.status(400).send({ msg: "Usuário ou senha inválidos." })
+                    }
+                    return;
+                }
+
+
             // try LDAP altentication
             ad.authenticate(userAD.distinguishedName, req.body.password, async (err, auth) => {
                 if (err) {

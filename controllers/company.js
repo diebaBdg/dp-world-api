@@ -2,6 +2,7 @@ const models = require('../db/models');
 const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const fs = require('fs');
 
 
 exports.get = async (req, res) => {
@@ -310,6 +311,22 @@ exports.getAttachmentFile = async (req, res) => {
             where: { id: req.params.idAttachment }
         });
         res.download(attachment.path);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+exports.getAttachmentFileStream = async (req, res) => {
+    try {
+        const attachment = await models.CompanyAttachment.findOne({
+            where: { id: req.params.idAttachment }
+        });
+
+        const buffer = fs.readFileSync(attachment.path);
+        res.contentType(attachment.mimetype);
+        res.send(buffer);
+    
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
