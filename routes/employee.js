@@ -200,6 +200,20 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
 router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
 
 /**
+ * @api {get} /employees/:id/attachments/:idAttachment/stream  Stream a employee attachment
+ * @apiName GetEmployeesAttachmentFile
+ * @apiGroup Employees-Attachment
+ * 
+ * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * 
+ * @apiSuccess {File} file The attachment file
+ */
+router.get('/:id/attachments/:idAttachment/stream', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFileStream);
+
+
+
+/**
  * @api {get} /employees/:id/attachments List employee attachments
  * @apiName GetEmployeesAttachment
  * @apiGroup Employees-Attachment
