@@ -5,10 +5,14 @@ const md5 = require('md5');
 const ActiveDirectory = require('activedirectory2');
 const Op = require('sequelize').Op;
 var config = {
-    url: 'ldap://embraport.net',
-    baseDN: 'dc=embraport,dc=net',
-    username: 'speedsoft@embraport.net',
-    password: 'Sp33dqu@18'
+    // url: 'ldap://embraport.net',
+    // baseDN: 'dc=embraport,dc=net',
+    // username: 'speedsoft@embraport.net',
+    // password: 'Sp33dqu@18'
+    url: 'ldap://ldap.forumsys.com',
+    baseDN: 'dc=example,dc=com',
+    username: '',
+    password: ''
 }
 
 var ad = new ActiveDirectory(config);
@@ -18,18 +22,15 @@ exports.post = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = md5(req.body.password);
-        console.log('test 1');
         let user = await models.User.findOne({ 
             where: {
                 [Op.or]: [{email: email}, {userName: email}],
                 UserStatusId: 1 
             } 
         });
-        console.log('test 222');
         ad.findUser(email, async (err, userAD) => {
             console.log('userAD', userAD);
             console.log('err', err);
-		console.log(req.body.password);
             // try LDAP altentication
             ad.authenticate(userAD.distinguishedName, req.body.password, async (err, auth) => {
                 if (err) {
