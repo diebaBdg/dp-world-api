@@ -200,7 +200,7 @@ exports.postRequestChangePassword = async (req, res, next) => {
             await user.SendEmail(`Olá ${user.name},<br>
                                   Você solicitou uma troca de senha, para concluí-la <a href="http://localhost/#/update-password/${hash}">clique aqui</a>.<br>
                                   Link: http://localhost/#/update-password/${hash}`)
-            res.send({ msg: "Troca se senha solicitada com sucesso" });
+            res.send({ msg: "Troca de senha solicitada com sucesso" });
         } else {
             res.status(400).send({ msg: "Só é possivel solicitar a troca de senha de usuário do tipo externo." });
         }
