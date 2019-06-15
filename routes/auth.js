@@ -38,6 +38,45 @@ const validators = require('./validators/auth-validators');
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros(), controller.post);
 
+/**
+ * @api {post} /auth/request-change-password User request change password
+ * @apiName PostAuthChangePassword
+ * @apiGroup Auth
+ *
+ * @apiParam (Request body) {String} email User email
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ */
+router.post('/request-change-password', validators.postRequestChangePassword, expressValidator.findsValidatorErros(), controller.postRequestChangePassword);
+
+
+/**
+ * @api {get} /auth/user/:hash Get user by hash
+ * @apiName GetAuthUser
+ * @apiGroup Auth
+ *
+ * @apiParam (Params) {String} hash User hash
+ * 
+ * @apiSuccess {Object} user User data
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ */
+router.get('/user/:hash', controller.getUser);
+
+/**
+ * @api {put} /auth/user/:hash Update password
+ * @apiName PutUserPassword
+ * @apiGroup Auth
+ *
+ * @apiParam (Request body) {String} password User password
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ */
+router.put('/user/:hash', validators.putUserPassword, expressValidator.findsValidatorErros(), controller.putUserPassword);
+
 // test sincronize users
 router.get('/test-sincronize', controller.testSincronize);
 
