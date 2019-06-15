@@ -189,9 +189,11 @@ exports.postRequestChangePassword = async (req, res, next) => {
     try {
         const hash = md5(moment() + req.body.email)
         const user = await models.User.findOne({
-            email: req.body.email
+            where: { email: req.body.email }
         });
-        if (user.UserTypeId != 2) {
+        if (!user){
+            res.status(400).send({ msg: "Usuário não cadastrado." });
+        }else if (user.UserTypeId != 2) {
             await user.update({
                 hash: hash
             });
@@ -214,13 +216,13 @@ exports.getUser = async (req, res, next) => {
         const user = await models.User.findOne({
             where: { hash: req.params.hash }
         });
-        if(user){
+        if (user) {
             user.password = undefined;
             res.send(user);
-        }else{
+        } else {
             res.status(400).send({ msg: "Hash inválido." })
         }
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
@@ -232,15 +234,15 @@ exports.putUserPassword = async (req, res, next) => {
         const user = await models.User.findOne({
             where: { hash: req.params.hash }
         });
-        if(user){
+        if (user) {
             user.password = md5(req.body.password);
             user.hash = null;
             await user.save();
-            res.send({msg: "Senha alterada com sucesso."});
-        }else{
+            res.send({ msg: "Senha alterada com sucesso." });
+        } else {
             res.status(400).send({ msg: "Hash inválido." })
         }
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
