@@ -4,11 +4,17 @@ const cfg = require("../config/config-auth");
 const md5 = require('md5');
 const ActiveDirectory = require('activedirectory2');
 const Op = require('sequelize').Op;
+const moment = require('moment');
+
 var config = {
-    url: 'ldap://embraport.net',
-    baseDN: 'dc=embraport,dc=net',
-    username: 'speedsoft@embraport.net',
-    password: 'Sp33dqu@18'
+    // url: 'ldap://embraport.net',
+    // baseDN: 'dc=embraport,dc=net',
+    // username: 'speedsoft@embraport.net',
+    // password: 'Sp33dqu@18'
+    url: 'ldap://ldap.forumsys.com',
+    baseDN: 'dc=example,dc=com',
+    username: '',
+    password: ''
 }
 
 var ad = new ActiveDirectory(config);
@@ -18,31 +24,30 @@ exports.post = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = md5(req.body.password);
-        console.log('test 1');
-        let user = await models.User.findOne({ 
+        let user = await models.User.findOne({
             where: {
-                [Op.or]: [{email: email}, {userName: email}],
-                UserStatusId: 1 
-            } 
+                [Op.or]: [{ email: email }, { userName: email }],
+                UserStatusId: 1
+            }
         });
         ad.findUser(email, async (err, userAD) => {
             console.log('userAD', userAD);
             console.log('err', err);
-		    console.log(req.body.password);
+            console.log(req.body.password);
 
 
-	    if (userAD == undefined) {
-                    console.log('ERROR: ' + JSON.stringify(err));
-                    if (user && user.password == password) {
-                        let payload = { id: user.id };
-                        let token = jwt.encode(payload, cfg.jwtSecret);
-                        user.password = undefined;
-                        res.json({ token: token, user });
-                    } else {
-                        res.status(400).send({ msg: "Usuário ou senha inválidos." })
-                    }
-                    return;
+            if (userAD == undefined) {
+                console.log('ERROR: ' + JSON.stringify(err));
+                if (user && user.password == password) {
+                    let payload = { id: user.id };
+                    let token = jwt.encode(payload, cfg.jwtSecret);
+                    user.password = undefined;
+                    res.json({ token: token, user });
+                } else {
+                    res.status(400).send({ msg: "Usuário ou senha inválidos." })
                 }
+                return;
+            }
 
 
             // try LDAP altentication
@@ -140,42 +145,104 @@ exports.testAuthenticate = async (req, res, next) => {
         var username = req.body.username;
         var password = req.body.password;
 
-	ad.findUser(username, async (err, userAD) => {
-	    console.log('userAD', userAD);
+        ad.findUser(username, async (err, userAD) => {
+            console.log('userAD', userAD);
             console.log('err', err);
 
- 	
-	console.log(userAD.distinguishedName);
-	console.log(password);
-        ad.authenticate(userAD.distinguishedName, password, function (err, auth) {
-            if (err) {
-                console.log('ERROR: ' + JSON.stringify(err));
-                res.status(500).send(err)
-                return;
-            }
 
-            if (auth) {
-                console.log('Authenticated!');
-                console.log(auth);
-		ad.getGroupMembershipForUser('monalizab', function(err, groups) {
-                	if (err) {
-                		console.log('ERROR: ' +JSON.stringify(err));
-                 		return;
-               		}
+            console.log(userAD.distinguishedName);
+            console.log(password);
+            ad.authenticate(userAD.distinguishedName, password, function (err, auth) {
+                if (err) {
+                    console.log('ERROR: ' + JSON.stringify(err));
+                    res.status(500).send(err)
+                    return;
+                }
 
- 			if (! groups) console.log('User: ' + sAMAccountName + ' not found.');
-  			else console.log(groups);
-		});
-	    }
-            else {
-                console.log('Authentication failed!');
-            }
-            res.send({ msg: auth })
+                if (auth) {
+                    console.log('Authenticated!');
+                    console.log(auth);
+                    ad.getGroupMembershipForUser('monalizab', function (err, groups) {
+                        if (err) {
+                            console.log('ERROR: ' + JSON.stringify(err));
+                            return;
+                        }
+
+                        if (!groups) console.log('User: ' + sAMAccountName + ' not found.');
+                        else console.log(groups);
+                    });
+                }
+                else {
+                    console.log('Authentication failed!');
+                }
+                res.send({ msg: auth })
+            });
         });
-	});  		
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: "Internal error" })
     }
 }
 
+
+exports.postRequestChangePassword = async (req, res, next) => {
+    try {
+        const hash = md5(moment() + req.body.email)
+        const user = await models.User.findOne({
+            email: req.body.email
+        });
+        if (user.UserTypeId != 2) {
+            await user.update({
+                hash: hash
+            });
+            await user.SendEmail(`Olá ${user.name},<br>
+                                  Você solicitou uma troca de senha, para concluí-la <a href="http://localhost/#/update-password/${hash}">clique aqui</a>.<br>
+                                  Link: http://localhost/#/update-password/${hash}`)
+            res.send({ msg: "Troca se senha solicitada com sucesso" });
+        } else {
+            res.status(400).send({ msg: "Só é possivel solicitar a troca de senha de usuário do tipo externo." });
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: "Internal error" })
+    }
+}
+
+exports.getUser = async (req, res, next) => {
+    try {
+        const user = await models.User.findOne({
+            where: { hash: req.params.hash }
+        });
+        if(user){
+            user.password = undefined;
+            res.send(user);
+        }else{
+            res.status(400).send({ msg: "Hash inválido." })
+        }
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: "Internal error" })
+    }
+}
+
+exports.putUserPassword = async (req, res, next) => {
+    try {
+        const user = await models.User.findOne({
+            where: { hash: req.params.hash }
+        });
+        if(user){
+            user.password = md5(req.body.password);
+            user.hash = null;
+            await user.save();
+            res.send({msg: "Senha alterada com sucesso."});
+        }else{
+            res.status(400).send({ msg: "Hash inválido." })
+        }
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: "Internal error" })
+    }
+}
