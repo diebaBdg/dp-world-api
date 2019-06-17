@@ -5,6 +5,7 @@ const validators = require('./validators/company-validators');
 const multer = require('multer');
 const mkdirp = require('mkdirp');
 
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const path = './uploads/companies/' + req.params.id;
@@ -345,6 +346,20 @@ router.get('/:id/attachments', validators.getAttachments, expressValidator.finds
  * @apiSuccess {File} file The attachment file
  */
 router.get('/:id/attachments/:idAttachment/file', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFile);
+
+/**
+ * @api {get} /companies/:id/attachments/:idAttachment/stream Stream a company attachment
+ * @apiName GetCompaniesAttachmentFile
+ * @apiGroup Companies-Attachment
+ * 
+ * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Params) {Int} idAttachment The attachment id.
+ * 
+ * @apiSuccess {File} file The attachment file
+ */
+router.get('/:id/attachments/:idAttachment/stream', validators.getAttachmentFile, expressValidator.findsValidatorErros(), controller.getAttachmentFileStream);
+
+
 
 /**
  * @api {patch} /companies/:id/attachments/:idAttachment Update a attachment status

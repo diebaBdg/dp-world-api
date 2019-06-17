@@ -33,6 +33,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // difinig routes in routes/index.js
 app = require('./routes').routes(app);
 
+//definig cron jobs
+require('./scripts/cron-notification');
+
 // defining server port and start server
 const port = 3000;
 app.listen(port, () => console.log(`Server runnig in port ${port}`));
