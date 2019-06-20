@@ -55,7 +55,22 @@ module.exports = (sequelize, DataTypes) => {
       from: '"noreply dp-world" noreply@speedsoftware.com.br',
       to: this.email,
       subject: "Notificação",
-      html: msg
+      //html: msg
+      html: `
+      <table style="border:1px solid #cccccc; width: 500px; text-align:center">
+        <tr>
+            <td style="padding:10px">
+                <img style="width: 300px" src="http://demo.weecode.com.br/cdi/images/logo.png" />
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 20px; font-family: Arial, Helvetica, sans-serif; border-top:1px solid #eeeeee; padding-top:20px; padding-bottom:20px">
+                
+                ${msg}
+        
+            </td>
+        </tr>
+      </table>`
     };
     return emailHelper.sendMail(mailOptions);
   }
