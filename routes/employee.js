@@ -219,34 +219,12 @@ router.get('/:id/attachments/:idAttachment/stream', validators.getAttachmentFile
  * @apiGroup Employees-Attachment
  * 
  * @apiParam (Params) {Int} id The employee id.
+ * @apiParam (Query params) DocumentTypeId The document type id.
  * 
  * @apiSuccess {Array} rows List of attachments
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
- *    {
- *        "rows": [{
- *           "id": 11,
- *           "originalName": "empty.csv",
- *           "fileName": "attachment-1554956328223.csv",
- *           "validityDate": null,
- *           "encoding": "7bit",
- *           "mimetype": "text/csv",
- *           "destination": "./uploads/companies/1",
- *           "size": "9295856",
- *           "path": "uploads\\companies\\1\\attachment-1554956328223.csv",
- *           "note": null,
- *           "createdAt": "2019-04-16T00:01:59.749Z",
- *           "updatedAt": "2019-04-16T00:01:59.749Z",
- *           "AttachmentStatusId": 2,
- *           "EmployeeId": 1,
- *           "DocumentId": 3,
- *           "AttachmentStatus": {
- *                "id": 2,
- *               "name": "Aprovado"
- *           }
- *        }]
- *    }
  */
 router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
 
