@@ -277,8 +277,7 @@ exports.postAttachment = async (req, res) => {
 exports.getAttachments = async (req, res) => {
     try {
         const whereDocument = {};
-        console.log(req.query)
-        if(req.query.DocumentTypeId){
+        if (req.query.DocumentTypeId) {
             whereDocument.DocumentTypeId = req.query.DocumentTypeId;
         }
         const attachments = await models.CompanyAttachment.findAll({
@@ -332,7 +331,7 @@ exports.getAttachmentFileStream = async (req, res) => {
         const buffer = fs.readFileSync(attachment.path);
         res.contentType(attachment.mimetype);
         res.send(buffer);
-    
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
