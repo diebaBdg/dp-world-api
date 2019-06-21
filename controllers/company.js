@@ -276,6 +276,11 @@ exports.postAttachment = async (req, res) => {
 
 exports.getAttachments = async (req, res) => {
     try {
+        const whereDocument = {};
+        console.log(req.query)
+        if(req.query.DocumentTypeId){
+            whereDocument.DocumentTypeId = req.query.DocumentTypeId;
+        }
         const attachments = await models.CompanyAttachment.findAll({
             where: {
                 CompanyId: req.params.id
@@ -290,7 +295,8 @@ exports.getAttachments = async (req, res) => {
                 }
             }, {
                 model: models.Document,
-                attributes: ['id', 'description']
+                attributes: ['id', 'description', 'DocumentTypeId'],
+                where: whereDocument
             }],
             order: [
                 ['id', 'DESC']
