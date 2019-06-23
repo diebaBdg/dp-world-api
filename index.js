@@ -13,7 +13,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 }
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // create a write stream (in append mode)
 let accessLogStream = rfs('access.log', {
@@ -37,5 +37,5 @@ app = require('./routes').routes(app);
 require('./scripts/cron-notification');
 
 // defining server port and start server
-const port = 3000;
+const port = 80;
 app.listen(port, () => console.log(`Server runnig in port ${port}`));
