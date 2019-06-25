@@ -285,53 +285,12 @@ router.post('/:id/attachments', upload.single('attachment'), validators.postAtta
  * @apiGroup Companies-Attachment
  * 
  * @apiParam (Params) {Int} id The company id.
+ * @apiParam (Query params) DocumentTypeId The document type id.
  * 
  * @apiSuccess {Array} rows List of attachments
  * 
  * @apiSuccessExample {json} Sucesso (example)
  *    HTTP/1.1 201 OK
- *    {
- *        "rows": [{
- *          "id": 26,
- *          "originalName": "relatorioD45.csv",
- *          "fileName": "attachment-1554686665843.csv",
- *          "validityDate": "2019-04-08T01:24:26.021Z",
- *          "encoding": "7bit",
- *          "mimetype": "text/csv",
- *          "destination": "./uploads/companies/44",
- *          "size": "9295856",
- *          "path": "uploads\\companies\\44\\attachment-1554686665843.csv",
- *          "createdAt": "2019-04-08T01:24:26.024Z",
- *          "updatedAt": "2019-04-08T01:24:26.024Z",
- *          "AttachmentStatusId": 1,
- *          "CompanyId": 44,
- *          "DocumentId": 2,
- *          "AttachmentStatus": {
- *              "id": 1,
- *              "name": "Aguardando Aprovação",
- *           }
- *       },
- *       {
- *          "id": 24,
- *          "originalName": "relatorioD45.csv",
- *          "fileName": "attachment-1554592781596.csv",
- *          "validityDate": "2019-04-06T23:19:41.778Z",
- *          "encoding": "7bit",
- *          "mimetype": "text/csv",
- *          "destination": "./uploads/companies/44",
- *          "size": "9295856",
- *          "path": "uploads\\companies\\44\\attachment-1554592781596.csv",
- *          "createdAt": "2019-04-06T23:19:41.778Z",
- *          "updatedAt": "2019-04-06T23:19:41.778Z",
- *          "AttachmentStatusId": 1,
- *          "CompanyId": 44,
- *          "DocumentId": 3,
- *          "AttachmentStatus": {
- *              "id": 1,
- *              "name": "Aguardando Aprovação"
- *          }
- *      }]
- *    }
  */
 router.get('/:id/attachments', validators.getAttachments, expressValidator.findsValidatorErros(), controller.getAttachments);
 

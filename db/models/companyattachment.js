@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     destination: DataTypes.STRING,
     size: DataTypes.BIGINT,
     path: DataTypes.STRING,
-    note: DataTypes.STRING
+    note: DataTypes.STRING,
+    expired: DataTypes.VIRTUAL
   }, {});
   CompanyAttachment.associate = function(models) {
     // associations can be defined here

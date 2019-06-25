@@ -3,6 +3,7 @@ const Op = require('sequelize').Op;
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
 const fs = require('fs');
+const moment = require('moment')
 
 
 exports.get = async (req, res) => {
@@ -276,6 +277,11 @@ exports.postAttachment = async (req, res) => {
 
 exports.getAttachments = async (req, res) => {
     try {
+        const now = moment();
+        const whereDocument = {};
+        if (req.query.DocumentTypeId) {
+            whereDocument.DocumentTypeId = req.query.DocumentTypeId;
+        }
         const attachments = await models.CompanyAttachment.findAll({
             where: {
                 CompanyId: req.params.id
@@ -290,12 +296,24 @@ exports.getAttachments = async (req, res) => {
                 }
             }, {
                 model: models.Document,
-                attributes: ['id', 'description']
+                attributes: ['id', 'description', 'DocumentTypeId'],
+                where: whereDocument
             }],
             order: [
                 ['id', 'DESC']
             ]
         });
+
+        // check that each one is exhaled
+        attachments.forEach(attachment => {
+            validityDate = moment(attachment.validityDate);
+            if(validityDate.isBefore(now, 'day')){
+                attachment.expired = true;
+            }else{
+                attachment.expired = false;
+            }
+        });
+
         res.send({
             rows: attachments
         })
@@ -326,7 +344,7 @@ exports.getAttachmentFileStream = async (req, res) => {
         const buffer = fs.readFileSync(attachment.path);
         res.contentType(attachment.mimetype);
         res.send(buffer);
-    
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
