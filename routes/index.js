@@ -16,5 +16,6 @@ exports.routes = (app) => {
     app.use('/integrations', require('./integration'));
     app.use('/integration-schedules', require('./integration-schedule'));
     app.use('/notifications', require('./notification'));
+    app.use('/instructors', require('./instructor'));
     return app;
 }

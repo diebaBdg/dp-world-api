@@ -65,6 +65,7 @@ router.get('/:id/presence-list', controller.getPresenceList);
  * @apiParam (Request body) {Int} vacancies The amount of vacancies in integration.
  * @apiParam (Request body) {String} instructor The instructor of the integration.
  * @apiParam (Request body) {String} note A note about the integration.
+ * @apiParam (Request body) {Array} instructors A array with instructors ids.
  *
  * @apiSuccess {Int} id Integration inserted
  * @apiSuccess {String} msg Success message
