@@ -12,14 +12,14 @@ exports.post = [
                 }
             });
         }),
-    // check('email')
-    //     .isEmail()
-    //     .withMessage("Deve ser um email válido")
-    //     .custom((email) => {
-    //         return models.User.findOne({ where: { email: email } }).then(employee => {
-    //             if (employee) {
-    //                 return Promise.reject('Isntrutor já cadastrado.');
-    //             }
-    //         });
-    //     })
+    check('email')
+        .isEmail()
+        .withMessage("Deve ser um email válido")
+        .custom((email) => {
+            return models.User.findOne({ where: { email: email } }).then(employee => {
+                if (employee) {
+                    return Promise.reject('Isntrutor já cadastrado.');
+                }
+            });
+        })
 ];
