@@ -25,4 +25,28 @@ router.use(auth.authenticate());
  */
 router.post('/', validators.post, expressValidator.findsValidatorErros() , controller.post);
 
+/**
+ * @api {get} /instructors List of instructors
+ * @apiName GetInstructors
+ * @apiGroup Instructors
+ * 
+ * @apiSuccess {Array} data List of sector documents
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "data": [
+ *          {
+ *              "id": 1,
+ *              "name": "Nome do instrutor 1"
+ *          },
+ *          {
+ *              "id": 2,
+ *              "name": "Nome do instrutor 1"
+ *           }
+ *       ]
+ *    }
+ */
+router.get('/', expressValidator.findsValidatorErros(), controller.get);
+
 module.exports = router;

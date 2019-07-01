@@ -158,6 +158,15 @@ module.exports = {
           "MenuId": 12
       },
       {
+        "id": 22,
+        "link": "/instructors",
+        "name": "Instrutores",
+        "icon": "mdi mdi-chevron-right",
+        "createdAt": new Date(),
+        "updatedAt": new Date(),
+        "MenuId": 12
+    },
+      {
           "id": 2,
           "link": "/",
           "name": "Credenciamento",
