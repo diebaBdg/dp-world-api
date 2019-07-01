@@ -9,11 +9,7 @@ let cors = require('cors');
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-<<<<<<< HEAD
-  origin: ['http://localhost','http://localhost:5000','http://localhost:4000'],
-=======
   origin: ['http://localhost:3000', 'http://200.98.200.133','http://200.98.200.133:3000'],
->>>>>>> ac366da6cab0f0947f446c6a8903a030a0e93c81
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 }
@@ -41,5 +37,5 @@ app = require('./routes').routes(app);
 require('./scripts/cron-notification');
 
 // defining server port and start server
-const port = 4000;
+const port = 80;
 app.listen(port, () => console.log(`Server runnig in port ${port}`));
