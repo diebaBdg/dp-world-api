@@ -68,6 +68,12 @@ module.exports = {
         name: 'Juridico',
         createdAt: new Date(),
         updatedAt: new Date()
+      },{
+        id: 12,
+        status: 1,
+        name: 'Meio ambiente',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 

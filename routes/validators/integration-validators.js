@@ -44,7 +44,10 @@ exports.post = [
     check('note')
         .optional({ nullable: true })
         .isLength({ min: 1, max: 200 })
-        .withMessage("Deve ter entre 1 e 200 caracteres.")
+        .withMessage("Deve ter entre 1 e 200 caracteres."),
+    check('instructors')
+        .isArray({ min: 3})
+        .withMessage("Deve ser um array.")
 ];
 
 exports.delete = [

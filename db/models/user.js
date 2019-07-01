@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Sector);
     User.belongsTo(models.Company);
     User.hasMany(models.Notification);
+    User.belongsToMany(models.Integration, { through: 'InstructorToIntegration' } );
   };
 
   // Instance Methods

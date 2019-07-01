@@ -24,6 +24,9 @@ exports.get = async (req, res) => {
             include: [{
                 model: models.IntegrationSchedule,
                 attributes: ['id', 'EmployeeId']
+            },{
+                model: models.User,
+                attributes: ['id', 'name', 'userName', 'email']
             }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
@@ -40,6 +43,15 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
     try {
         const integrationCreated = await models.Integration.create(req.body);
+        const users = await models.User.findAll({
+            where: {
+                id: {
+                    [Op.in]: req.body.instructors
+                }
+            }
+        });
+
+        await integrationCreated.addUsers(users);
         res.send({
             id: integrationCreated.id,
             msg: "Cadastrado com sucesso."
