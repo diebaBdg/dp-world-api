@@ -117,7 +117,7 @@ module.exports = {
       },
       {
           "id": 19,
-          "link": "/",
+          "link": "/documents-periodic",
           "name": "Documentos Mensais",
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
