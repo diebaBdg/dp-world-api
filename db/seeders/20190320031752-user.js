@@ -16,6 +16,21 @@ module.exports = {
       CompanyId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      id: 2,
+      name: 'Zyad',
+      userName: 'zyad',
+      email: 'zyad@weecode.com.br',
+      phone: '37999223568',
+      phone2: '31989915622',
+      password: '827ccb0eea8a706c4c34a16891f84e7b',
+      UserTypeId: 1,
+      UserStatusId: 1,
+      SectorId: 1,
+      CompanyId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }], {});
   },
 
