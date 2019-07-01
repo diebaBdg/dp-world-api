@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "postgres",
-    "password": "1234",
-    "database": "dp_world",
+    "password": "speedverde",
+    "database": "dpworld_cdi",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
