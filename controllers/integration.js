@@ -23,7 +23,7 @@ exports.get = async (req, res) => {
             where: filter,
             include: [{
                 model: models.IntegrationSchedule,
-                attributes: ['id', 'EmployeeId']
+                attributes: ['id', 'EmployeeId', 'showedUp']
             },{
                 model: models.User,
                 attributes: ['id', 'name', 'userName', 'email']

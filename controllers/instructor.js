@@ -19,7 +19,7 @@ exports.post = async (req, res) => {
                     SectorId: req.body.SectorId,
                     CompanyId: 1
                 });
-                res.status(201).send({ 
+                res.status(201).send({
                     id: user.id,
                     msg: "Cadastrado com sucesso."
                 });
@@ -30,5 +30,25 @@ exports.post = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' });
+    }
+}
+
+exports.get = async (req, res) => {
+    try {
+
+        let filter = {};
+        filter.SectorId = Array(5, 6, 12);
+
+        let data = await models.User.findAll({
+            where: filter,
+            include: [{
+                model: models.Sector
+            }],
+        });
+        res.send(data);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
     }
 }
