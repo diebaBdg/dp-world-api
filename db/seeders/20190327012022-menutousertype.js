@@ -115,6 +115,12 @@ module.exports = {
       updatedAt: new Date(),
       "MenuId": "21",
       "UserTypeId": "2"
+    },
+    {
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      "MenuId": "22",
+      "UserTypeId": "1"
     }], {});
   },
 
