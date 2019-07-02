@@ -64,6 +64,10 @@ exports.post = async (req, res) => {
             res.status(400).send({msg: "A data da integração já passou e por isso não é possivel fazer o agendamento."})
             return false;
         }
+        if(integration.closed){
+            res.status(400).send({msg: "Não é possivel agendar porque essa integração está fechada."})
+            return false;
+        }
         
 
         const scheduleCreated = await models.IntegrationSchedule.create(req.body);

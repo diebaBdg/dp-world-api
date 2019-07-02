@@ -43,8 +43,8 @@ exports.post = [
         .withMessage("Deve ter entre 1 e 200 caracteres."),
     check('note')
         .optional({ nullable: true })
-        .isLength({ min: 1, max: 200 })
-        .withMessage("Deve ter entre 1 e 200 caracteres."),
+        .isLength({ min: 1, max: 2000 })
+        .withMessage("Deve ter entre 1 e 2000 caracteres."),
     check('instructors')
         .isArray({ min: 3})
         .withMessage("Deve ser um array.")
@@ -106,6 +106,23 @@ exports.put = [
         .withMessage("Deve ter entre 1 e 200 caracteres."),
     check('note')
         .optional({ nullable: true })
-        .isLength({ min: 1, max: 200 })
-        .withMessage("Deve ter entre 1 e 200 caracteres.")
+        .isLength({ min: 1, max: 2000 })
+        .withMessage("Deve ter entre 1 e 2000 caracteres.")
+];
+
+exports.close = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.Integration.findOne({
+                where: {
+                    id
+                }
+            }).then(integration => {
+                if (!integration) {
+                    return Promise.reject('Integração não existe.');
+                }
+            });
+        }),
 ];

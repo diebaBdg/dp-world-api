@@ -121,4 +121,18 @@ router.delete('/:id', validators.delete, expressValidator.findsValidatorErros(),
  */
 router.put('/:id', validators.put, expressValidator.findsValidatorErros(), controller.put);
 
+/**
+ * @api {patch} /integrations/:id/close Close a integration
+ * @apiName PostIntegrationsClose
+ * @apiGroup Integrations
+ * 
+ * @apiParam (Request body) {Int} id Integration id.
+ *
+ * @apiSuccess {String} msg Success message
+ * 
+ * @apiSuccessExample {json} Success (example)
+ *    HTTP/1.1 201 OK
+ */
+router.patch('/:id/close', validators.close, expressValidator.findsValidatorErros(), controller.close);
+
 module.exports = router;
