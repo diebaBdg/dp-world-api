@@ -179,6 +179,10 @@ let prepareMessageClosedItegration = (instructor, integration) => {
 exports.close = async (req, res) => {
     try {
         const integration = await models.Integration.findOne({ where: { id: req.params.id } });
+        if(integration.closed){
+            res.status(400).send({msg: "A integração já está fechada."})
+            return false;
+        }
         
         const instructors = await integration.getUsers();
         const notifications = instructors.map(user => {
