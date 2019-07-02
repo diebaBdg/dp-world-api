@@ -109,3 +109,20 @@ exports.put = [
         .isLength({ min: 1, max: 200 })
         .withMessage("Deve ter entre 1 e 200 caracteres.")
 ];
+
+exports.close = [
+    check('id')
+        .isInt()
+        .withMessage("Deve ser um número inteiro.")
+        .custom((id) => {
+            return models.Integration.findOne({
+                where: {
+                    id
+                }
+            }).then(integration => {
+                if (!integration) {
+                    return Promise.reject('Integração não existe.');
+                }
+            });
+        }),
+];
