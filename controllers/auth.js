@@ -74,8 +74,7 @@ exports.post = async (req, res, next) => {
                                 name: userAD ? userAD.cn : null,
                                 UserTypeId: 1,
                                 UserStatusId: 1,
-                                SectorId: 3,
-                                CompanyId: 1
+                                SectorId: 3
                             });
                         } else {
                             user.update({

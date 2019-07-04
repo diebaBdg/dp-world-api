@@ -65,7 +65,7 @@ exports.patch = async (req, res) => {
         const employeeStatusId = req.body.EmployeeStatusId;
         const employee = await models.Employee.findOne({ where: { id: req.params.id } });
         const company = await employee.getCompany();
-        const contacts = await company.getUsers();
+        const contacts = await company.getUsers({ where:{ UserTypeId: 2 }});
         const attachments = await employee.getEmployeeAttachments({
             include: [{
                 model: models.Document,
