@@ -107,7 +107,7 @@ exports.patch = async (req, res) => {
     try {
         const companyStatusId = req.body.CompanyStatusId;
         const company = await models.Company.findOne({ where: { id: req.params.id } });
-        const contacts = await company.getUsers();
+        const contacts = await company.getUsers({ where: { UserTypeId: 2 } });
         const attachments = await company.getCompanyAttachments({
             include: [{
                 model: models.Document,
@@ -307,9 +307,9 @@ exports.getAttachments = async (req, res) => {
         // check that each one is exhaled
         attachments.forEach(attachment => {
             validityDate = moment(attachment.validityDate);
-            if(validityDate.isBefore(now, 'day')){
+            if (validityDate.isBefore(now, 'day')) {
                 attachment.expired = true;
-            }else{
+            } else {
                 attachment.expired = false;
             }
         });

@@ -13,7 +13,6 @@ module.exports = {
       UserTypeId: 1,
       UserStatusId: 1,
       SectorId: 1,
-      CompanyId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     },
