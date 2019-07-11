@@ -24,8 +24,8 @@ new CronJob('00 00 00 * * *', async () => {
                     validityDate: { [Op.lt]: now }
                 }
             });
-            if(expiredAttachments.length){
-                const users = await company.getUsers({UserStatusId: 1});
+            if (expiredAttachments.length) {
+                const users = await company.getUsers({ UserStatusId: 1 });
                 const notifications = await users.map(user => {
                     return models.Notification.build({
                         UserId: user.id,
@@ -39,6 +39,44 @@ new CronJob('00 00 00 * * *', async () => {
             }
         }
         console.log('Notification cron end');
+    } catch (err) {
+        console.log(err)
+    }
+
+}, null, true, 'America/Sao_Paulo');
+
+
+// identify expired integration to Notify the users
+new CronJob('00 30 00 * * *', async () => {
+    try {
+        console.log('Notification expired integration start');
+        const now = moment().format()
+        const fifteenDaysAhead = moment().add(15, "days").format();
+        const almostExpiredIntegrations = await models.IntegrationSchedule.findAll({
+            where: {
+                validityDate: {
+                    [Op.between]: [now, fifteenDaysAhead]
+                }
+            }
+        });
+
+        for (integration of almostExpiredIntegrations) {
+            const employee = await integration.getEmployee();
+            const company = await employee.getCompany();
+            const users = await company.getUsers({ where: { UserTypeId: 2 } });
+            const notifications = users.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `Olá ${user.name},<br> Há colaborador(es) com a integração prestes a vencer, acesse o sistema <link> para agendar novas integrações.`
+                })
+            })
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
+            }
+            return 'foi';
+        }
+        console.log('Notification expired integration end');
     } catch (err) {
         console.log(err)
     }

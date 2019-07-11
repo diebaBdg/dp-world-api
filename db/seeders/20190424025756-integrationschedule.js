@@ -7,7 +7,8 @@ module.exports = {
         EmployeeId: 1,
         showedUp: false,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        validityDate: new Date()
       }], {});
   },
 

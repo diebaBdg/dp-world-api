@@ -70,6 +70,7 @@ router.get('/user/:hash', controller.getUser);
  * @apiName PutUserPassword
  * @apiGroup Auth
  *
+ * @apiParam (Params) {String} hash User Key to change password
  * @apiParam (Request body) {String} password User password
  * 
  * @apiSuccessExample {json} Success (example):

@@ -37,6 +37,7 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
     try {
         const now = moment().format();
+        req.body.validityDate = moment().add(1, 'year');
         const integration = await models.Integration.findOne({where: {id: req.body.IntegrationId}});
         const integrationSchedule = await models.IntegrationSchedule.findOne({
             where: {
