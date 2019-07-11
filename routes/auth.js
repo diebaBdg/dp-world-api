@@ -50,6 +50,17 @@ router.post('/', validators.post, expressValidator.findsValidatorErros(), contro
  */
 router.post('/request-change-password', validators.postRequestChangePassword, expressValidator.findsValidatorErros(), controller.postRequestChangePassword);
 
+/**
+ * @api {post} /auth/request-reset-password User request reset password
+ * @apiName PostAuthResetPassword
+ * @apiGroup Auth
+ *
+ * @apiParam (Request body) {String} email User email
+ * 
+ * @apiSuccessExample {json} Success (example):
+ *    HTTP/1.1 201 OK
+ */
+router.post('/request-reset-password', validators.postRequestResetPassword, expressValidator.findsValidatorErros(), controller.postRequestResetPassword);
 
 /**
  * @api {get} /auth/user/:hash Get user by hash
