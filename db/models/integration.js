@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     vacancies: DataTypes.INTEGER,
     instructor: DataTypes.STRING,
-    note: DataTypes.STRING,
+    note: DataTypes.TEXT,
     closed: DataTypes.BOOLEAN
   }, {});
   Integration.associate = function(models) {
