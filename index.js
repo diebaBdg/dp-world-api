@@ -9,11 +9,12 @@ let cors = require('cors');
 
 // configure CORS (Cross-origin resource sharing)
 const corsOptions = {
-  origin: ['http://200.98.200.133','http://200.98.200.133:3000'],
+  origin: ['http://localhost:3000', 'http://200.98.200.133','http://200.98.200.133:3000'],
   optionsSuccessStatus: 204,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 }
-/pp.use(cors(corsOptions));
+
+//app.use(cors(corsOptions));
 
 // create a write stream (in append mode)
 let accessLogStream = rfs('access.log', {
@@ -38,4 +39,5 @@ require('./scripts/cron-notification');
 
 // defining server port and start server
 const port = 3000;
-appwlisten(port, () => console.log(`Server runnig in port ${port}`));
+app.listen(port, () => console.log(`Server runnig in port ${port}`));
+
