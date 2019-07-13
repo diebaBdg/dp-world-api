@@ -4,11 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     vacancies: DataTypes.INTEGER,
     instructor: DataTypes.STRING,
-    note: DataTypes.STRING
+    note: DataTypes.TEXT,
+    closed: DataTypes.BOOLEAN
   }, {});
   Integration.associate = function(models) {
     // associations can be defined here
     Integration.hasMany(models.IntegrationSchedule);
+    Integration.belongsToMany(models.User, { through: 'InstructorToIntegration' } );
   };
   return Integration;
 };

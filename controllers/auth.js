@@ -74,8 +74,7 @@ exports.post = async (req, res, next) => {
                                 name: userAD ? userAD.cn : null,
                                 UserTypeId: 1,
                                 UserStatusId: 1,
-                                SectorId: 3,
-                                CompanyId: 1
+                                SectorId: 3
                             });
                         } else {
                             user.update({
@@ -203,6 +202,27 @@ exports.postRequestChangePassword = async (req, res, next) => {
             res.send({ msg: "Troca de senha solicitada com sucesso" });
         } else {
             res.status(400).send({ msg: "Só é possivel solicitar a troca de senha de usuário do tipo externo." });
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: "Internal error" })
+    }
+}
+
+exports.postRequestResetPassword = async (req, res, next) => {
+    try {
+        const hash = md5(moment() + req.body.email)
+        const user = await models.User.findOne({
+            where: { email: req.body.email }
+        });
+        if (!user){
+            res.status(400).send({ msg: "Usuário não cadastrado." });
+        }else{
+            await user.update({
+                hash: hash
+            });
+            res.send({ hash: hash });
         }
 
     } catch (err) {

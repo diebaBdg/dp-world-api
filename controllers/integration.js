@@ -23,7 +23,10 @@ exports.get = async (req, res) => {
             where: filter,
             include: [{
                 model: models.IntegrationSchedule,
-                attributes: ['id', 'EmployeeId']
+                attributes: ['id', 'EmployeeId', 'showedUp']
+            }, {
+                model: models.User,
+                attributes: ['id', 'name', 'userName', 'email']
             }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
@@ -40,6 +43,15 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
     try {
         const integrationCreated = await models.Integration.create(req.body);
+        const users = await models.User.findAll({
+            where: {
+                id: {
+                    [Op.in]: req.body.instructors
+                }
+            }
+        });
+
+        await integrationCreated.addUsers(users);
         res.send({
             id: integrationCreated.id,
             msg: "Cadastrado com sucesso."
@@ -131,7 +143,7 @@ exports.put = async (req, res) => {
             }]
         });
 
-        if(req.body.date){
+        if (req.body.date) {
             const notifications = schedules.map(schedule => {
                 return models.Notification.build({
                     EmployeeId: schedule.EmployeeId,
@@ -148,6 +160,48 @@ exports.put = async (req, res) => {
         res.send({
             msg: "Atualizado com sucesso."
         });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: 'Internal Error' })
+    }
+}
+
+let prepareMessageClosedItegration = (instructor, integration) => {
+    return `
+        Olá ${instructor.name},<br><br>
+        A integração ${integration.id} que você é instrutor foi fechada.<br>
+        Data: ${moment(integration.date).format('DD/MM/YYYY') }<br>
+        Hora: ${moment(integration.date).format('HH:mm') }<br>
+        Observações: ${integration.note}<br>
+    `
+}
+
+exports.close = async (req, res) => {
+    try {
+        const integration = await models.Integration.findOne({ where: { id: req.params.id } });
+        if(integration.closed){
+            res.status(400).send({msg: "A integração já está fechada."})
+            return false;
+        }
+        
+        const instructors = await integration.getUsers();
+        const notifications = instructors.map(user => {
+            return models.Notification.build({
+                UserId: user.id,
+                message: prepareMessageClosedItegration(user, integration)
+            })
+        })
+        for (notification of notifications) {
+            await notification.sendEmail();
+            await notification.save();
+        }
+
+        integration.closed = true;
+        await integration.save();
+
+        res.send({
+            msg: `integração ${integration.id} fechada com sucesso.`
+        })
     } catch (err) {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })

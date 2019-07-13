@@ -15,6 +15,12 @@ exports.postRequestChangePassword = [
         .withMessage("Deve ser um email")
 ];
 
+exports.postRequestResetPassword = [
+    check('email')
+        .isEmail()
+        .withMessage("Deve ser um email")
+];
+
 exports.putUserPassword = [
     check('password')
         .isLength({ min: 5, max: 20 })

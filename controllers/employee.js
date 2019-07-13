@@ -65,7 +65,7 @@ exports.patch = async (req, res) => {
         const employeeStatusId = req.body.EmployeeStatusId;
         const employee = await models.Employee.findOne({ where: { id: req.params.id } });
         const company = await employee.getCompany();
-        const contacts = await company.getUsers();
+        const contacts = await company.getUsers({ where:{ UserTypeId: 2 }});
         const attachments = await employee.getEmployeeAttachments({
             include: [{
                 model: models.Document,
@@ -272,11 +272,13 @@ exports.getAttachmentFile = async (req, res) => {
 }
 
 exports.getAttachmentFileStream = async (req, res) => {
+
     try {
+     
         const attachment = await models.EmployeeAttachment.findOne({
             where: { id: req.params.idAttachment }
         });
-
+    
         const buffer = fs.readFileSync(attachment.path);
         res.contentType(attachment.mimetype);
         res.send(buffer);
@@ -285,6 +287,7 @@ exports.getAttachmentFileStream = async (req, res) => {
         console.log(err);
         res.status(500).send({ msg: 'Internal Error' })
     }
+
 }
 
 exports.pathAttachment = async (req, res) => {

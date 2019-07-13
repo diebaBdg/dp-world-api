@@ -37,6 +37,7 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
     try {
         const now = moment().format();
+        req.body.validityDate = moment().add(1, 'year');
         const integration = await models.Integration.findOne({where: {id: req.body.IntegrationId}});
         const integrationSchedule = await models.IntegrationSchedule.findOne({
             where: {
@@ -62,6 +63,10 @@ exports.post = async (req, res) => {
         }
         if(integrationDate.isBefore(now)){
             res.status(400).send({msg: "A data da integração já passou e por isso não é possivel fazer o agendamento."})
+            return false;
+        }
+        if(integration.closed){
+            res.status(400).send({msg: "Não é possivel agendar porque essa integração está fechada."})
             return false;
         }
         
