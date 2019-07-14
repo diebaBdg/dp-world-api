@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const IntegrationSchedule = sequelize.define('IntegrationSchedule', {
     showedUp: DataTypes.BOOLEAN,
-    validityDate: DataTypes.DATE
+    validityDate: DataTypes.DATE,
+    expired: DataTypes.VIRTUAL
   }, {});
   IntegrationSchedule.associate = function(models) {
     // associations can be defined here

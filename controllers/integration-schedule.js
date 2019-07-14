@@ -5,6 +5,7 @@ const moment = require('moment');
 
 exports.get = async (req, res) => {
     try {
+        const now = moment();
         const paginator = new Paginator(req.query.page);
         let filter = {};
         if(req.query.EmployeeId){
@@ -26,6 +27,16 @@ exports.get = async (req, res) => {
             limit: paginator.limit,
             offset: paginator.offset
         });
+
+        data.rows.forEach(schedule => {
+            validityDate = moment(schedule.validityDate);
+            if (validityDate.isBefore(now, 'day')) {
+                schedule.expired = true;
+            } else {
+                schedule.expired = false;
+            }
+        });
+        
         data.pages = paginator.getNumberOfPages(data.count);
         res.send(data);
     } catch (err) {
