@@ -241,6 +241,22 @@ exports.postAttachment = async (req, res) => {
             return false;
         }
 
+        if(company.CompanyStatusId == 5){
+            company.CompanyStatusId = 3;
+            const users = await models.User.findAll({ UserTypeId: 1 });
+            const notifications = users.map(user => {
+                return models.Notification.build({
+                    UserId: user.id,
+                    message: `O cadastro ${company.cnpj} – ${company.socialName} encaminhou os documentos para análise.`
+                })
+            })
+            for (notification of notifications) {
+                await notification.sendEmail();
+                await notification.save();
+            }
+            await company.save();
+        }
+
         const companyAttachmentCreated = await models.CompanyAttachment.create({
             originalName: req.file.originalname,
             fileName: req.file.filename,
