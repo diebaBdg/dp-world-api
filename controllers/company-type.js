@@ -1,6 +1,7 @@
 const models = require('../db/models');
 const Paginator = require('../helpers/paginator-helper');
 const orderHerper = require('../helpers/order-helper');
+const Op = require('sequelize').Op;
 
 exports.get = async (req, res) => {
     try {
@@ -105,13 +106,31 @@ exports.getDocuments = async (req, res) => {
     }
 }
 
+let notifyCompanies = async (companies, document) => {
+    for (company of companies) {
+        company.CompanyStatusId = 2;
+        const contacts = await company.getUsers({ where: { UserTypeId: 2 } });
+        const notifications = contacts.map(user => {
+            return models.Notification.build({
+                UserId: user.id,
+                message: `Olá ${user.name},<br>O documento ${document.name} agora é necessário para o seu tipo de empresa, acesse o sistema para anexa-lo.<br><br> `
+            })
+        });
+        for (notification of notifications) {
+            await notification.sendEmail();
+            await notification.save();
+        }
+        company.save();
+    }
+}
+
 exports.postDocuments = async (req, res) => {
     try {
         const documents = req.body.documents;
         // insrt each document in list
         for (document of documents) {
             // insert item if not exists
-            await models.DocumentToCompanyType.findOrCreate({
+            const documentToCompanyType = await models.DocumentToCompanyType.findOrCreate({
                 where: {
                     CompanyTypeId: req.params.id,
                     DocumentId: document.DocumentId
@@ -120,6 +139,17 @@ exports.postDocuments = async (req, res) => {
                     defaultValidity: document.defaultValidity
                 }
             });
+            console.log('NEW RECORD', documentToCompanyType[0].isNewRecord);
+            // notify companies about new document
+            const companies = await models.Company.findAll({
+                where:{
+                    CompanyTypeId: req.params.id,
+                    CompanyStatusId: {
+                        [Op.ne]: 6
+                    }
+                }
+            })
+            await notifyCompanies(companies, document);
         }
         res.status(201).send({ msg: "Documents inserted" });
     } catch (err) {
