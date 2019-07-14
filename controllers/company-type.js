@@ -80,16 +80,16 @@ exports.getDocuments = async (req, res) => {
     try {
         const id = req.params.id;
         const filters = {}
-        if(req.query.DocumentTypeId){
+        if (req.query.DocumentTypeId) {
             filters.DocumentTypeId = req.query.DocumentTypeId;
         }
-        if(req.query.FunctionId){
+        if (req.query.FunctionId) {
             filters.FunctionId = req.query.FunctionId;
         }
         const filters2 = {
             CompanyTypeId: id
         }
-        if(req.query.isperiodic == 'false'){
+        if (req.query.isperiodic == 'false') {
             filters2.defaultValidity = null;
         }
         const documents = await models.Document.findAll({
@@ -113,7 +113,7 @@ let notifyCompanies = async (companies, document) => {
         const notifications = contacts.map(user => {
             return models.Notification.build({
                 UserId: user.id,
-                message: `Olá ${user.name},<br>O documento ${document.name} agora é necessário para o seu tipo de empresa, acesse o sistema para anexa-lo.<br><br> `
+                message: `Olá ${user.name},<br>O documento <strong>${document.description}</strong> agora é necessário para o seu tipo de empresa, acesse o sistema para anexa-lo.<br><br> `
             })
         });
         for (notification of notifications) {
@@ -129,27 +129,31 @@ exports.postDocuments = async (req, res) => {
         const documents = req.body.documents;
         // insrt each document in list
         for (document of documents) {
+            const documentObj = await models.Document.findOne({where: {id: document.DocumentId}})
+            const where = {
+                CompanyTypeId: req.params.id,
+                DocumentId: document.DocumentId
+            }
+            const exists = await models.DocumentToCompanyType.findOne({where});
             // insert item if not exists
-            const documentToCompanyType = await models.DocumentToCompanyType.findOrCreate({
-                where: {
-                    CompanyTypeId: req.params.id,
-                    DocumentId: document.DocumentId
-                },
+            await models.DocumentToCompanyType.findOrCreate({
+                where,
                 defaults: {
                     defaultValidity: document.defaultValidity
                 }
             });
-            console.log('NEW RECORD', documentToCompanyType[0].isNewRecord);
-            // notify companies about new document
-            const companies = await models.Company.findAll({
-                where:{
-                    CompanyTypeId: req.params.id,
-                    CompanyStatusId: {
-                        [Op.ne]: 6
+            if (!exists) {
+                // notify companies about new document
+                const companies = await models.Company.findAll({
+                    where: {
+                        CompanyTypeId: req.params.id,
+                        CompanyStatusId: {
+                            [Op.ne]: 6
+                        }
                     }
-                }
-            })
-            await notifyCompanies(companies, document);
+                })
+                await notifyCompanies(companies, documentObj);
+            }
         }
         res.status(201).send({ msg: "Documents inserted" });
     } catch (err) {
