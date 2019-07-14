@@ -210,6 +210,27 @@ exports.postRequestChangePassword = async (req, res, next) => {
     }
 }
 
+exports.postRequestResetPassword = async (req, res, next) => {
+    try {
+        const hash = md5(moment() + req.body.email)
+        const user = await models.User.findOne({
+            where: { email: req.body.email }
+        });
+        if (!user){
+            res.status(400).send({ msg: "Usuário não cadastrado." });
+        }else{
+            await user.update({
+                hash: hash
+            });
+            res.send({ hash: hash });
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ msg: "Internal error" })
+    }
+}
+
 exports.getUser = async (req, res, next) => {
     try {
         const user = await models.User.findOne({
