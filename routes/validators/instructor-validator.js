@@ -21,5 +21,8 @@ exports.post = [
                     return Promise.reject('Isntrutor já cadastrado.');
                 }
             });
-        })
+        }),
+    check('name')
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Deve ter entre 3 e 50 caracteres.")
 ];

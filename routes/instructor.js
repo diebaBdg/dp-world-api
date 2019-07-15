@@ -10,7 +10,8 @@ router.use(auth.authenticate());
  * @apiName PostInstructors
  * @apiGroup Instructors
  *
- * @apiParam (Request body) {Int} email Instructor email.
+ * @apiParam (Request body) {String} email Instructor email.
+ * @apiParam (Request body) {String} name Instructor name.
  * @apiParam (Request body) {Int} SectorId Sector id.
  * 
  * @apiSuccess {Int} id Instructor id
