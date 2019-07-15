@@ -17,7 +17,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     },{
-      id: 1,
+      id: 2,
       name: 'Cleyton',
       userName: 'cleyton',
       email: 'cleytonb40@gmail.com',
@@ -32,7 +32,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      id: 2,
+      id: 3,
       name: 'Zyad',
       userName: 'zyad',
       email: 'zyad@weecode.com.br',
@@ -46,7 +46,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     },{
-      id: 2,
+      id: 4,
       name: 'Natalie',
       userName: 'natalie',
       email: 'natalie@weecode.com.br',
