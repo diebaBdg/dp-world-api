@@ -9,6 +9,10 @@ exports.get = async (req, res) => {
         let filter = {};
         let data = await models.User.findAndCountAll({
             where: filter,
+            include: [{
+                model: models.Sector,
+                attributes: ['name']
+            }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
             offset: paginator.offset
