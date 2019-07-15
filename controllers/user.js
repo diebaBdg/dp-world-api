@@ -6,7 +6,9 @@ exports.get = async (req, res) => {
     try {
         const paginator = new Paginator(req.query.page);
         // filter definition
-        let filter = {};
+        let filter = {
+            UserTypeId: 1
+        };
         let data = await models.User.findAndCountAll({
             where: filter,
             include: [{
