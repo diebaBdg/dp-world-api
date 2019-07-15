@@ -19,7 +19,7 @@ router.get('/', controller.get);
 
 /**
  * @api {patch} /users/:id Update user sector
- * @apiName GetUsers
+ * @apiName PutUsers
  * @apiGroup Users
  *
  * @apiParam (Params) {Int} id The user id.
