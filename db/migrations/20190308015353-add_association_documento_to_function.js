@@ -21,7 +21,7 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeColumn(
       'Documents', // name of Source model
-      'functionId' // key we want to remove
+      'FunctionId' // key we want to remove
     );
   }
 };
