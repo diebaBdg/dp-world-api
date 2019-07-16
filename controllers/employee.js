@@ -55,6 +55,9 @@ exports.getOne = async (req, res) => {
             }, {
                 attributes: ['id', 'cnpj', 'socialName'],
                 model: models.Company
+            },{
+                model: models.Function,
+                attributes: ['id', 'description']
             }]
         }));
     } catch (err) {
