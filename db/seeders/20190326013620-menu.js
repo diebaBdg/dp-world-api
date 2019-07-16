@@ -173,7 +173,15 @@ module.exports = {
           "icon": "mdi mdi-chevron-right",
           "createdAt": new Date(),
           "updatedAt": new Date()
-      }
+      },
+      {
+        "id": 23,
+        "link": "/users",
+        "name": "Usuários",
+        "icon": "mdi mdi-chevron-right",
+        "createdAt": new Date(),
+        "updatedAt": new Date()
+    }
   ], {});
   },
 
