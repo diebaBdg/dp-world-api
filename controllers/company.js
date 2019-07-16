@@ -34,6 +34,9 @@ exports.get = async (req, res) => {
             }, {
                 model: models.CompanyType,
                 attributes: ['id', 'description']
+            }, {
+                model: models.Sector,
+                attributes: ['id', 'name']
             }],
             order: orderHerper.getOrder(req.query.order_by, req.query.order_direction),
             limit: paginator.limit,
