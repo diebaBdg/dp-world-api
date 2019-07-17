@@ -19,6 +19,9 @@ exports.get = async (req, res) => {
                 filter.date = { [Op.lte]: now };
             }
         }
+        if(req.query.closed){
+            filter.closed = req.query.closed == 'TRUE'? true: false;
+        }
         let data = await models.Integration.findAndCountAll({
             where: filter,
             include: [{

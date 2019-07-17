@@ -14,6 +14,7 @@ const auth = require("../config/auth")();
  * @apiParam (Query params) order_by A column to order.
  * @apiParam (Query params) order_direction The order direction (ASC or DESC).
  * @apiParam (Query params) occurrence The occurrence (PAST or FUTURE).
+ * @apiParam (Query params) closed If integration is closed or oppened (TRUE or FALSE).
  *
  * @apiSuccess {Int} count Number of total items.
  * @apiSuccess {Int} pages Number of pages.

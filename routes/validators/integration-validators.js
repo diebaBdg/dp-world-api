@@ -18,6 +18,10 @@ exports.get = [
     check('occurrence')
         .optional()
         .isIn(['PAST', 'past', 'FUTURE', 'future'])
+        .withMessage("Deve ser PAST ou FUTURE."),
+    check('closed')
+        .optional()
+        .isIn(['TRUE', 'FALSE'])
         .withMessage("Deve ser PAST ou FUTURE.")
 ];
 
@@ -46,7 +50,7 @@ exports.post = [
         .isLength({ min: 1, max: 2000 })
         .withMessage("Deve ter entre 1 e 2000 caracteres."),
     check('instructors')
-        .isArray({ min: 3})
+        .isArray({ min: 3 })
         .withMessage("Deve ser um array.")
 ];
 
