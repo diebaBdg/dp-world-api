@@ -130,19 +130,18 @@ exports.postDocuments = async (req, res) => {
         // insrt each document in list
         for (document of documents) {
             const documentObj = await models.Document.findOne({where: {id: document.DocumentId}})
-            const where = {
+            
+            const exists = await models.DocumentToCompanyType.findOne({where: {
                 CompanyTypeId: req.params.id,
                 DocumentId: document.DocumentId
-            }
-            const exists = await models.DocumentToCompanyType.findOne({where});
+            }});
             // insert item if not exists
-            await models.DocumentToCompanyType.findOrCreate({
-                where,
-                defaults: {
-                    defaultValidity: document.defaultValidity
-                }
-            });
             if (!exists) {
+                await models.DocumentToCompanyType.create({
+                    CompanyTypeId: req.params.id,
+                    DocumentId: document.DocumentId,
+                    defaultValidity: document.defaultValidity
+                })
                 // notify companies about new document
                 const companies = await models.Company.findAll({
                     where: {
