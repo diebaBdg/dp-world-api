@@ -115,6 +115,7 @@ exports.post = [
         .isInt()
         .withMessage("Deve ser um número inteiro."),
     check('FunctionId')
+        .optional({ nullable: true })
         .isInt()
         .withMessage("Deve ser um número inteiro.")
 ];
