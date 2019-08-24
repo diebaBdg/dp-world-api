@@ -80,7 +80,7 @@ exports.getPresenceList = async (req, res) => {
             <thead>
                 <tr>
                     <th colspan="3">
-                        Lista de presença de integração DP WORLD
+                        Lista de presença de integração
                     </th>
                 </tr>
                 <tr>

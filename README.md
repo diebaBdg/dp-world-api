@@ -1,6 +1,10 @@
-# DP WORLD API
+# KINTEGRADO (API)
 
-Esta é a API para o sistema de gerenciamento de documentos de integração da DP WORLD
+Kintegrado é uma aplicação web que facilita a integração de colaboradores proprios ou terceiros em empresas, automatizando o processo desde o envio de documentos até a integração.
+
+Este projeto contém o back-end da aplicação em formato de API RestFull.
+
+Acesse o font-end em: https://github.com/cleytonlang/dp-world-front.
 
 ## Getting Started
 

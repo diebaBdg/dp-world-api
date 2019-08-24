@@ -1,7 +1,7 @@
 {
   "name": "dp-world-api",
   "version": "1.0.0",
-  "description": "It is the api for the supplier management web sistem at Dp World",
+  "description": "It is the back-end of Kintegrado",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
