@@ -1,4 +1,4 @@
 module.exports = {
-    jwtSecret: "@@$DPWORLD$@@",
+    jwtSecret: "",
     jwtSession: { session: false }
 };
